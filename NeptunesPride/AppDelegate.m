@@ -7,6 +7,13 @@
 //
 
 #import "AppDelegate.h"
+#import "MainViewController.h"
+
+@interface AppDelegate ()
+
+@property (nonatomic, strong) MainViewController *mainVC;
+
+@end
 
 @implementation AppDelegate
 
@@ -14,9 +21,9 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-    // Insert code here to initialize your application
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    self.mainVC = [[MainViewController alloc] init];
+    addSubviewFill(self.window.contentView, self.mainVC.view);
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "llama-games.NeptunesPride" in the user's Application Support directory.

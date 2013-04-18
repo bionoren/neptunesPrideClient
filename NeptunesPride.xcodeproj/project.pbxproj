@@ -18,6 +18,10 @@
 		BE353964171F9FA8004DA84F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE353941171F9FA8004DA84F /* Cocoa.framework */; };
 		BE35396C171F9FA8004DA84F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE35396A171F9FA8004DA84F /* InfoPlist.strings */; };
 		BE35396F171F9FA8004DA84F /* NeptunesPrideTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE35396E171F9FA8004DA84F /* NeptunesPrideTests.m */; };
+		BE35397B171FA010004DA84F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE353979171FA010004DA84F /* MainViewController.m */; };
+		BE35397C171FA010004DA84F /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE35397A171FA010004DA84F /* MainViewController.xib */; };
+		BE35398217203635004DA84F /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE35398117203635004DA84F /* MapView.m */; };
+		BE35398517208A89004DA84F /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = BE35398417208A89004DA84F /* info.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,12 @@
 		BE35396B171F9FA8004DA84F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BE35396D171F9FA8004DA84F /* NeptunesPrideTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NeptunesPrideTests.h; sourceTree = "<group>"; };
 		BE35396E171F9FA8004DA84F /* NeptunesPrideTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NeptunesPrideTests.m; sourceTree = "<group>"; };
+		BE353978171FA010004DA84F /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		BE353979171FA010004DA84F /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		BE35397A171FA010004DA84F /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		BE35398017203635004DA84F /* MapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
+		BE35398117203635004DA84F /* MapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapView.m; sourceTree = "<group>"; };
+		BE35398417208A89004DA84F /* info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				BE353947171F9FA8004DA84F /* NeptunesPride */,
+				BE35398317208A62004DA84F /* Resources */,
 				BE353967171F9FA8004DA84F /* NeptunesPrideTests */,
 				BE353940171F9FA8004DA84F /* Frameworks */,
 				BE35393F171F9FA8004DA84F /* Products */,
@@ -121,6 +132,11 @@
 				BE353956171F9FA8004DA84F /* MainMenu.xib */,
 				BE353959171F9FA8004DA84F /* NeptunesPride.xcdatamodeld */,
 				BE353948171F9FA8004DA84F /* Supporting Files */,
+				BE353978171FA010004DA84F /* MainViewController.h */,
+				BE353979171FA010004DA84F /* MainViewController.m */,
+				BE35397A171FA010004DA84F /* MainViewController.xib */,
+				BE35398017203635004DA84F /* MapView.h */,
+				BE35398117203635004DA84F /* MapView.m */,
 			);
 			path = NeptunesPride;
 			sourceTree = "<group>";
@@ -154,6 +170,15 @@
 				BE35396A171F9FA8004DA84F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BE35398317208A62004DA84F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BE35398417208A89004DA84F /* info.png */,
+			);
+			name = Resources;
+			path = NeptunesPride;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,6 +255,8 @@
 				BE35394C171F9FA8004DA84F /* InfoPlist.strings in Resources */,
 				BE353952171F9FA8004DA84F /* Credits.rtf in Resources */,
 				BE353958171F9FA8004DA84F /* MainMenu.xib in Resources */,
+				BE35397C171FA010004DA84F /* MainViewController.xib in Resources */,
+				BE35398517208A89004DA84F /* info.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +294,8 @@
 				BE35394E171F9FA8004DA84F /* main.m in Sources */,
 				BE353955171F9FA8004DA84F /* AppDelegate.m in Sources */,
 				BE35395B171F9FA8004DA84F /* NeptunesPride.xcdatamodeld in Sources */,
+				BE35397B171FA010004DA84F /* MainViewController.m in Sources */,
+				BE35398217203635004DA84F /* MapView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

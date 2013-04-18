@@ -5,3 +5,24 @@
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
 #endif
+
+#define DEG_FROM_RAD(rad) (rad) * 180 / M_PI
+#define RAD_FROM_DEG(deg) (deg) * M_PI / 180
+
+#define CGPointDistance(p1, p2) sqrtf((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y))
+#define CGPointOffset(from, to) CGPointMake(to.x - from.x, to.y - from.y)
+#define BETWEEN_CLOSED(low, val, high) (low <= val && val <= high)
+
+#define CGRectMakeWithPointSize(pt, size) CGRectMake(pt.x, pt.y, size.width, size.height)
+
+#define LOG_AFFINE_TRANSFORM(aft) NSLog(@"%s = \n[%f, %f, 0]\n[%f, %f, 0]\n[%f, %f, 1]", #aft, aft.a, aft.b, aft.c, aft.d, aft.tx, aft.ty)
+#define LOG_CGRECT(rect) NSLog(@"%s = (%f, %f, %f, %f)", #rect, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)
+
+//NOTE: the subview parameter must NOT be a property. Use the ivar instead.
+static void addSubviewFill(NSView *view, NSView *subview) {
+    [view addSubview:subview];
+    subview.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *bindings = NSDictionaryOfVariableBindings(subview);
+    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[subview]|" options:0 metrics:nil views:bindings]];
+    [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[subview]|" options:0 metrics:nil views:bindings]];
+}
