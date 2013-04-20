@@ -82,7 +82,8 @@
         s.uid = @([star[@"uid"] intValue]);
         int player = [star[@"puid"] intValue];
         s.player = [Player playerFromUID:player];
-        if([star[@"v"] boolValue]) {
+        s.visible = @([star[@"v"] boolValue]);
+        if(s.visible) {
             s.economy = @([star[@"e"] intValue]);
             s.industry = @([star[@"i"] intValue]);
             s.science = @([star[@"s"] intValue]);

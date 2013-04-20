@@ -2,7 +2,7 @@
 //  Star.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/19/13.
+//  Created by Bion Oren on 4/20/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSNumber * uid;
 @property (nonatomic, retain) NSNumber * x;
 @property (nonatomic, retain) NSNumber * y;
+@property (nonatomic, retain) NSNumber * visible;
 @property (nonatomic, retain) Player *player;
 
 @end

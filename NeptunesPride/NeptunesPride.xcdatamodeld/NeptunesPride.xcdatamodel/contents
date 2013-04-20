@@ -30,6 +30,7 @@
         <attribute name="science" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ships" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="visible" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="x" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="y" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="player" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="stars" inverseEntity="Player" syncable="YES"/>
@@ -37,6 +38,6 @@
     <elements>
         <element name="Fleet" positionX="171" positionY="288" width="128" height="135"/>
         <element name="Player" positionX="160" positionY="192" width="128" height="180"/>
-        <element name="Star" positionX="160" positionY="192" width="128" height="240"/>
+        <element name="Star" positionX="160" positionY="192" width="128" height="255"/>
     </elements>
 </model>

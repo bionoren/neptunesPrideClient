@@ -60,7 +60,7 @@
             return RGB(32, 64, 32);
             break;
         default:
-            return [NSColor blackColor];
+            return [NSColor grayColor];
     }
 }
 

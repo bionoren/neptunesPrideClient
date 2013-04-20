@@ -11,7 +11,7 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong) MainWindowController *mainWC;
+@property (nonatomic, weak) IBOutlet MainWindowController *mainWC;
 
 @end
 
@@ -22,7 +22,6 @@
 @synthesize managedObjectContext = _managedObjectContext;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    self.mainWC = [[MainWindowController alloc] initWithWindow:self.window];
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "llama-games.NeptunesPride" in the user's Application Support directory.
@@ -138,6 +137,10 @@
     if (![[self managedObjectContext] save:&error]) {
         [[NSApplication sharedApplication] presentError:error];
     }
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+    return YES;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
