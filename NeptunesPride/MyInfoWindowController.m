@@ -8,7 +8,7 @@
 
 #import "MyInfoWindowController.h"
 #import "AppDelegate.h"
-#import "Player+Helpers.h"®
+#import "Player+Helpers.h"
 
 @interface MyInfoWindowController () <NSOutlineViewDataSource, NSOutlineViewDelegate>
 

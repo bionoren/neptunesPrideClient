@@ -9,6 +9,7 @@
 #import "MapView.h"
 #import "Star+Helpers.h"
 #import "Player+Helpers.h"
+#import "NSManagedObject+Helpers.h"
 
 @implementation MapView
 
@@ -17,6 +18,12 @@
     }
     
     return self;
+}
+
+-(void)awakeFromNib {
+    [super awakeFromNib];
+
+    [NSManagedObject loadData];
 }
 
 -(CGRect)virtualFrame {

@@ -10,6 +10,7 @@
 
 @interface NSManagedObject (Helpers)
 
-+ (void) deleteAllObjects;
++(void)loadData;
++(void)deleteAllObjects;
 
 @end

@@ -62,16 +62,6 @@
         default:
             return [NSColor blackColor];
     }
-    /*.pc_0 {color: rgba(0, 0, 255, 1)}
-    .pc_1 {color: rgba(0, 159, 223, 1)}
-    .pc_2 {color: rgba(64, 192, 0, 1)}
-    .pc_3 {color: rgba(255, 192, 0, 1)}
-    .pc_4 {color: rgba(223, 95, 0, 1)}
-    .pc_5 {color: rgba(192, 0, 0, 1)}
-    .pc_6 {color: rgba(192, 0, 192, 1)}
-    .pc_7 {color: rgba(96, 0, 128, 1)}
-    .pc_8 {color: rgba(0, 0, 128, 1)}
-    .pc_9 {color: rgba(32, 64, 32, 1)}*/
 }
 
 -(NSNumber*)resources {

@@ -6,43 +6,31 @@
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import "MainWindowController.h"
 #import "MapView.h"
 #import "AppDelegate.h"
 #import "MyInfoWindowController.h"
-#import "MainViewController+loadData.h"
 
-@interface MainViewController () <NSToolbarDelegate>
+@interface MainWindowController () <NSToolbarDelegate>
 
 @property (nonatomic, strong) MyInfoWindowController *someWindow;
 
 @end
 
-@implementation MainViewController
+@implementation MainWindowController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self reloadData];
-
+- (id)initWithWindow:(NSWindow *)window {
+    if(self = [super initWithWindow:window]) {
         NSToolbar *toolbar = [[NSToolbar alloc] initWithIdentifier:@"Toolbar"];
         toolbar.allowsUserCustomization = YES;
         toolbar.autosavesConfiguration = YES;
         toolbar.displayMode = NSToolbarDisplayModeIconAndLabel;
         toolbar.delegate = self;
 
-        ((AppDelegate*)[NSApplication sharedApplication].delegate).window.toolbar = toolbar;
+        self.window.toolbar = toolbar;
     }
     
     return self;
-}
-
--(IBAction)reloadData {
-    [self loadData];
-
-    LOG_CGRECT(NSRectToCGRect(self.view.bounds));
-    MapView *map = [[MapView alloc] initWithFrame:NSRectFromCGRect(self.view.bounds)];
-    [((NSScrollView*)self.view) setDocumentView:map];
-    [map setNeedsDisplay:YES];
 }
 
 -(void)something:(id)sender {
