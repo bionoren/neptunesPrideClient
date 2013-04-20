@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define GET_CONTEXT [(AppDelegate*)[NSApplication sharedApplication].delegate managedObjectContext]
+#define SAVE_CONTEXT [(AppDelegate*)[NSApplication sharedApplication].delegate saveAction:nil]
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;

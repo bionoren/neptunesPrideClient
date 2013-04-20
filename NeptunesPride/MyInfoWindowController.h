@@ -1,5 +1,5 @@
 //
-//  MapView.h
+//  MyInfoWindowController.h
 //  NeptunesPride
 //
 //  Created by Bion Oren on 4/18/13.
@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface MapView : NSView
+@interface MyInfoWindowController : NSWindowController
 
 @end

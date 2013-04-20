@@ -9,11 +9,12 @@
 #import "MainViewController.h"
 #import "MapView.h"
 #import "AppDelegate.h"
+#import "MyInfoWindowController.h"
+#import "MainViewController+loadData.h"
 
 @interface MainViewController () <NSToolbarDelegate>
 
-@property (nonatomic, strong) NSDictionary *data;
-@property (nonatomic, readonly) NSDictionary *stars;
+@property (nonatomic, strong) MyInfoWindowController *someWindow;
 
 @end
 
@@ -36,37 +37,17 @@
 }
 
 -(IBAction)reloadData {
-    //curl "http://triton.ironhelmet.com/grequest/order" --data "type=order&order=full_universe_report&game_number=1429278"
-    NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://triton.ironhelmet.com/grequest/order"]];
-    [request setHTTPMethod:@"POST"];
-
-    NSString *post =[NSString stringWithFormat:@"type=order&order=full_universe_report&game_number=%d", 1429278];
-    [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
-
-    NSURLResponse *response;
-    NSError *err = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
-
-    err = nil;
-    self.data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
-    //NSLog(@"Data = %@", self.data);
+    [self loadData];
 
     LOG_CGRECT(NSRectToCGRect(self.view.bounds));
     MapView *map = [[MapView alloc] initWithFrame:NSRectFromCGRect(self.view.bounds)];
-    map.data = self.data;
     [((NSScrollView*)self.view) setDocumentView:map];
     [map setNeedsDisplay:YES];
 }
 
--(NSDictionary*)stars {
-    return self.data[@"stars"];
-}
-
 -(void)something:(id)sender {
-    NSLog(@"Something!");
+    self.someWindow = [[MyInfoWindowController alloc] init];
+    [self.someWindow showWindow:sender];
 }
 
 -(BOOL)validateToolbarItem:(NSToolbarItem*)item {
@@ -99,10 +80,6 @@ static const NSString *someIdentifier = @"someID";
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar {
     return @[someIdentifier, NSToolbarFlexibleSpaceItemIdentifier];
-}
-
-- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar {
-    return @[someIdentifier];
 }
 
 @end

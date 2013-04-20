@@ -1,4 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="untitled.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Fleet" representedClassName="Fleet" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="strength" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="x" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="y" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="player" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="fleets" inverseEntity="Player" syncable="YES"/>
+    </entity>
+    <entity name="Player" representedClassName="Player" syncable="YES">
+        <attribute name="economy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="industry" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numFleets" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="science" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="strength" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Fleet" inverseName="player" inverseEntity="Fleet" syncable="YES"/>
+        <relationship name="stars" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Star" inverseName="player" inverseEntity="Star" syncable="YES"/>
+    </entity>
+    <entity name="Star" representedClassName="Star" syncable="YES">
+        <attribute name="buildRate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="economy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="garrison" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="industry" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="naturalResources" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="resources" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="science" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="ships" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="x" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="y" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="player" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="stars" inverseEntity="Player" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Fleet" positionX="171" positionY="288" width="128" height="135"/>
+        <element name="Player" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="Star" positionX="160" positionY="192" width="128" height="240"/>
+    </elements>
 </model>

@@ -7,6 +7,8 @@
 //
 
 #import "MapView.h"
+#import "Star+Helpers.h"
+#import "Player+Helpers.h"
 
 @implementation MapView
 
@@ -22,9 +24,9 @@
     float miny = MAXFLOAT;
     float maxx = -MAXFLOAT;
     float maxy = -MAXFLOAT;
-    for(NSDictionary *star in [self.stars objectEnumerator]) {
-        float x = [star[@"x"] floatValue];
-        float y = [star[@"y"] floatValue];
+    for(Star *star in [Star allStars]) {
+        float x = star.x.floatValue;
+        float y = star.y.floatValue;
         if(x < minx) {
             minx = x;
         }
@@ -43,34 +45,30 @@
     return CGRectMake(minx - 0.1*width, miny - 0.1*height, width*1.2, height*1.2);
 }
 
+static CGRect virtualFrame = {0};
+
 - (void)drawRect:(NSRect)dirtyRect {
-    if(self.data) {
-        CGRect frame = [self virtualFrame];
-        //LOG_CGRECT(frame);
-
-        [[NSColor greenColor] set];
-        for(NSDictionary *star in [self.stars objectEnumerator]) {
-            float x = [star[@"x"] floatValue];
-            float y = [star[@"y"] floatValue];
-            float xoffsetPercent = (x - frame.origin.x) / frame.size.width;
-            float yoffsetPercent = (y - frame.origin.y) / frame.size.height;
-            float xoffset = self.bounds.size.width * xoffsetPercent;
-            float yoffset = self.bounds.size.height * yoffsetPercent;
-            //NSLog(@"xoffset = %f", xoffset);
-            //NSLog(@"yoffset = %f", yoffset);
-
-            NSBezierPath *starPath = [[NSBezierPath alloc] init];
-            [starPath appendBezierPathWithOvalInRect:NSRectFromCGRect(CGRectMake(xoffset - 5, self.bounds.size.height - (yoffset - 5), 10, 10))];
-            [starPath stroke];
-            [starPath fill];
-        }
-    } else {
-        NSLog(@"No data");
+    if(virtualFrame.size.width == 0) {
+        virtualFrame = [self virtualFrame];
     }
-}
+    //LOG_CGRECT(frame);
 
--(NSDictionary*)stars {
-    return self.data[@"stars"];
+    for(Star *star in [Star allStars]) {
+        [star.player.color set];
+        float x = star.x.floatValue;
+        float y = star.y.floatValue;
+        float xoffsetPercent = (x - virtualFrame.origin.x) / virtualFrame.size.width;
+        float yoffsetPercent = (y - virtualFrame.origin.y) / virtualFrame.size.height;
+        float xoffset = self.bounds.size.width * xoffsetPercent;
+        float yoffset = self.bounds.size.height * yoffsetPercent;
+        //NSLog(@"xoffset = %f", xoffset);
+        //NSLog(@"yoffset = %f", yoffset);
+
+        NSBezierPath *starPath = [[NSBezierPath alloc] init];
+        [starPath appendBezierPathWithOvalInRect:NSRectFromCGRect(CGRectMake(xoffset - 5, self.bounds.size.height - (yoffset - 5), 10, 10))];
+        [starPath stroke];
+        [starPath fill];
+    }
 }
 
 @end
