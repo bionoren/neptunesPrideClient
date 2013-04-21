@@ -10,6 +10,7 @@
 #import "Star+Helpers.h"
 #import "Player+Helpers.h"
 #import "NSManagedObject+Helpers.h"
+#import "Report+Helpers.h"
 
 @interface MapView ()
 
@@ -29,7 +30,10 @@
 -(void)awakeFromNib {
     [super awakeFromNib];
 
-    [NSManagedObject loadData];
+    Report *report = [NSManagedObject loadData];
+    NSTimeInterval timeToNextPossibleUpdate = [report timeToPossibleUpdate];
+    [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:[NSManagedObject class] selector:@selector(loadData) userInfo:nil repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate + 15 * 60 target:[NSManagedObject class] selector:@selector(loadData) userInfo:nil repeats:YES];
 }
 
 -(CGRect)virtualFrame {

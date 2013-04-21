@@ -15,9 +15,9 @@
 
 @implementation Player (Helpers)
 
-+(Player*)playerFromUID:(int)uid {
++(Player*)playerFromUID:(int)uid inReport:(Report*)report {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d", uid];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND report = %@", uid, report];
     NSError *err = nil;
     NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
     if(err) {

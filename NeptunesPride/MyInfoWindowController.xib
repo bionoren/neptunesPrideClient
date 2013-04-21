@@ -66,7 +66,7 @@
 											<string key="NSFrameSize">{480, 540}</string>
 											<reference key="NSSuperview" ref="1044574801"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="716969981"/>
+											<reference key="NSNextKeyView" ref="990746715"/>
 											<string key="NSReuseIdentifierKey">_NS:13</string>
 											<bool key="NSEnabled">YES</bool>
 											<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -184,7 +184,7 @@
 													<reference key="NSTableView" ref="835485865"/>
 													<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 														<string key="NSKey">economy</string>
-														<bool key="NSAscending">YES</bool>
+														<bool key="NSAscending">NO</bool>
 														<string key="NSSelector">compare:</string>
 													</object>
 												</object>
@@ -218,7 +218,7 @@
 													<reference key="NSTableView" ref="835485865"/>
 													<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 														<string key="NSKey">industry</string>
-														<bool key="NSAscending">YES</bool>
+														<bool key="NSAscending">NO</bool>
 														<string key="NSSelector">compare:</string>
 													</object>
 												</object>
@@ -249,7 +249,7 @@
 													<reference key="NSTableView" ref="835485865"/>
 													<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 														<string key="NSKey">science</string>
-														<bool key="NSAscending">YES</bool>
+														<bool key="NSAscending">NO</bool>
 														<string key="NSSelector">compare:</string>
 													</object>
 												</object>
@@ -283,7 +283,7 @@
 													<reference key="NSTableView" ref="835485865"/>
 													<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 														<string key="NSKey">numFleets</string>
-														<bool key="NSAscending">YES</bool>
+														<bool key="NSAscending">NO</bool>
 														<string key="NSSelector">compare:</string>
 													</object>
 												</object>
@@ -317,7 +317,7 @@
 													<reference key="NSTableView" ref="835485865"/>
 													<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 														<string key="NSKey">resources</string>
-														<bool key="NSAscending">YES</bool>
+														<bool key="NSAscending">NO</bool>
 														<string key="NSSelector">compare:</string>
 													</object>
 												</object>
@@ -351,7 +351,7 @@
 													<reference key="NSTableView" ref="835485865"/>
 													<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
 														<string key="NSKey">strength</string>
-														<bool key="NSAscending">YES</bool>
+														<bool key="NSAscending">NO</bool>
 														<string key="NSSelector">compare:</string>
 													</object>
 												</object>
@@ -439,7 +439,7 @@
 							<string key="NSFrame">{{-1, -1}, {482, 558}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="990746715"/>
+							<reference key="NSNextKeyView" ref="1044574801"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<int key="NSsFlags">133682</int>
 							<reference key="NSVScroller" ref="716969981"/>

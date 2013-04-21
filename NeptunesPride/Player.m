@@ -2,12 +2,14 @@
 //  Player.m
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/19/13.
+//  Created by Bion Oren on 4/21/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
 #import "Player.h"
 #import "Fleet.h"
+#import "Report.h"
+#import "Research.h"
 #import "Star.h"
 
 
@@ -20,7 +22,12 @@
 @dynamic science;
 @dynamic strength;
 @dynamic uid;
+@dynamic cash;
 @dynamic fleets;
+@dynamic report;
 @dynamic stars;
+@dynamic research;
+@dynamic research_next;
+@dynamic researches;
 
 @end

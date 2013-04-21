@@ -9,6 +9,7 @@
 #import "MyInfoWindowController.h"
 #import "AppDelegate.h"
 #import "Player+Helpers.h"
+#import "Report+Helpers.h"
 
 @interface MyInfoWindowController () <NSOutlineViewDataSource, NSOutlineViewDelegate>
 
@@ -38,9 +39,12 @@
 }
 
 -(void)reloadData {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"gameTime" ascending:NO]];
+    fetchRequest.fetchLimit = 1;
     NSError *err = nil;
-    self.players = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
+    Report *report = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err][0];
+    self.players = [report.players array];
     if(err) {
         NSLog(@"ERROR: %@", err);
     }

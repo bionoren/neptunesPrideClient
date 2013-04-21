@@ -9,6 +9,7 @@
         <relationship name="player" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="fleets" inverseEntity="Player" syncable="YES"/>
     </entity>
     <entity name="Player" representedClassName="Player" syncable="YES">
+        <attribute name="cash" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="economy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="industry" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -16,8 +17,29 @@
         <attribute name="science" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="strength" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Fleet" inverseName="player" inverseEntity="Fleet" syncable="YES"/>
-        <relationship name="stars" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Star" inverseName="player" inverseEntity="Star" syncable="YES"/>
+        <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Fleet" inverseName="player" inverseEntity="Fleet" syncable="YES"/>
+        <relationship name="report" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Report" inverseName="players" inverseEntity="Report" syncable="YES"/>
+        <relationship name="research" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Research" syncable="YES"/>
+        <relationship name="research_next" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Research" syncable="YES"/>
+        <relationship name="researches" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Research" inverseName="player" inverseEntity="Research" syncable="YES"/>
+        <relationship name="stars" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Star" inverseName="player" inverseEntity="Star" syncable="YES"/>
+    </entity>
+    <entity name="Report" representedClassName="Report" syncable="YES">
+        <attribute name="collectionTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="gameTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="originatorUID" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tick" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="tick_fragment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="players" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Player" inverseName="report" inverseEntity="Player" syncable="YES"/>
+    </entity>
+    <entity name="Research" representedClassName="Research" syncable="YES">
+        <attribute name="goal" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="increment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="level" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="progress" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
+        <relationship name="player" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="researches" inverseEntity="Player" syncable="YES"/>
     </entity>
     <entity name="Star" representedClassName="Star" syncable="YES">
         <attribute name="buildRate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -37,7 +59,9 @@
     </entity>
     <elements>
         <element name="Fleet" positionX="171" positionY="288" width="128" height="135"/>
-        <element name="Player" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="Player" positionX="160" positionY="192" width="128" height="255"/>
+        <element name="Report" positionX="160" positionY="192" width="128" height="135"/>
         <element name="Star" positionX="160" positionY="192" width="128" height="255"/>
+        <element name="Research" positionX="160" positionY="192" width="128" height="150"/>
     </elements>
 </model>

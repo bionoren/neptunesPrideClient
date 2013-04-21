@@ -7,10 +7,11 @@
 //
 
 #import "Player.h"
+#import "Report.h"
 
 @interface Player (Helpers)
 
-+(Player*)playerFromUID:(int)uid;
++(Player*)playerFromUID:(int)uid inReport:(Report*)report;
 -(NSColor*)color;
 -(NSNumber*)resources;
 -(NSNumber*)ships;

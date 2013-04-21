@@ -2,14 +2,14 @@
 //  Player.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/19/13.
+//  Created by Bion Oren on 4/21/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Fleet, Star;
+@class Fleet, Report, Research, Star;
 
 @interface Player : NSManagedObject
 
@@ -20,8 +20,13 @@
 @property (nonatomic, retain) NSNumber * science;
 @property (nonatomic, retain) NSNumber * strength;
 @property (nonatomic, retain) NSNumber * uid;
+@property (nonatomic, retain) NSNumber * cash;
 @property (nonatomic, retain) NSOrderedSet *fleets;
+@property (nonatomic, retain) Report *report;
 @property (nonatomic, retain) NSOrderedSet *stars;
+@property (nonatomic, retain) Research *research;
+@property (nonatomic, retain) Research *research_next;
+@property (nonatomic, retain) NSSet *researches;
 @end
 
 @interface Player (CoreDataGeneratedAccessors)
@@ -46,4 +51,9 @@
 - (void)removeStarsObject:(Star *)value;
 - (void)addStars:(NSOrderedSet *)values;
 - (void)removeStars:(NSOrderedSet *)values;
+- (void)addResearchesObject:(Research *)value;
+- (void)removeResearchesObject:(Research *)value;
+- (void)addResearches:(NSSet *)values;
+- (void)removeResearches:(NSSet *)values;
+
 @end
