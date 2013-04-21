@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Player+Helpers.h"
 #import "Report+Helpers.h"
+#import "Star+Helpers.h"
 
 @interface MyInfoWindowController () <NSOutlineViewDataSource, NSOutlineViewDelegate>
 
@@ -56,10 +57,16 @@
     if(item == nil) {
         return self.players[index];
     }
+    if([item isKindOfClass:[Player class]]) {
+        return [[[[item stars] array] sortedArrayUsingDescriptors:outlineView.sortDescriptors] objectAtIndex:index];
+    }
     return nil;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
+    if([item isKindOfClass:[Player class]]) {
+        return YES;
+    };
     return NO;
 }
 
@@ -67,52 +74,101 @@
     if(item == nil) {
         return self.players.count;
     }
+    if([item isKindOfClass:[Player class]]) {
+        return [item stars].count;
+    }
     return 0;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
-    if([tableColumn.identifier isEqualToString:@"name"]) {
-        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
-        [ret setEditable:NO];
-        [ret setSelectable:NO];
-        ret.stringValue = ((Player*)item).name;
-        return ret;
-    } else if([tableColumn.identifier isEqualToString:@"economy"]) {
-        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
-        [ret setEditable:NO];
-        [ret setSelectable:NO];
-        ret.stringValue = ((Player*)item).economy.stringValue;
-        return ret;
-    } else if([tableColumn.identifier isEqualToString:@"industry"]) {
-        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
-        [ret setEditable:NO];
-        [ret setSelectable:NO];
-        ret.stringValue = ((Player*)item).industry.stringValue;
-        return ret;
-    } else if([tableColumn.identifier isEqualToString:@"science"]) {
-        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
-        [ret setEditable:NO];
-        [ret setSelectable:NO];
-        ret.stringValue = ((Player*)item).science.stringValue;
-        return ret;
-    } else if([tableColumn.identifier isEqualToString:@"fleets"]) {
-        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
-        [ret setEditable:NO];
-        [ret setSelectable:NO];
-        ret.stringValue = ((Player*)item).numFleets.stringValue;
-        return ret;
-    } else if([tableColumn.identifier isEqualToString:@"resources"]) {
-        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
-        [ret setEditable:NO];
-        [ret setSelectable:NO];
-        ret.stringValue = ((Player*)item).resources.stringValue;
-        return ret;
-    } else if([tableColumn.identifier isEqualToString:@"ships"]) {
-        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
-        [ret setEditable:NO];
-        [ret setSelectable:NO];
-        ret.stringValue = ((Player*)item).strength.stringValue;
-        return ret;
+    if([item isKindOfClass:[Player class]]) {
+        if([tableColumn.identifier isEqualToString:@"name"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Player*)item).name;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"economy"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Player*)item).economy.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"industry"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Player*)item).industry.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"science"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Player*)item).science.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"fleets"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Player*)item).numFleets.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"resources"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Player*)item).resources.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"ships"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Player*)item).strength.stringValue;
+            return ret;
+        }
+    } else if([item isKindOfClass:[Star class]]) {
+        if([tableColumn.identifier isEqualToString:@"name"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Star*)item).name;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"economy"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Star*)item).economy.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"industry"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Star*)item).industry.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"science"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Star*)item).science.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"fleets"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = @"?";
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"resources"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Star*)item).resources.stringValue;
+            return ret;
+        } else if([tableColumn.identifier isEqualToString:@"ships"]) {
+            NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+            [ret setEditable:NO];
+            [ret setSelectable:NO];
+            ret.stringValue = ((Star*)item).ships.stringValue;
+            return ret;
+        }
     }
     return nil;
 }
