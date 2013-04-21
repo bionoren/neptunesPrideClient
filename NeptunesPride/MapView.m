@@ -9,31 +9,24 @@
 #import "MapView.h"
 #import "Star+Helpers.h"
 #import "Player+Helpers.h"
-#import "NSManagedObject+Helpers.h"
 #import "Report+Helpers.h"
 
 @interface MapView ()
 
-@property (nonatomic, weak) IBOutlet NSScrollView *scrollView;
+@property (nonatomic, strong) NSScrollView *scrollView;
 
 @end
 
 @implementation MapView
 
-- (id)initWithFrame:(NSRect)frame {
-    if(self = [super initWithFrame:frame]) {
-    }
-    
-    return self;
-}
-
 -(void)awakeFromNib {
     [super awakeFromNib];
 
-    Report *report = [NSManagedObject loadData];
-    NSTimeInterval timeToNextPossibleUpdate = [report timeToPossibleUpdate];
-    [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:[NSManagedObject class] selector:@selector(loadData) userInfo:nil repeats:NO];
-    [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate + 15 * 60 target:[NSManagedObject class] selector:@selector(loadData) userInfo:nil repeats:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadData" object:nil];
+}
+
+-(void)reloadData {
+    [self setNeedsDisplay:YES];
 }
 
 -(CGRect)virtualFrame {
@@ -41,7 +34,7 @@
     float miny = MAXFLOAT;
     float maxx = -MAXFLOAT;
     float maxy = -MAXFLOAT;
-    for(Star *star in [Star allStars]) {
+    for(Star *star in [Star allStarsInReport:[Report latestReport]]) {
         float x = star.x.floatValue;
         float y = star.y.floatValue;
         if(x < minx) {
@@ -60,6 +53,11 @@
     float width = maxx - minx;
     float height = maxy - miny;
     return CGRectMake(minx - 0.1*width, miny - 0.1*height, width*1.2, height*1.2);
+}
+
+-(void)setFrameSize:(NSSize)newSize {
+    self.scrollView = [self enclosingScrollView];
+    [super setFrameSize:self.scrollView.frame.size];
 }
 
 static CGRect virtualFrame = {0};
@@ -89,7 +87,7 @@ static CGRect virtualFrame = {0};
         mapOffsetX = (self.bounds.size.width - bounds.width) / 2;
     }
 
-    for(Star *star in [Star allStars]) {
+    for(Star *star in [Star allStarsInReport:[Report latestReport]]) {
         float x = star.x.floatValue;
         float y = star.y.floatValue;
         float xoffsetPercent = (x - virtualFrame.origin.x) / virtualFrame.size.width;

@@ -51,7 +51,7 @@
 
     err = nil;
     NSDictionary *data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
-    NSLog(@"Data = %@", data);
+    //NSLog(@"Data = %@", data);
 
     //[Report deleteAllObjects];
 
@@ -143,6 +143,8 @@
     }
     SAVE_CONTEXT;
 
+    [Report setLatestReport:report];
+    
     double delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

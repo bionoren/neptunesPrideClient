@@ -11,13 +11,15 @@
 
 @implementation Star (Helpers)
 
-+(NSArray*)allStars {
++(NSArray*)allStarsInReport:(Report*)report {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Star"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@", report];
     NSError *err = nil;
     NSArray *ret = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
     if(err) {
         NSLog(@"ERROR: %@", err);
     }
+    NSAssert(ret.count == 62, @"Found %ld stars?", ret.count);
     return ret;
 }
 

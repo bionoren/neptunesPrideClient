@@ -7,9 +7,10 @@
 //
 
 #import "Star.h"
+#import "Report.h"
 
 @interface Star (Helpers)
 
-+(NSArray*)allStars;
++(NSArray*)allStarsInReport:(Report*)report;
 
 @end

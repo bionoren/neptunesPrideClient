@@ -10,6 +10,8 @@
 
 @interface Report (Helpers)
 
++(void)setLatestReport:(Report*)report;
++(Report*)latestReport;
 -(NSTimeInterval)timeToPossibleUpdate;
 
 @end

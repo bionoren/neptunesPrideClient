@@ -10,6 +10,8 @@
 #import "MapView.h"
 #import "AppDelegate.h"
 #import "MyInfoWindowController.h"
+#import "Report+Helpers.h"
+#import "NSManagedObject+Helpers.h"
 
 @interface MainWindowController ()
 
@@ -19,11 +21,15 @@
 
 @implementation MainWindowController
 
-- (id)initWithWindow:(NSWindow *)window {
-    if(self = [super initWithWindow:window]) {
-    }
-    
-    return self;
+-(void)awakeFromNib {
+    [super awakeFromNib];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        Report *report = [NSManagedObject loadData];
+        NSTimeInterval timeToNextPossibleUpdate = [report timeToPossibleUpdate];
+        [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:[NSManagedObject class] selector:@selector(loadData) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate + 15 * 60 target:[NSManagedObject class] selector:@selector(loadData) userInfo:nil repeats:YES];
+    });
 }
 
 -(IBAction)showPlayerInfo:(id)sender {

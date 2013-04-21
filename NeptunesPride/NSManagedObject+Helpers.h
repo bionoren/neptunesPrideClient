@@ -7,7 +7,7 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "Report.h"
+#import "Report+Helpers.h"
 
 @interface NSManagedObject (Helpers)
 
