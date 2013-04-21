@@ -37,7 +37,7 @@
     //curl "http://triton.ironhelmet.com/grequest/order" --data "type=order&order=full_universe_report&game_number=1429278"
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://triton.ironhelmet.com/grequest/order"]];
     [request setHTTPMethod:@"POST"];
-    [request setValue:@"__utma=110446173.1320838023.1366223391.1366223391.1366223391.1; __utmc=110446173; __utmz=110446173.1366223391.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utma=127647816.971439499.1366203781.1366516430.1366549243.26; __utmc=127647816; __utmz=127647816.1366203781.1.1.utmcsr=facebook.com|utmccn=(referral)|utmcmd=referral|utmcct=/l/DAQF7Qu1QAQHFeN7yQSqmnJ2a5uaW4jxkNLFW4l95C-xpRg/triton.ironhelmet.com/game/1429278; ACSID=AJKiYcFZCGsjHGK1OfN2WG2LDk3mT6smOsyF8-kZ0zQXnciEzy8a0HhdMwwcban3GArCrvCAHp5mrqzwrmILYTtFOSXily3CiHjMJ-cTnu2UOji8V-Xc9QA6mehp2Zg5zJlkGeArwdmrOK8-QlBP5rCFmmZwRQTjmHlxjet15xmCBHS00fGDEp9dJuVmakIoV1UyilBIN8QS1NnmyWfQ75o4pntPrdh04-g0ZUS29Yez1gmRhAaJ4VPg1GZB_M28VQIcRqslqFxNFECaZ0PsiW1JsPqbZNutEfnkcwWietx5qn7dRCljVqKLdMiwh6F8ZS4eV8ElPOQFLDKjYP56u4bhWMqz9NeeYeiARSNnCouSz-NVeij8dLncaiMedFFcnjzILXqmdj-Czs88X8fHcPKL1U-gSz0iyNJmOfklvsgoaASGimGlrdzj3W6N2H1S9w2hZiyDx6CFGnLOpH6tjkEDkh4LXhwrgNXBTBB-fCrwnZJErjg0MLV-vPaUD6Zcok5SwHWiLxElEVdOsd6wjMz96ed3Gk9Yf8rmQ3EWUck-T0xqPPtjQTI" forHTTPHeaderField:@"Cookie"];
+    [request setValue:@"__utma=110446173.1320838023.1366223391.1366223391.1366223391.1; __utmc=110446173; __utmz=110446173.1366223391.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); ACSID=AJKiYcEMYOStGfjRM7JzI9SJDSZ_trsF3iVrxl5HLwa8zx2xWwY_4cjhCNPvVHkRtGGEsK9TEPghGDDtIm-I-bAfFBb3e5C3DneO1yUZ1rUUU3q34Bii59GR04fu6I0D22eW0nMOmnkegx2aMT56khpnYG8Vktb-P2TgT7zYnMB6SIwYvgZVOfsuFaNW9zoPKXm7kvP71SpN7eRwwbclMdo3-l6TkdNAJjUgbc46GuqiuSguKNvq0rAe6eD7zOKGzqJA5NU7unf8lXjCkL04TCrP3Zomj_E8hrT8J_OCEoXrUw6BBuSD8HPVOik4yTlQK4QQk4HNcdadI9BfTRfJQiRe6Gnh4brQywQQKywwrUFPrlQGGxn5Tn7Jmm8UZdk2SZ00csruf1umwGJvsi8MM4rAim2fakY2vH696rhqrKm2BV62IxGa7Ci4ZI8zEfu6ECEDSdGNxEWMSZqkJ3H8pF41-uHCsjwXA_0XpJ0Un4TBy-ByDvyeg51FYNLFe5kiSSZeqg2BiTQ5Cub2X-Cccd54DvZU5tdr3cDDuDxP3UO5YQzAF_NkD8w; __utma=127647816.971439499.1366203781.1366556986.1366579489.28; __utmb=127647816.1.10.1366579489; __utmc=127647816; __utmz=127647816.1366203781.1.1.utmcsr=facebook.com|utmccn=(referral)|utmcmd=referral|utmcct=/l/DAQF7Qu1QAQHFeN7yQSqmnJ2a5uaW4jxkNLFW4l95C-xpRg/triton.ironhelmet.com/game/1429278" forHTTPHeaderField:@"Cookie"];
 
     NSString *post =[NSString stringWithFormat:@"type=order&order=full_universe_report&game_number=%d", 1429278];
     [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
@@ -62,9 +62,9 @@
     report.originatorUID = @([data[@"player_uid"] intValue]);
     report.tick = @([data[@"tick"] intValue]);
     report.tick_fragment = @([data[@"tick_fragment"] floatValue]);
-    SAVE_CONTEXT;
 
     //players
+    NSAssert([data[@"players"] count] > 0, @"No players??");
     for(NSDictionary *player in [data[@"players"] objectEnumerator]) {
         Player *p = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:GET_CONTEXT];
         p.uid = @([player[@"uid"] intValue]);
@@ -77,7 +77,6 @@
         p.report = report;
         p.cash = @([player[@"cash"] intValue]);
         NSAssert(p.name, @"Need a name: %@", player);
-        SAVE_CONTEXT;
 
         //research
         for(NSString *name in [player[@"tech"] keyEnumerator]) {
@@ -99,15 +98,14 @@
                 r.progress = @([research[@"research"] intValue]);
             }
         }
-        SAVE_CONTEXT;
     }
     Player *noPlayer = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:GET_CONTEXT];
     noPlayer.uid = @(-1);
     noPlayer.name = @"Nobody";
     noPlayer.report = report;
-    SAVE_CONTEXT;
 
     //stars
+    NSAssert([data[@"stars"] count] > 0, @"No stars??");
     for(NSDictionary *star in [data[@"stars"] objectEnumerator]) {
         Star *s = [NSEntityDescription insertNewObjectForEntityForName:@"Star" inManagedObjectContext:GET_CONTEXT];
         s.name = star[@"n"];
@@ -128,7 +126,6 @@
             s.ships = @([star[@"st"] intValue]);
         }
     }
-    SAVE_CONTEXT;
 
     //fleets
     for(NSDictionary *fleet in [data[@"fleets"] objectEnumerator]) {

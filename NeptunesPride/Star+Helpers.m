@@ -12,6 +12,9 @@
 @implementation Star (Helpers)
 
 +(NSArray*)allStarsInReport:(Report*)report {
+    if(!report) {
+        return nil;
+    }
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Star"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@", report];
     NSError *err = nil;
@@ -19,7 +22,7 @@
     if(err) {
         NSLog(@"ERROR: %@", err);
     }
-    NSAssert(ret.count == 62, @"Found %ld stars?", ret.count);
+    NSAssert(ret.count == 62, @"Found %ld stars in report %@?", ret.count, report);
     return ret;
 }
 

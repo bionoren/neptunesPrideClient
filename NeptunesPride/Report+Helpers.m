@@ -9,7 +9,7 @@
 #import "Report+Helpers.h"
 #import "AppDelegate.h"
 
-static Report *latestReport;
+static Report *latestReport = nil;
 
 @implementation Report (Helpers)
 

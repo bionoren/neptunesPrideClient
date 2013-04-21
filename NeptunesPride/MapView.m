@@ -72,7 +72,8 @@ static CGRect virtualFrame = {0};
         virtualFrame = [self virtualFrame];
     }
 
-    float starSize = STAR_SIZE / self.scrollView.magnification;
+    const float magnification = self.scrollView.magnification;
+    float starSize = STAR_SIZE / magnification;
 
     NSSize bounds = self.bounds.size;
     float scale = virtualFrame.size.width / virtualFrame.size.height;
@@ -101,9 +102,14 @@ static CGRect virtualFrame = {0};
             NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:star.player.color, (CGFloat)0, star.player.color, (CGFloat)0.35, [NSColor blackColor], (CGFloat)0.55, [NSColor whiteColor], (CGFloat)0.65, nil];
             [gradient drawInBezierPath:starPath relativeCenterPosition:NSZeroPoint];
         } else {
+            [[NSColor clearColor] setStroke];
             [star.player.color setFill];
             [starPath stroke];
             [starPath fill];
+        }
+
+        if(star.visible.boolValue && magnification > 2) {
+            [[NSString stringWithFormat:@"%@  %@  %@", star.economy, star.industry, star.science] drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 6.5 / magnification, bounds.height - (yoffset - starSize / 2 - 20 / magnification)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
         }
     }
 }
