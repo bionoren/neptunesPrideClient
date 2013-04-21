@@ -1213,7 +1213,7 @@
 				<int key="NSWTFlags">1954021376</int>
 				<string key="NSWindowTitle">NeptunesPride</string>
 				<string key="NSWindowClass">NSWindow</string>
-				<object class="NSToolbar" key="NSViewClass" id="160869671">
+				<object class="NSToolbar" key="NSViewClass" id="777010583">
 					<object class="NSMutableString" key="NSToolbarIdentifier">
 						<characters key="NS.bytes">51A00ED1-DB06-4E35-8056-4135A687A4BC</characters>
 					</object>
@@ -1225,7 +1225,7 @@
 					<int key="NSToolbarDisplayMode">3</int>
 					<int key="NSToolbarSizeMode">1</int>
 					<dictionary class="NSMutableDictionary" key="NSToolbarIBIdentifiedItems">
-						<object class="NSToolbarItem" key="B8CB2CBB-F882-4EE8-8CBF-9E1DF5D462DA" id="431090576">
+						<object class="NSToolbarItem" key="B8CB2CBB-F882-4EE8-8CBF-9E1DF5D462DA" id="856237458">
 							<object class="NSMutableString" key="NSToolbarItemIdentifier">
 								<characters key="NS.bytes">B8CB2CBB-F882-4EE8-8CBF-9E1DF5D462DA</characters>
 							</object>
@@ -1247,7 +1247,7 @@
 							<bool key="NSToolbarIsUserRemovable">YES</bool>
 							<int key="NSToolbarItemVisibilityPriority">0</int>
 						</object>
-						<object class="NSToolbarFlexibleSpaceItem" key="NSToolbarFlexibleSpaceItem" id="901715216">
+						<object class="NSToolbarFlexibleSpaceItem" key="NSToolbarFlexibleSpaceItem" id="1015231534">
 							<string key="NSToolbarItemIdentifier">NSToolbarFlexibleSpaceItem</string>
 							<string key="NSToolbarItemLabel"/>
 							<string key="NSToolbarItemPaletteLabel">Flexible Space</string>
@@ -1274,7 +1274,7 @@
 								<reference key="NSMixedImage" ref="502551668"/>
 							</object>
 						</object>
-						<object class="NSToolbarItem" key="NSToolbarPrintItem" id="560942380">
+						<object class="NSToolbarItem" key="NSToolbarPrintItem" id="857673352">
 							<string key="NSToolbarItemIdentifier">NSToolbarPrintItem</string>
 							<string key="NSToolbarItemLabel">Print</string>
 							<string key="NSToolbarItemPaletteLabel">Print</string>
@@ -1294,7 +1294,7 @@
 							<bool key="NSToolbarIsUserRemovable">YES</bool>
 							<int key="NSToolbarItemVisibilityPriority">0</int>
 						</object>
-						<object class="NSToolbarSpaceItem" key="NSToolbarSpaceItem" id="170602010">
+						<object class="NSToolbarSpaceItem" key="NSToolbarSpaceItem" id="547414466">
 							<string key="NSToolbarItemIdentifier">NSToolbarSpaceItem</string>
 							<string key="NSToolbarItemLabel"/>
 							<string key="NSToolbarItemPaletteLabel">Space</string>
@@ -1323,14 +1323,14 @@
 						</object>
 					</dictionary>
 					<array class="NSMutableArray" key="NSToolbarIBAllowedItems">
-						<reference ref="431090576"/>
-						<reference ref="560942380"/>
-						<reference ref="170602010"/>
-						<reference ref="901715216"/>
+						<reference ref="856237458"/>
+						<reference ref="857673352"/>
+						<reference ref="547414466"/>
+						<reference ref="1015231534"/>
 					</array>
 					<array key="NSToolbarIBDefaultItems">
-						<reference ref="431090576"/>
-						<reference ref="901715216"/>
+						<reference ref="856237458"/>
+						<reference ref="1015231534"/>
 					</array>
 					<array key="NSToolbarIBSelectableItems" id="0"/>
 				</object>
@@ -1406,7 +1406,6 @@
 									<string key="NSFrame">{{0, 587}, {787, 15}}</string>
 									<reference key="NSSuperview" ref="221779215"/>
 									<reference key="NSWindow"/>
-									<reference key="NSNextKeyView"/>
 									<string key="NSReuseIdentifierKey">_NS:26</string>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 									<int key="NSsFlags">1</int>
@@ -1420,11 +1419,11 @@
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="46309098"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
-							<int key="NSsFlags">133680</int>
+							<int key="NSsFlags">657968</int>
 							<reference key="NSVScroller" ref="303274888"/>
 							<reference key="NSHScroller" ref="654016200"/>
 							<reference key="NSContentView" ref="46309098"/>
-							<double key="NSMinMagnification">0.25</double>
+							<double key="NSMinMagnification">1</double>
 							<double key="NSMaxMagnification">4</double>
 							<double key="NSMagnification">1</double>
 						</object>
@@ -1444,7 +1443,7 @@
 			<object class="NSCustomObject" id="755631768">
 				<string key="NSClassName">NSFontManager</string>
 			</object>
-			<object class="NSCustomObject" id="283481759">
+			<object class="NSCustomObject" id="559008980">
 				<string key="NSClassName">MainWindowController</string>
 			</object>
 		</array>
@@ -2086,31 +2085,31 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">mainWC</string>
 						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="283481759"/>
+						<reference key="destination" ref="559008980"/>
 					</object>
 					<int key="connectionID">603</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">scrollView</string>
+						<reference key="source" ref="910260102"/>
+						<reference key="destination" ref="221779215"/>
+					</object>
+					<int key="connectionID">608</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">window</string>
-						<reference key="source" ref="283481759"/>
+						<reference key="source" ref="559008980"/>
 						<reference key="destination" ref="972006081"/>
 					</object>
 					<int key="connectionID">604</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mapScrollView</string>
-						<reference key="source" ref="283481759"/>
-						<reference key="destination" ref="221779215"/>
-					</object>
-					<int key="connectionID">605</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">showPlayerInfo:</string>
-						<reference key="source" ref="283481759"/>
-						<reference key="destination" ref="431090576"/>
+						<reference key="source" ref="559008980"/>
+						<reference key="destination" ref="856237458"/>
 					</object>
 					<int key="connectionID">607</int>
 				</object>
@@ -2568,7 +2567,7 @@
 						<reference key="object" ref="972006081"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="439893737"/>
-							<reference ref="160869671"/>
+							<reference ref="777010583"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -3256,38 +3255,38 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">594</int>
-						<reference key="object" ref="160869671"/>
+						<reference key="object" ref="777010583"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="170602010"/>
-							<reference ref="901715216"/>
-							<reference ref="560942380"/>
-							<reference ref="431090576"/>
+							<reference ref="547414466"/>
+							<reference ref="1015231534"/>
+							<reference ref="857673352"/>
+							<reference ref="856237458"/>
 						</array>
 						<reference key="parent" ref="972006081"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">595</int>
-						<reference key="object" ref="170602010"/>
-						<reference key="parent" ref="160869671"/>
+						<reference key="object" ref="547414466"/>
+						<reference key="parent" ref="777010583"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">598</int>
-						<reference key="object" ref="901715216"/>
-						<reference key="parent" ref="160869671"/>
+						<reference key="object" ref="1015231534"/>
+						<reference key="parent" ref="777010583"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">599</int>
-						<reference key="object" ref="560942380"/>
-						<reference key="parent" ref="160869671"/>
+						<reference key="object" ref="857673352"/>
+						<reference key="parent" ref="777010583"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">600</int>
-						<reference key="object" ref="431090576"/>
-						<reference key="parent" ref="160869671"/>
+						<reference key="object" ref="856237458"/>
+						<reference key="parent" ref="777010583"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">602</int>
-						<reference key="object" ref="283481759"/>
+						<reference key="object" ref="559008980"/>
 						<reference key="parent" ref="0"/>
 					</object>
 				</array>
@@ -3475,7 +3474,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">607</int>
+			<int key="maxID">608</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3515,28 +3514,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">MainWindowController</string>
 					<string key="superclassName">NSWindowController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">showPlayerInfo:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">showPlayerInfo:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">showPlayerInfo:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">mapScrollView</string>
-						<string key="NS.object.0">NSScrollView</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">mapScrollView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">mapScrollView</string>
-							<string key="candidateClassName">NSScrollView</string>
-						</object>
-					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/MainWindowController.h</string>
@@ -3545,6 +3522,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">MapView</string>
 					<string key="superclassName">NSView</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">scrollView</string>
+						<string key="NS.object.0">NSScrollView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">scrollView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">scrollView</string>
+							<string key="candidateClassName">NSScrollView</string>
+						</object>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/MapView.h</string>

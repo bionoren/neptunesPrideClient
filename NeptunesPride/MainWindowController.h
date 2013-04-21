@@ -10,6 +10,4 @@
 
 @interface MainWindowController : NSWindowController
 
-@property (nonatomic, weak) IBOutlet NSScrollView *mapScrollView;
-
 @end

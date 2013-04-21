@@ -11,6 +11,12 @@
 #import "Player+Helpers.h"
 #import "NSManagedObject+Helpers.h"
 
+@interface MapView ()
+
+@property (nonatomic, weak) IBOutlet NSScrollView *scrollView;
+
+@end
+
 @implementation MapView
 
 - (id)initWithFrame:(NSRect)frame {
@@ -63,21 +69,32 @@ static CGRect virtualFrame = {0};
     if(virtualFrame.size.width == 0) {
         virtualFrame = [self virtualFrame];
     }
-    //LOG_CGRECT(frame);
+
+    float starSize = STAR_SIZE / self.scrollView.magnification;
+
+    NSSize bounds = self.bounds.size;
+    float scale = virtualFrame.size.width / virtualFrame.size.height;
+    CGFloat mapOffsetX = 0;
+    CGFloat mapOffsetY = 0;
+    float computedWidth = bounds.height * scale;
+    if(computedWidth > bounds.width) {
+        bounds = NSMakeSize(bounds.width, bounds.width / scale);
+        mapOffsetY = -(self.bounds.size.height - bounds.height) / 2;
+    } else {
+        bounds = NSMakeSize(bounds.height * scale, bounds.height);
+        mapOffsetX = (self.bounds.size.width - bounds.width) / 2;
+    }
 
     for(Star *star in [Star allStars]) {
-        //[star.player.color set];
         float x = star.x.floatValue;
         float y = star.y.floatValue;
         float xoffsetPercent = (x - virtualFrame.origin.x) / virtualFrame.size.width;
         float yoffsetPercent = (y - virtualFrame.origin.y) / virtualFrame.size.height;
-        float xoffset = self.bounds.size.width * xoffsetPercent;
-        float yoffset = self.bounds.size.height * yoffsetPercent;
-        //NSLog(@"xoffset = %f", xoffset);
-        //NSLog(@"yoffset = %f", yoffset);
+        float xoffset = bounds.width * xoffsetPercent + mapOffsetX;
+        float yoffset = bounds.height * yoffsetPercent + mapOffsetY;
 
         NSBezierPath *starPath = [[NSBezierPath alloc] init];
-        [starPath appendBezierPathWithOvalInRect:NSRectFromCGRect(CGRectMake(xoffset - STAR_SIZE / 2, self.bounds.size.height - (yoffset - STAR_SIZE / 2), STAR_SIZE, STAR_SIZE))];
+        [starPath appendBezierPathWithOvalInRect:NSRectFromCGRect(CGRectMake(xoffset - starSize / 2, bounds.height - (yoffset - starSize / 2), starSize, starSize))];
         if(star.visible.boolValue) {
             NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:star.player.color, (CGFloat)0, star.player.color, (CGFloat)0.35, [NSColor blackColor], (CGFloat)0.55, [NSColor whiteColor], (CGFloat)0.65, nil];
             [gradient drawInBezierPath:starPath relativeCenterPosition:NSZeroPoint];
