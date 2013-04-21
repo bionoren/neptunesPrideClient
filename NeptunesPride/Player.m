@@ -15,19 +15,19 @@
 
 @implementation Player
 
+@dynamic cash;
 @dynamic economy;
 @dynamic industry;
 @dynamic name;
 @dynamic numFleets;
 @dynamic science;
-@dynamic strength;
+@dynamic ships;
 @dynamic uid;
-@dynamic cash;
 @dynamic fleets;
 @dynamic report;
-@dynamic stars;
 @dynamic research;
 @dynamic research_next;
 @dynamic researches;
+@dynamic stars;
 
 @end

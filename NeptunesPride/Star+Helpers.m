@@ -23,4 +23,8 @@
     return ret;
 }
 
+-(NSNumber*)numFleets {
+    return @(0);
+}
+
 @end

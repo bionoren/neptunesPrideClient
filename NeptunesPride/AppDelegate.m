@@ -88,7 +88,7 @@
     
     NSURL *url = [applicationFilesDirectory URLByAppendingPathComponent:@"NeptunesPride.storedata"];
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    if (![coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:url options:nil error:&error]) {
+    if (![coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:url options:@{NSMigratePersistentStoresAutomaticallyOption: @(YES), NSInferMappingModelAutomaticallyOption: @(YES)} error:&error]) {
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }

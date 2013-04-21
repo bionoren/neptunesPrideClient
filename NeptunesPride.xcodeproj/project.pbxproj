@@ -10,7 +10,6 @@
 		BE112B8E17239CA6002739BB /* Report+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE112B8D17239CA6002739BB /* Report+Helpers.m */; };
 		BE112B91172421D2002739BB /* ProductionToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BE112B90172421D1002739BB /* ProductionToolbarItem.m */; };
 		BE112B9717242F71002739BB /* Research.m in Sources */ = {isa = PBXBuildFile; fileRef = BE112B9617242F71002739BB /* Research.m */; };
-		BE112B9A172430C8002739BB /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = BE112B99172430C8002739BB /* Player.m */; };
 		BE112B9D172430DF002739BB /* Research+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE112B9C172430DF002739BB /* Research+Helpers.m */; };
 		BE353942171F9FA8004DA84F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE353941171F9FA8004DA84F /* Cocoa.framework */; };
 		BE35394C171F9FA8004DA84F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE35394A171F9FA8004DA84F /* InfoPlist.strings */; };
@@ -34,6 +33,7 @@
 		BEBBB7C61722187000DA54CF /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBBB7C51722187000DA54CF /* Fleet.m */; };
 		BEE541E31721BACF00F8CC85 /* Player+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E21721BACF00F8CC85 /* Player+Helpers.m */; };
 		BEE541E61721C39700F8CC85 /* Star+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E51721C39600F8CC85 /* Star+Helpers.m */; };
+		BEF369F717248ACB0046DE5C /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF369F617248ACB0046DE5C /* Player.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,8 +53,6 @@
 		BE112B90172421D1002739BB /* ProductionToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductionToolbarItem.m; sourceTree = "<group>"; };
 		BE112B9517242F71002739BB /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
 		BE112B9617242F71002739BB /* Research.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Research.m; sourceTree = "<group>"; };
-		BE112B98172430C8002739BB /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		BE112B99172430C8002739BB /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		BE112B9B172430DF002739BB /* Research+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Research+Helpers.h"; sourceTree = "<group>"; };
 		BE112B9C172430DF002739BB /* Research+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Research+Helpers.m"; sourceTree = "<group>"; };
 		BE35393E171F9FA8004DA84F /* NeptunesPride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeptunesPride.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +95,9 @@
 		BEE541E21721BACF00F8CC85 /* Player+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Player+Helpers.m"; sourceTree = "<group>"; };
 		BEE541E41721C39600F8CC85 /* Star+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Star+Helpers.h"; sourceTree = "<group>"; };
 		BEE541E51721C39600F8CC85 /* Star+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Star+Helpers.m"; sourceTree = "<group>"; };
+		BEF369F4172489EA0046DE5C /* NeptunesPride2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = NeptunesPride2.xcdatamodel; sourceTree = "<group>"; };
+		BEF369F517248ACB0046DE5C /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		BEF369F617248ACB0046DE5C /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,9 +237,9 @@
 				BE112B9617242F71002739BB /* Research.m */,
 				BE112B9B172430DF002739BB /* Research+Helpers.h */,
 				BE112B9C172430DF002739BB /* Research+Helpers.m */,
+				BEF369F517248ACB0046DE5C /* Player.h */,
+				BEF369F617248ACB0046DE5C /* Player.m */,
 				BE353959171F9FA8004DA84F /* NeptunesPride.xcdatamodeld */,
-				BE112B98172430C8002739BB /* Player.h */,
-				BE112B99172430C8002739BB /* Player.m */,
 				BEBBB7C41722187000DA54CF /* Fleet.h */,
 				BEBBB7C51722187000DA54CF /* Fleet.m */,
 				BEE541E41721C39600F8CC85 /* Star+Helpers.h */,
@@ -374,8 +375,8 @@
 				BE112B8E17239CA6002739BB /* Report+Helpers.m in Sources */,
 				BE112B91172421D2002739BB /* ProductionToolbarItem.m in Sources */,
 				BE112B9717242F71002739BB /* Research.m in Sources */,
-				BE112B9A172430C8002739BB /* Player.m in Sources */,
 				BE112B9D172430DF002739BB /* Research+Helpers.m in Sources */,
+				BEF369F717248ACB0046DE5C /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,9 +583,10 @@
 		BE353959171F9FA8004DA84F /* NeptunesPride.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BEF369F4172489EA0046DE5C /* NeptunesPride2.xcdatamodel */,
 				BE35395A171F9FA8004DA84F /* NeptunesPride.xcdatamodel */,
 			);
-			currentVersion = BE35395A171F9FA8004DA84F /* NeptunesPride.xcdatamodel */;
+			currentVersion = BEF369F4172489EA0046DE5C /* NeptunesPride2.xcdatamodel */;
 			path = NeptunesPride.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

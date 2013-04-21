@@ -13,4 +13,6 @@
 
 +(NSArray*)allStarsInReport:(Report*)report;
 
+-(NSNumber*)numFleets;
+
 @end

@@ -72,7 +72,7 @@
         p.economy = @([player[@"total_economy"] intValue]);
         p.industry = @([player[@"total_industry"] intValue]);
         p.science = @([player[@"total_science"] intValue]);
-        p.strength = @([player[@"total_strength"] intValue]);
+        p.ships = @([player[@"total_strength"] intValue]);
         p.numFleets = @([player[@"total_fleets"] intValue]);
         p.report = report;
         p.cash = @([player[@"cash"] intValue]);

@@ -13,20 +13,20 @@
 
 @interface Player : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * cash;
 @property (nonatomic, retain) NSNumber * economy;
 @property (nonatomic, retain) NSNumber * industry;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numFleets;
 @property (nonatomic, retain) NSNumber * science;
-@property (nonatomic, retain) NSNumber * strength;
+@property (nonatomic, retain) NSNumber * ships;
 @property (nonatomic, retain) NSNumber * uid;
-@property (nonatomic, retain) NSNumber * cash;
 @property (nonatomic, retain) NSOrderedSet *fleets;
 @property (nonatomic, retain) Report *report;
-@property (nonatomic, retain) NSOrderedSet *stars;
 @property (nonatomic, retain) Research *research;
 @property (nonatomic, retain) Research *research_next;
 @property (nonatomic, retain) NSSet *researches;
+@property (nonatomic, retain) NSOrderedSet *stars;
 @end
 
 @interface Player (CoreDataGeneratedAccessors)
@@ -41,6 +41,11 @@
 - (void)removeFleetsObject:(Fleet *)value;
 - (void)addFleets:(NSOrderedSet *)values;
 - (void)removeFleets:(NSOrderedSet *)values;
+- (void)addResearchesObject:(Research *)value;
+- (void)removeResearchesObject:(Research *)value;
+- (void)addResearches:(NSSet *)values;
+- (void)removeResearches:(NSSet *)values;
+
 - (void)insertObject:(Star *)value inStarsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromStarsAtIndex:(NSUInteger)idx;
 - (void)insertStars:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
@@ -51,9 +56,4 @@
 - (void)removeStarsObject:(Star *)value;
 - (void)addStars:(NSOrderedSet *)values;
 - (void)removeStars:(NSOrderedSet *)values;
-- (void)addResearchesObject:(Research *)value;
-- (void)removeResearchesObject:(Research *)value;
-- (void)addResearches:(NSSet *)values;
-- (void)removeResearches:(NSSet *)values;
-
 @end
