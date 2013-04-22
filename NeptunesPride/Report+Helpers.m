@@ -8,6 +8,7 @@
 
 #import "Report+Helpers.h"
 #import "AppDelegate.h"
+#import "Game+Helpers.h"
 
 static Report *latestReport = nil;
 
@@ -37,11 +38,13 @@ static Report *latestReport = nil;
 }
 
 -(NSTimeInterval)timeToPossibleUpdate {
+    Game *game = [Game game];
+
     //tick_fragment is a percentage of the hour (well, there's a tick interval, but it's 60 for me)
-    int minutes = (int)(self.tick_fragment.floatValue * 60) % 15;
-    int seconds = (int)roundf((int)(self.tick_fragment.floatValue * 60 * 100) / 60.0);
+    int minutes = (int)(self.tick_fragment.floatValue * game.tickRate.floatValue);
+    int seconds = (int)roundf((int)(self.tick_fragment.floatValue * game.tickRate.floatValue * 100) / game.tickRate.floatValue);
     //NSLog(@"%d minutes, %d seconds", minutes, seconds);
-    return 15*60 - minutes * seconds;
+    return game.tickRate.floatValue * 60 - minutes * seconds;
 }
 
 @end

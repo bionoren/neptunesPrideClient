@@ -2,7 +2,7 @@
 //  Star.m
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/20/13.
+//  Created by Bion Oren on 4/22/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
@@ -22,9 +22,9 @@
 @dynamic science;
 @dynamic ships;
 @dynamic uid;
+@dynamic visible;
 @dynamic x;
 @dynamic y;
-@dynamic visible;
 @dynamic player;
 
 @end

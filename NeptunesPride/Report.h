@@ -2,23 +2,24 @@
 //  Report.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/20/13.
+//  Created by Bion Oren on 4/22/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Player;
+@class Game, Player;
 
 @interface Report : NSManagedObject
 
+@property (nonatomic, retain) NSDate * collectionTime;
 @property (nonatomic, retain) NSDate * gameTime;
 @property (nonatomic, retain) NSNumber * originatorUID;
 @property (nonatomic, retain) NSNumber * tick;
 @property (nonatomic, retain) NSNumber * tick_fragment;
-@property (nonatomic, retain) NSDate * collectionTime;
 @property (nonatomic, retain) NSOrderedSet *players;
+@property (nonatomic, retain) Game *game;
 @end
 
 @interface Report (CoreDataGeneratedAccessors)

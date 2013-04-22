@@ -12,6 +12,10 @@
 #import "Star.h"
 #import "Fleet.h"
 #import "Research.h"
+#import "Game+Helpers.h"
+
+static NSTimer *updateTimer = nil;
+static BOOL oneShotTimer = NO;
 
 @implementation NSManagedObject (Helpers)
 
@@ -33,13 +37,36 @@
     SAVE_CONTEXT;
 }
 
++(void)reset {
+    [updateTimer invalidate];
+    updateTimer = nil;
+}
+
++(void)resetAndLoad {
+    [self reset];
+    [self loadData];
+}
+
 +(Report*)loadData {
     //curl "http://triton.ironhelmet.com/grequest/order" --data "type=order&order=full_universe_report&game_number=1429278"
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://triton.ironhelmet.com/grequest/order"]];
     [request setHTTPMethod:@"POST"];
-    [request setValue:@"__utma=110446173.1320838023.1366223391.1366223391.1366223391.1; __utmc=110446173; __utmz=110446173.1366223391.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); ACSID=AJKiYcEMYOStGfjRM7JzI9SJDSZ_trsF3iVrxl5HLwa8zx2xWwY_4cjhCNPvVHkRtGGEsK9TEPghGDDtIm-I-bAfFBb3e5C3DneO1yUZ1rUUU3q34Bii59GR04fu6I0D22eW0nMOmnkegx2aMT56khpnYG8Vktb-P2TgT7zYnMB6SIwYvgZVOfsuFaNW9zoPKXm7kvP71SpN7eRwwbclMdo3-l6TkdNAJjUgbc46GuqiuSguKNvq0rAe6eD7zOKGzqJA5NU7unf8lXjCkL04TCrP3Zomj_E8hrT8J_OCEoXrUw6BBuSD8HPVOik4yTlQK4QQk4HNcdadI9BfTRfJQiRe6Gnh4brQywQQKywwrUFPrlQGGxn5Tn7Jmm8UZdk2SZ00csruf1umwGJvsi8MM4rAim2fakY2vH696rhqrKm2BV62IxGa7Ci4ZI8zEfu6ECEDSdGNxEWMSZqkJ3H8pF41-uHCsjwXA_0XpJ0Un4TBy-ByDvyeg51FYNLFe5kiSSZeqg2BiTQ5Cub2X-Cccd54DvZU5tdr3cDDuDxP3UO5YQzAF_NkD8w; __utma=127647816.971439499.1366203781.1366556986.1366579489.28; __utmb=127647816.1.10.1366579489; __utmc=127647816; __utmz=127647816.1366203781.1.1.utmcsr=facebook.com|utmccn=(referral)|utmcmd=referral|utmcct=/l/DAQF7Qu1QAQHFeN7yQSqmnJ2a5uaW4jxkNLFW4l95C-xpRg/triton.ironhelmet.com/game/1429278" forHTTPHeaderField:@"Cookie"];
 
-    NSString *post =[NSString stringWithFormat:@"type=order&order=full_universe_report&game_number=%d", 1429278];
+    //game
+    Game *game = [Game game];
+    if(!game.cookie.length || !game.number.length) {
+        [self reset];
+        return nil;
+    }
+
+    if(oneShotTimer) {
+        updateTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(game.tickRate.floatValue * 60) target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+        oneShotTimer = NO;
+    }
+
+    [request setValue:[NSString stringWithFormat:@"ACSID=%@", game.cookie] forHTTPHeaderField:@"Cookie"];
+
+    NSString *post =[NSString stringWithFormat:@"type=order&order=full_universe_report&game_number=%@", game.number];
     [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
 
     NSURLResponse *response;
@@ -49,11 +76,33 @@
         NSLog(@"ERROR: %@", err);
     }
 
-    err = nil;
-    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
+    __block NSDictionary *data = nil;
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSError *err = nil;
+        data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
+        if(err) {
+            NSLog(@"ERROR: %@", err);
+        }
+    });
     //NSLog(@"Data = %@", data);
 
-    //[Report deleteAllObjects];
+    //update game
+    if([data[@"player_uid"] intValue] < 0) {
+        [self reset];
+        game.cookie = nil;
+        SAVE_CONTEXT;
+        return nil;
+    }
+    game.tickRate = @([data[@"tick_rate"] floatValue]);
+    game.starsForVictory = @([data[@"stars_for_victory"] intValue]);
+    game.startTime = [NSDate dateWithTimeIntervalSince1970:[data[@"start_time"] longValue] / 1000];
+    game.tradeCost = @([data[@"trade_cost"] floatValue]);
+    game.productionRate = @([data[@"production_rate"] floatValue]);
+    game.economyCost = @([data[@"dev_cost_economy"] floatValue]);
+    game.industryCost = @([data[@"dev_cost_industry"] floatValue]);
+    game.scienceCost = @([data[@"dev_cost_science"] floatValue]);
+    game.fleetSpeed = @([data[@"fleet_speed"] floatValue]);
+    SAVE_CONTEXT;
 
     //report
     Report *report = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];
@@ -62,6 +111,7 @@
     report.originatorUID = @([data[@"player_uid"] intValue]);
     report.tick = @([data[@"tick"] intValue]);
     report.tick_fragment = @([data[@"tick_fragment"] floatValue]);
+    report.game = game;
 
     //players
     NSAssert([data[@"players"] count] > 0, @"No players??");
@@ -147,6 +197,12 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadData" object:nil userInfo:@{@"report": report}];
     });
+
+    NSTimeInterval timeToNextPossibleUpdate = [report timeToPossibleUpdate];
+    if(!updateTimer) {
+        updateTimer = [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:self selector:@selector(loadData) userInfo:nil repeats:NO];
+        oneShotTimer = YES;
+    }
 
     return report;
 }

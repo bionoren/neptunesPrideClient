@@ -14,6 +14,7 @@
 @interface MapView ()
 
 @property (nonatomic, strong) NSScrollView *scrollView;
+@property (nonatomic, strong) id<NSFastEnumeration> stars;
 
 @end
 
@@ -26,6 +27,14 @@
 }
 
 -(void)reloadData {
+    self.stars = [Star allStarsInReport:[Report latestReport]];
+    if(!self.stars) {
+        return;
+    }
+    if(virtualFrame.size.width == 0) {
+        virtualFrame = [self virtualFrame];
+    }
+
     [self setNeedsDisplay:YES];
 }
 
@@ -34,7 +43,7 @@
     float miny = MAXFLOAT;
     float maxx = -MAXFLOAT;
     float maxy = -MAXFLOAT;
-    for(Star *star in [Star allStarsInReport:[Report latestReport]]) {
+    for(Star *star in self.stars) {
         float x = star.x.floatValue;
         float y = star.y.floatValue;
         if(x < minx) {
@@ -69,7 +78,7 @@ static CGRect virtualFrame = {0};
     NSRectFill(dirtyRect);
 
     if(virtualFrame.size.width == 0) {
-        virtualFrame = [self virtualFrame];
+        return;
     }
 
     const float magnification = self.scrollView.magnification;
@@ -88,7 +97,7 @@ static CGRect virtualFrame = {0};
         mapOffsetX = (self.bounds.size.width - bounds.width) / 2;
     }
 
-    for(Star *star in [Star allStarsInReport:[Report latestReport]]) {
+    for(Star *star in self.stars) {
         float x = star.x.floatValue;
         float y = star.y.floatValue;
         float xoffsetPercent = (x - virtualFrame.origin.x) / virtualFrame.size.width;
@@ -102,7 +111,6 @@ static CGRect virtualFrame = {0};
             NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:star.player.color, (CGFloat)0, star.player.color, (CGFloat)0.35, [NSColor blackColor], (CGFloat)0.55, [NSColor whiteColor], (CGFloat)0.65, nil];
             [gradient drawInBezierPath:starPath relativeCenterPosition:NSZeroPoint];
         } else {
-            [[NSColor clearColor] setStroke];
             [star.player.color setFill];
             [starPath stroke];
             [starPath fill];
@@ -110,6 +118,15 @@ static CGRect virtualFrame = {0};
 
         if(star.visible.boolValue && magnification > 2) {
             [[NSString stringWithFormat:@"%@  %@  %@", star.economy, star.industry, star.science] drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 6.5 / magnification, bounds.height - (yoffset - starSize / 2 - 20 / magnification)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
+            NSString *shipsString;
+            if(star.industry.floatValue != 0) {
+                shipsString = [NSString stringWithFormat:@"%@", star.ships];
+            } else {
+                shipsString = [NSString stringWithFormat:@"%@", star.ships];
+            }
+            [shipsString drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 1 / magnification, bounds.height - (yoffset + starSize / 2)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
+
+            [[NSColor clearColor] setStroke];
         }
     }
 }

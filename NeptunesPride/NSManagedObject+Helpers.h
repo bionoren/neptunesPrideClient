@@ -13,5 +13,6 @@
 
 +(Report*)loadData;
 +(void)deleteAllObjects;
++(void)resetAndLoad;
 
 @end
