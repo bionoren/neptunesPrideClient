@@ -11,7 +11,15 @@
 
 @implementation Research (Helpers)
 
++(int)levelForResearch:(const NSString*)research forPlayer:(Player*)player {
+    return [self research:research forPlayer:player].level.intValue;
+}
+
 +(float)valueForResearch:(const NSString*)research forPlayer:(Player*)player {
+    return [self research:research forPlayer:player].value.floatValue;
+}
+
++(Research*)research:(const NSString*)research forPlayer:(Player*)player {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Research"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player = %@ AND name = %@", player, research];
     NSError *err = nil;
@@ -20,7 +28,7 @@
         NSLog(@"ERROR: %@", err);
     }
     NSAssert(results.count == 1, @"Not the results we expected for player %@ and string %@: %@", player, research, results);
-    return [[results[0] value] floatValue];
+    return results[0];
 }
 
 @end
