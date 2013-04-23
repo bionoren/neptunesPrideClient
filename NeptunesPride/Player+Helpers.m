@@ -8,7 +8,7 @@
 
 #import "Player+Helpers.h"
 #import "AppDelegate.h"
-#import "Star.h"
+#import "Star+Helpers.h"
 #import "Fleet.h"
 
 #define RGB(r, g, b) [NSColor colorWithSRGBRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
@@ -67,7 +67,7 @@
 -(NSNumber*)resources {
     int ret = 0;
     for(Star *star in self.stars) {
-        ret += star.naturalResources.intValue;
+        ret += star.resources.intValue;
     }
 
     return @(ret);

@@ -19,7 +19,7 @@ static Report *latestReport = nil;
 +(Report*)latestReport {
     if(!latestReport) {
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
-        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"gameTime" ascending:NO]];
+        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"collectionTime" ascending:NO]];
         fetchRequest.fetchLimit = 1;
         NSError *err = nil;
         NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];

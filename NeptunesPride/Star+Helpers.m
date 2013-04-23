@@ -9,6 +9,8 @@
 #import "Star+Helpers.h"
 #import "AppDelegate.h"
 #import "Fleet.h"
+#import "Research+Helpers.h"
+#import "Player.h"
 
 @implementation Star (Helpers)
 
@@ -78,6 +80,14 @@
     }
 
     return ret;
+}
+
+-(NSNumber*)resources {
+    if(self.player.uid.intValue < 0) {
+        return @(0);
+    }
+    float terraforming = [Research valueForResearch:TERRAFORMING forPlayer:self.player];
+    return @(self.naturalResources.intValue + terraforming * 5);
 }
 
 @end

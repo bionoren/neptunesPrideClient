@@ -135,7 +135,7 @@ static BOOL oneShotTimer = NO;
             Research *r = [NSEntityDescription insertNewObjectForEntityForName:@"Research" inManagedObjectContext:GET_CONTEXT];
             r.name = name;
             r.player = p;
-            r.level = @([research[@"level"] intValue]);
+            r.level = @([research[@"level"] floatValue]);
             r.value = @([research[@"value"] floatValue]);
             if(player[@"cash"]) { //this is us
                 /*
@@ -148,6 +148,7 @@ static BOOL oneShotTimer = NO;
                 r.goal = @([research[@"brr"] intValue]); //this doesn't get incremented in the JSON
                 r.progress = @([research[@"research"] intValue]);
             }
+            NSLog(@"Research %@ = %@", r.name, r.value);
         }
     }
     Player *noPlayer = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:GET_CONTEXT];

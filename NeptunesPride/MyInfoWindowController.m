@@ -131,7 +131,12 @@
         if([[item uid] intValue] == -1) {
             ret.stringValue = @"0";
         } else {
-            ret.stringValue = [NSString stringWithFormat:@"%d", [Research valueForResearch:tableColumn.identifier forPlayer:item]];
+            float value = [Research valueForResearch:tableColumn.identifier forPlayer:item];
+            if(value - (int)value < 0.001) {
+                ret.stringValue = [NSString stringWithFormat:@"%d", (int)value];
+            } else {
+                ret.stringValue = [NSString stringWithFormat:@"%.3f", value];
+            }
         }
         return ret;
     }

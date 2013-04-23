@@ -18,6 +18,6 @@ static const NSString *WEAPONS = @"weapons";
 
 @interface Research (Helpers)
 
-+(int)valueForResearch:(const NSString*)research forPlayer:(Player*)player;
++(float)valueForResearch:(const NSString*)research forPlayer:(Player*)player;
 
 @end
