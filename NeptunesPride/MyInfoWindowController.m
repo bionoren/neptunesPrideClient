@@ -11,6 +11,7 @@
 #import "Player+Helpers.h"
 #import "Report+Helpers.h"
 #import "Star+Helpers.h"
+#import "Research+Helpers.h"
 
 @interface MyInfoWindowController () <NSOutlineViewDataSource, NSOutlineViewDelegate>
 
@@ -122,6 +123,16 @@
         [ret setEditable:NO];
         [ret setSelectable:NO];
         ret.stringValue = [item ships].stringValue;
+        return ret;
+    } else if([item isKindOfClass:[Player class]]) {
+        NSTextFieldCell *ret = [[NSTextFieldCell alloc] init];
+        [ret setEditable:NO];
+        [ret setSelectable:NO];
+        if([[item uid] intValue] == -1) {
+            ret.stringValue = @"0";
+        } else {
+            ret.stringValue = [NSString stringWithFormat:@"%d", [Research valueForResearch:tableColumn.identifier forPlayer:item]];
+        }
         return ret;
     }
     return nil;
