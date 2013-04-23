@@ -12,7 +12,10 @@
 @interface Star (Helpers)
 
 +(NSArray*)allStarsInReport:(Report*)report;
++(NSArray*)dataForReport:(Report*)report;
++(Star*)starFromUID:(int)uid inReport:(Report*)report;
 
 -(NSNumber*)numFleets;
+-(int)allShips;
 
 @end

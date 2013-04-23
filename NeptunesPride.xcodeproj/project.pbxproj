@@ -16,11 +16,12 @@
 		BE18FDFF17258760002AEFE2 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE18FDFE17258760002AEFE2 /* PreferencesWindowController.xib */; };
 		BE18FE0217259314002AEFE2 /* Research.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE0117259314002AEFE2 /* Research.m */; };
 		BE18FE0517259314002AEFE2 /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE0417259314002AEFE2 /* Game.m */; };
-		BE18FE0817259314002AEFE2 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE0717259314002AEFE2 /* Fleet.m */; };
 		BE18FE0B17259314002AEFE2 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE0A17259314002AEFE2 /* Player.m */; };
 		BE18FE0E17259314002AEFE2 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE0D17259314002AEFE2 /* Report.m */; };
-		BE18FE1117259314002AEFE2 /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE1017259314002AEFE2 /* Star.m */; };
 		BE18FE14172595C3002AEFE2 /* Game+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE13172595C3002AEFE2 /* Game+Helpers.m */; };
+		BE18FE2B172633FA002AEFE2 /* Fleet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */; };
+		BE18FE371726C604002AEFE2 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE361726C603002AEFE2 /* Fleet.m */; };
+		BE18FE3A1726C608002AEFE2 /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE391726C606002AEFE2 /* Star.m */; };
 		BE353942171F9FA8004DA84F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE353941171F9FA8004DA84F /* Cocoa.framework */; };
 		BE35394C171F9FA8004DA84F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE35394A171F9FA8004DA84F /* InfoPlist.strings */; };
 		BE35394E171F9FA8004DA84F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE35394D171F9FA8004DA84F /* main.m */; };
@@ -68,16 +69,18 @@
 		BE18FE0117259314002AEFE2 /* Research.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Research.m; sourceTree = "<group>"; };
 		BE18FE0317259314002AEFE2 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
 		BE18FE0417259314002AEFE2 /* Game.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Game.m; sourceTree = "<group>"; };
-		BE18FE0617259314002AEFE2 /* Fleet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fleet.h; sourceTree = "<group>"; };
-		BE18FE0717259314002AEFE2 /* Fleet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fleet.m; sourceTree = "<group>"; };
 		BE18FE0917259314002AEFE2 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		BE18FE0A17259314002AEFE2 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		BE18FE0C17259314002AEFE2 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
 		BE18FE0D17259314002AEFE2 /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
-		BE18FE0F17259314002AEFE2 /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Star.h; sourceTree = "<group>"; };
-		BE18FE1017259314002AEFE2 /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Star.m; sourceTree = "<group>"; };
 		BE18FE12172595C3002AEFE2 /* Game+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Game+Helpers.h"; sourceTree = "<group>"; };
 		BE18FE13172595C3002AEFE2 /* Game+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Game+Helpers.m"; sourceTree = "<group>"; };
+		BE18FE29172633F9002AEFE2 /* Fleet+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Fleet+Helpers.h"; sourceTree = "<group>"; };
+		BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Fleet+Helpers.m"; sourceTree = "<group>"; };
+		BE18FE351726C601002AEFE2 /* Fleet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fleet.h; sourceTree = "<group>"; };
+		BE18FE361726C603002AEFE2 /* Fleet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fleet.m; sourceTree = "<group>"; };
+		BE18FE381726C605002AEFE2 /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Star.h; sourceTree = "<group>"; };
+		BE18FE391726C606002AEFE2 /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Star.m; sourceTree = "<group>"; };
 		BE35393E171F9FA8004DA84F /* NeptunesPride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeptunesPride.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE353941171F9FA8004DA84F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		BE353944171F9FA8004DA84F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -253,17 +256,19 @@
 				BE112B9C172430DF002739BB /* Research+Helpers.m */,
 				BE18FE12172595C3002AEFE2 /* Game+Helpers.h */,
 				BE18FE13172595C3002AEFE2 /* Game+Helpers.m */,
+				BE18FE29172633F9002AEFE2 /* Fleet+Helpers.h */,
+				BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */,
 				BE353959171F9FA8004DA84F /* NeptunesPride.xcdatamodeld */,
+				BE18FE351726C601002AEFE2 /* Fleet.h */,
+				BE18FE361726C603002AEFE2 /* Fleet.m */,
+				BE18FE381726C605002AEFE2 /* Star.h */,
+				BE18FE391726C606002AEFE2 /* Star.m */,
 				BE18FE0017259314002AEFE2 /* Research.h */,
 				BE18FE0117259314002AEFE2 /* Research.m */,
 				BE18FE0917259314002AEFE2 /* Player.h */,
 				BE18FE0A17259314002AEFE2 /* Player.m */,
 				BE18FE0C17259314002AEFE2 /* Report.h */,
 				BE18FE0D17259314002AEFE2 /* Report.m */,
-				BE18FE0F17259314002AEFE2 /* Star.h */,
-				BE18FE1017259314002AEFE2 /* Star.m */,
-				BE18FE0617259314002AEFE2 /* Fleet.h */,
-				BE18FE0717259314002AEFE2 /* Fleet.m */,
 				BE18FE0317259314002AEFE2 /* Game.h */,
 				BE18FE0417259314002AEFE2 /* Game.m */,
 				BEE541E41721C39600F8CC85 /* Star+Helpers.h */,
@@ -402,11 +407,12 @@
 				BE18FDFD1725874B002AEFE2 /* PreferencesWindowController.m in Sources */,
 				BE18FE0217259314002AEFE2 /* Research.m in Sources */,
 				BE18FE0517259314002AEFE2 /* Game.m in Sources */,
-				BE18FE0817259314002AEFE2 /* Fleet.m in Sources */,
 				BE18FE0B17259314002AEFE2 /* Player.m in Sources */,
 				BE18FE0E17259314002AEFE2 /* Report.m in Sources */,
-				BE18FE1117259314002AEFE2 /* Star.m in Sources */,
 				BE18FE14172595C3002AEFE2 /* Game+Helpers.m in Sources */,
+				BE18FE2B172633FA002AEFE2 /* Fleet+Helpers.m in Sources */,
+				BE18FE371726C604002AEFE2 /* Fleet.m in Sources */,
+				BE18FE3A1726C608002AEFE2 /* Star.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

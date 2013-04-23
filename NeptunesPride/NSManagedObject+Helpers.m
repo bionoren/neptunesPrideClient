@@ -9,7 +9,7 @@
 #import "NSManagedObject+Helpers.h"
 #import "AppDelegate.h"
 #import "Player+Helpers.h"
-#import "Star.h"
+#import "Star+Helpers.h"
 #import "Fleet.h"
 #import "Research.h"
 #import "Game+Helpers.h"
@@ -69,16 +69,16 @@ static BOOL oneShotTimer = NO;
     NSString *post =[NSString stringWithFormat:@"type=order&order=full_universe_report&game_number=%@", game.number];
     [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
 
-    NSURLResponse *response;
-    NSError *err = nil;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
-
     __block NSDictionary *data = nil;
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSURLResponse *response;
         NSError *err = nil;
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+        if(err) {
+            NSLog(@"ERROR: %@", err);
+        }
+
+        err = nil;
         data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
         if(err) {
             NSLog(@"ERROR: %@", err);
@@ -93,6 +93,7 @@ static BOOL oneShotTimer = NO;
         SAVE_CONTEXT;
         return nil;
     }
+    NSLog(@"Loading data...");
     game.tickRate = @([data[@"tick_rate"] floatValue]);
     game.starsForVictory = @([data[@"stars_for_victory"] intValue]);
     game.startTime = [NSDate dateWithTimeIntervalSince1970:[data[@"start_time"] longValue] / 1000];
@@ -171,7 +172,6 @@ static BOOL oneShotTimer = NO;
             s.science = @([star[@"s"] intValue]);
             s.garrison = @([star[@"g"] intValue]);
             s.naturalResources = @([star[@"nr"] intValue]);
-            s.resources = @([star[@"r"] intValue]);
             s.buildRate = @([star[@"c"] floatValue]);
             s.ships = @([star[@"st"] intValue]);
         }
@@ -183,10 +183,21 @@ static BOOL oneShotTimer = NO;
         f.name = fleet[@"n"];
         int player = [fleet[@"puid"] intValue];
         f.player = [Player playerFromUID:player inReport:report];
-        f.strength = @([fleet[@"st"] intValue]);
+        f.ships = @([fleet[@"st"] intValue]);
         f.uid = @([fleet[@"uid"] intValue]);
         f.x = @([fleet[@"x"] floatValue]);
         f.y = @([fleet[@"y"] floatValue]);
+        if(fleet[@"ouid"]) {
+            int uid = [fleet[@"ouid"] intValue];
+            f.orbiting = [Star starFromUID:uid inReport:report];
+        } else {
+            NSArray *waypoints = fleet[@"p"];
+            NSMutableOrderedSet *wp = [[NSMutableOrderedSet alloc] init];
+            for(NSNumber *waypoint in waypoints) {
+                [wp addObject:[Star starFromUID:waypoint.intValue inReport:report]];
+            }
+            f.waypoints = wp;
+        }
     }
     SAVE_CONTEXT;
 
@@ -203,6 +214,8 @@ static BOOL oneShotTimer = NO;
         updateTimer = [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:self selector:@selector(loadData) userInfo:nil repeats:NO];
         oneShotTimer = YES;
     }
+
+    [report push];
 
     return report;
 }

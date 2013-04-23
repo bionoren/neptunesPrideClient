@@ -8,6 +8,7 @@
 
 #import "Star+Helpers.h"
 #import "AppDelegate.h"
+#import "Fleet.h"
 
 @implementation Star (Helpers)
 
@@ -26,8 +27,57 @@
     return ret;
 }
 
++(NSArray*)dataForReport:(Report*)report {
+    NSMutableArray *ret = [[NSMutableArray alloc] init];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Star"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@ AND player.uid != %@", report, report.originatorUID];
+    NSError *err = nil;
+    NSArray *stars = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
+    if(err) {
+        NSLog(@"ERROR: %@", err);
+    }
+
+    for(Star *star in stars) {
+        NSMutableDictionary *s = [[NSMutableDictionary alloc] init];
+        s[@"uid"] = star.uid;
+        s[@"economy"] = star.economy;
+        s[@"buildRate"] = star.buildRate;
+        s[@"garrison"] = star.garrison;
+        s[@"industry"] = star.industry;
+        s[@"naturalResources"] = star.naturalResources;
+        s[@"science"] = star.science;
+        s[@"ships"] = star.ships;
+
+        [ret addObject:s];
+    }
+
+    return ret;
+}
+
++(Star*)starFromUID:(int)uid inReport:(Report*)report {
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Star"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND player.report = %@", uid, report];
+    NSError *err = nil;
+    NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
+    if(err) {
+        NSLog(@"ERROR: %@", err);
+    }
+    NSAssert(result.count > 0, @"Huh? No results for uid %d", uid);
+    return result[0];
+}
+
 -(NSNumber*)numFleets {
     return @(0);
+}
+
+-(int)allShips {
+    int ret = self.ships.intValue;
+    for(Fleet *fleet in self.fleets) {
+        ret += fleet.ships.intValue;
+    }
+
+    return ret;
 }
 
 @end

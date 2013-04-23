@@ -73,13 +73,13 @@
     return @(ret);
 }
 
--(NSNumber*)ships {
+-(NSNumber*)visibleShips {
     int ret = 0;
     for(Star *star in self.stars) {
         ret += star.ships.intValue;
     }
     for(Fleet *fleet in self.fleets) {
-        ret += fleet.strength.intValue;
+        ret += fleet.ships.intValue;
     }
 
     return @(ret);

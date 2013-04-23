@@ -14,4 +14,6 @@
 +(Report*)latestReport;
 -(NSTimeInterval)timeToPossibleUpdate;
 
+-(void)push;
+
 @end

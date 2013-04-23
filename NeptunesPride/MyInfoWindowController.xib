@@ -350,7 +350,7 @@
 													<bool key="NSIsResizeable">YES</bool>
 													<reference key="NSTableView" ref="835485865"/>
 													<object class="NSSortDescriptor" key="NSSortDescriptorPrototype">
-														<string key="NSKey">strength</string>
+														<string key="NSKey">ships</string>
 														<bool key="NSAscending">NO</bool>
 														<string key="NSSelector">compare:</string>
 													</object>

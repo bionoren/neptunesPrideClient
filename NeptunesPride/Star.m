@@ -2,11 +2,12 @@
 //  Star.m
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/22/13.
+//  Created by Bion Oren on 4/23/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
 #import "Star.h"
+#import "Fleet.h"
 #import "Player.h"
 
 
@@ -18,7 +19,6 @@
 @dynamic industry;
 @dynamic name;
 @dynamic naturalResources;
-@dynamic resources;
 @dynamic science;
 @dynamic ships;
 @dynamic uid;
@@ -26,5 +26,6 @@
 @dynamic x;
 @dynamic y;
 @dynamic player;
+@dynamic fleets;
 
 @end

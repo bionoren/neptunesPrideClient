@@ -14,6 +14,6 @@
 +(Player*)playerFromUID:(int)uid inReport:(Report*)report;
 -(NSColor*)color;
 -(NSNumber*)resources;
--(NSNumber*)ships;
+-(NSNumber*)visibleShips;
 
 @end

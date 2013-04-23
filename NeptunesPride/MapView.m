@@ -10,11 +10,13 @@
 #import "Star+Helpers.h"
 #import "Player+Helpers.h"
 #import "Report+Helpers.h"
+#import "Fleet+Helpers.h"
 
 @interface MapView ()
 
 @property (nonatomic, strong) NSScrollView *scrollView;
 @property (nonatomic, strong) id<NSFastEnumeration> stars;
+@property (nonatomic, strong) id<NSFastEnumeration> fleets;
 
 @end
 
@@ -27,7 +29,9 @@
 }
 
 -(void)reloadData {
-    self.stars = [Star allStarsInReport:[Report latestReport]];
+    Report *report = [Report latestReport];
+    self.stars = [Star allStarsInReport:report];
+    self.fleets = [Fleet allFleetsInReport:report];
     if(!self.stars) {
         return;
     }
@@ -120,14 +124,23 @@ static CGRect virtualFrame = {0};
             [[NSString stringWithFormat:@"%@  %@  %@", star.economy, star.industry, star.science] drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 6.5 / magnification, bounds.height - (yoffset - starSize / 2 - 20 / magnification)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
             NSString *shipsString;
             if(star.industry.floatValue != 0) {
-                shipsString = [NSString stringWithFormat:@"%@", star.ships];
+                shipsString = [NSString stringWithFormat:@"%d", star.allShips];
             } else {
-                shipsString = [NSString stringWithFormat:@"%@", star.ships];
+                shipsString = [NSString stringWithFormat:@"%d", star.allShips];
             }
             [shipsString drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 1 / magnification, bounds.height - (yoffset + starSize / 2)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
 
             [[NSColor clearColor] setStroke];
         }
+    }
+
+    for(Fleet *fleet in self.fleets) {
+        float x = fleet.x.floatValue;
+        float y = fleet.y.floatValue;
+        float xoffsetPercent = (x - virtualFrame.origin.x) / virtualFrame.size.width;
+        float yoffsetPercent = (y - virtualFrame.origin.y) / virtualFrame.size.height;
+        float xoffset = bounds.width * xoffsetPercent + mapOffsetX;
+        float yoffset = bounds.height * yoffsetPercent + mapOffsetY;
     }
 }
 
