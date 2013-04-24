@@ -33,6 +33,7 @@
 -(void)awakeFromNib {
     [super awakeFromNib];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadData" object:nil];
     [self.sharingView setHidden:YES];
 
     Game *game = [Game game];
@@ -50,6 +51,11 @@
 - (void)windowDidLoad {
     [super windowDidLoad];
 }
+
+-(void)reloadData {
+}
+
+#pragma mark - Settings
 
 - (IBAction)showSettings:(id)sender {
     [self.sharingView setHidden:YES];
@@ -82,5 +88,19 @@
     SAVE_CONTEXT;
     [self reloadData:nil];
 }
+
+#pragma mark - Sharing
+
+#pragma mark NSTableViewDataSource
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
+    return 0;
+}
+
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+    return nil;
+}
+
+#pragma mark NSTableViewDataDelegate
 
 @end

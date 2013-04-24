@@ -31,6 +31,7 @@
 -(void)awakeFromNib {
     [super awakeFromNib];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadData" object:nil];
     [self reloadData];
 }
 
