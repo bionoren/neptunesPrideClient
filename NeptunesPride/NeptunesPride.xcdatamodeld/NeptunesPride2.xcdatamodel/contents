@@ -60,7 +60,6 @@
         <relationship name="player" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="researches" inverseEntity="Player" syncable="YES"/>
     </entity>
     <entity name="Star" representedClassName="Star" syncable="YES">
-        <attribute name="buildRate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="economy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="garrison" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="industry" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -77,10 +76,10 @@
     </entity>
     <elements>
         <element name="Fleet" positionX="171" positionY="288" width="128" height="165"/>
+        <element name="Game" positionX="160" positionY="192" width="128" height="240"/>
         <element name="Player" positionX="160" positionY="192" width="128" height="255"/>
         <element name="Report" positionX="160" positionY="192" width="128" height="150"/>
         <element name="Research" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="Star" positionX="160" positionY="192" width="128" height="255"/>
-        <element name="Game" positionX="160" positionY="192" width="128" height="240"/>
+        <element name="Star" positionX="160" positionY="192" width="128" height="240"/>
     </elements>
 </model>

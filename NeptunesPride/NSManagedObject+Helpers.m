@@ -172,7 +172,6 @@ static BOOL oneShotTimer = NO;
             s.science = @([star[@"s"] intValue]);
             s.garrison = @([star[@"g"] intValue]);
             s.naturalResources = @([star[@"nr"] intValue]);
-            s.buildRate = @([star[@"c"] floatValue]);
             s.ships = @([star[@"st"] intValue]);
         }
     }

@@ -2,7 +2,7 @@
 //  Star.m
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/23/13.
+//  Created by Bion Oren on 4/24/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
@@ -13,7 +13,6 @@
 
 @implementation Star
 
-@dynamic buildRate;
 @dynamic economy;
 @dynamic garrison;
 @dynamic industry;
@@ -25,7 +24,7 @@
 @dynamic visible;
 @dynamic x;
 @dynamic y;
-@dynamic player;
 @dynamic fleets;
+@dynamic player;
 
 @end

@@ -2,7 +2,7 @@
 //  Star.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/23/13.
+//  Created by Bion Oren on 4/24/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
@@ -13,7 +13,6 @@
 
 @interface Star : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * buildRate;
 @property (nonatomic, retain) NSNumber * economy;
 @property (nonatomic, retain) NSNumber * garrison;
 @property (nonatomic, retain) NSNumber * industry;
@@ -25,8 +24,8 @@
 @property (nonatomic, retain) NSNumber * visible;
 @property (nonatomic, retain) NSNumber * x;
 @property (nonatomic, retain) NSNumber * y;
-@property (nonatomic, retain) Player *player;
 @property (nonatomic, retain) NSSet *fleets;
+@property (nonatomic, retain) Player *player;
 @end
 
 @interface Star (CoreDataGeneratedAccessors)

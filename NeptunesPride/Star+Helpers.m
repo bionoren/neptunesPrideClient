@@ -44,7 +44,6 @@
         NSMutableDictionary *s = [[NSMutableDictionary alloc] init];
         s[@"uid"] = star.uid;
         s[@"economy"] = star.economy;
-        s[@"buildRate"] = star.buildRate;
         s[@"garrison"] = star.garrison;
         s[@"industry"] = star.industry;
         s[@"naturalResources"] = star.naturalResources;
@@ -83,7 +82,7 @@
 }
 
 -(NSNumber*)resources {
-    if(self.player.uid.intValue < 0) {
+    if(self.player.uid.intValue < 0 || self.naturalResources.intValue == 0) {
         return @(0);
     }
     float terraforming = [Research valueForResearch:TERRAFORMING forPlayer:self.player];

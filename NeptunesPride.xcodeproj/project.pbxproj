@@ -21,7 +21,6 @@
 		BE18FE14172595C3002AEFE2 /* Game+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE13172595C3002AEFE2 /* Game+Helpers.m */; };
 		BE18FE2B172633FA002AEFE2 /* Fleet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */; };
 		BE18FE371726C604002AEFE2 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE361726C603002AEFE2 /* Fleet.m */; };
-		BE18FE3A1726C608002AEFE2 /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE391726C606002AEFE2 /* Star.m */; };
 		BE353942171F9FA8004DA84F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE353941171F9FA8004DA84F /* Cocoa.framework */; };
 		BE35394C171F9FA8004DA84F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE35394A171F9FA8004DA84F /* InfoPlist.strings */; };
 		BE35394E171F9FA8004DA84F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE35394D171F9FA8004DA84F /* main.m */; };
@@ -38,6 +37,7 @@
 		BE35398517208A89004DA84F /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = BE35398417208A89004DA84F /* info.png */; };
 		BE35398C17209B69004DA84F /* MyInfoWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE35398A17209B69004DA84F /* MyInfoWindowController.m */; };
 		BE35398D17209B69004DA84F /* MyInfoWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE35398B17209B69004DA84F /* MyInfoWindowController.xib */; };
+		BE432B051728480700BD43E6 /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = BE432B041728480700BD43E6 /* Star.m */; };
 		BE7C8B8D1722E0A0002DC4CA /* NSManagedObject+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C8B8C1722E0A0002DC4CA /* NSManagedObject+Helpers.m */; };
 		BEE541E31721BACF00F8CC85 /* Player+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E21721BACF00F8CC85 /* Player+Helpers.m */; };
 		BEE541E61721C39700F8CC85 /* Star+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E51721C39600F8CC85 /* Star+Helpers.m */; };
@@ -79,8 +79,6 @@
 		BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Fleet+Helpers.m"; sourceTree = "<group>"; };
 		BE18FE351726C601002AEFE2 /* Fleet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fleet.h; sourceTree = "<group>"; };
 		BE18FE361726C603002AEFE2 /* Fleet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fleet.m; sourceTree = "<group>"; };
-		BE18FE381726C605002AEFE2 /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Star.h; sourceTree = "<group>"; };
-		BE18FE391726C606002AEFE2 /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Star.m; sourceTree = "<group>"; };
 		BE35393E171F9FA8004DA84F /* NeptunesPride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeptunesPride.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE353941171F9FA8004DA84F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		BE353944171F9FA8004DA84F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -109,6 +107,8 @@
 		BE35398917209B69004DA84F /* MyInfoWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyInfoWindowController.h; sourceTree = "<group>"; };
 		BE35398A17209B69004DA84F /* MyInfoWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyInfoWindowController.m; sourceTree = "<group>"; };
 		BE35398B17209B69004DA84F /* MyInfoWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyInfoWindowController.xib; sourceTree = "<group>"; };
+		BE432B031728480700BD43E6 /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Star.h; sourceTree = "<group>"; };
+		BE432B041728480700BD43E6 /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Star.m; sourceTree = "<group>"; };
 		BE7C8B8B1722E0A0002DC4CA /* NSManagedObject+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Helpers.h"; sourceTree = "<group>"; };
 		BE7C8B8C1722E0A0002DC4CA /* NSManagedObject+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Helpers.m"; sourceTree = "<group>"; };
 		BEE541E11721BACF00F8CC85 /* Player+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Player+Helpers.h"; sourceTree = "<group>"; };
@@ -259,10 +259,10 @@
 				BE18FE29172633F9002AEFE2 /* Fleet+Helpers.h */,
 				BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */,
 				BE353959171F9FA8004DA84F /* NeptunesPride.xcdatamodeld */,
+				BE432B031728480700BD43E6 /* Star.h */,
+				BE432B041728480700BD43E6 /* Star.m */,
 				BE18FE351726C601002AEFE2 /* Fleet.h */,
 				BE18FE361726C603002AEFE2 /* Fleet.m */,
-				BE18FE381726C605002AEFE2 /* Star.h */,
-				BE18FE391726C606002AEFE2 /* Star.m */,
 				BE18FE0017259314002AEFE2 /* Research.h */,
 				BE18FE0117259314002AEFE2 /* Research.m */,
 				BE18FE0917259314002AEFE2 /* Player.h */,
@@ -412,7 +412,7 @@
 				BE18FE14172595C3002AEFE2 /* Game+Helpers.m in Sources */,
 				BE18FE2B172633FA002AEFE2 /* Fleet+Helpers.m in Sources */,
 				BE18FE371726C604002AEFE2 /* Fleet.m in Sources */,
-				BE18FE3A1726C608002AEFE2 /* Star.m in Sources */,
+				BE432B051728480700BD43E6 /* Star.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
