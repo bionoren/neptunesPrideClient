@@ -84,7 +84,7 @@ static BOOL oneShotTimer = NO;
             NSLog(@"ERROR: %@", err);
         }
     });
-    //NSLog(@"Data = %@", data);
+    NSLog(@"Data = %@", data);
 
     //update game
     if([data[@"player_uid"] intValue] < 0) {
@@ -148,7 +148,6 @@ static BOOL oneShotTimer = NO;
                 r.goal = @([research[@"brr"] intValue]); //this doesn't get incremented in the JSON
                 r.progress = @([research[@"research"] intValue]);
             }
-            NSLog(@"Research %@ = %@", r.name, r.value);
         }
     }
     Player *noPlayer = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext:GET_CONTEXT];

@@ -76,6 +76,7 @@
 static CGRect virtualFrame = {0};
 
 #define STAR_SIZE 20
+#define FLEET_SIZE 20
 
 - (void)drawRect:(NSRect)dirtyRect {
     [[NSColor blackColor] setFill];
@@ -87,6 +88,7 @@ static CGRect virtualFrame = {0};
 
     const float magnification = self.scrollView.magnification;
     float starSize = STAR_SIZE / magnification;
+    float fleetSize = FLEET_SIZE / magnification;
 
     NSSize bounds = self.bounds.size;
     float scale = virtualFrame.size.width / virtualFrame.size.height;
@@ -109,8 +111,7 @@ static CGRect virtualFrame = {0};
         float xoffset = bounds.width * xoffsetPercent + mapOffsetX;
         float yoffset = bounds.height * yoffsetPercent + mapOffsetY;
 
-        NSBezierPath *starPath = [[NSBezierPath alloc] init];
-        [starPath appendBezierPathWithOvalInRect:NSRectFromCGRect(CGRectMake(xoffset - starSize / 2, bounds.height - (yoffset - starSize / 2), starSize, starSize))];
+        NSBezierPath *starPath = [NSBezierPath bezierPathWithOvalInRect:NSRectFromCGRect(CGRectMake(xoffset - starSize / 2, bounds.height - (yoffset - starSize / 2), starSize, starSize))];
         if(star.visible.boolValue) {
             NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:star.player.color, (CGFloat)0, star.player.color, (CGFloat)0.35, [NSColor blackColor], (CGFloat)0.55, [NSColor whiteColor], (CGFloat)0.65, nil];
             [gradient drawInBezierPath:starPath relativeCenterPosition:NSZeroPoint];
@@ -141,6 +142,30 @@ static CGRect virtualFrame = {0};
         float yoffsetPercent = (y - virtualFrame.origin.y) / virtualFrame.size.height;
         float xoffset = bounds.width * xoffsetPercent + mapOffsetX;
         float yoffset = bounds.height * yoffsetPercent + mapOffsetY;
+
+        NSRect bound = NSMakeRect(xoffset - fleetSize / 2, bounds.height - (yoffset - fleetSize / 2), fleetSize, fleetSize);
+        NSBezierPath *shipPath = [[NSBezierPath alloc] init];
+
+#define CORNER_ANGLE (145 * 2 * M_PI / 360)
+        if(fleet.waypoints.count > 0) {
+            Star *dest = fleet.waypoints[0];
+            float theta = atan2f(dest.y.floatValue - y, dest.x.floatValue - x);
+            float r = bound.size.width * 0.8;
+            float ypartial = bounds.height - (yoffset - bound.size.height);
+            [shipPath moveToPoint:NSMakePoint(xoffset + r * cosf(theta - CORNER_ANGLE),  ypartial - r * sinf(theta - CORNER_ANGLE))];
+            [shipPath lineToPoint:NSMakePoint(xoffset + r * cosf(theta), ypartial - r * sinf(theta))];
+            [shipPath lineToPoint:NSMakePoint(xoffset + r * cosf(theta + CORNER_ANGLE), ypartial - r * sinf(theta + CORNER_ANGLE))];
+            [shipPath closePath];
+        } else {
+            [shipPath moveToPoint:bound.origin];
+            [shipPath relativeLineToPoint:NSMakePoint(bound.size.width, 0)];
+            [shipPath relativeLineToPoint:NSMakePoint(-bound.size.width / 2, bound.size.height)];
+            [shipPath closePath];
+        }
+
+        [fleet.player.color setFill];
+        [shipPath stroke];
+        [shipPath fill];
     }
 }
 
