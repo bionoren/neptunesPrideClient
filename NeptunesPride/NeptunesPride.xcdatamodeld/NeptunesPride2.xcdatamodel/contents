@@ -29,9 +29,11 @@
         <attribute name="cash" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="economy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="industry" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="lastSync" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numFleets" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="science" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="shareStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="ships" optional="YES" attributeType="Integer 16" defaultValueString="0" elementID="strength" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
         <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Fleet" inverseName="player" inverseEntity="Fleet" syncable="YES"/>
@@ -77,7 +79,7 @@
     <elements>
         <element name="Fleet" positionX="171" positionY="288" width="128" height="165"/>
         <element name="Game" positionX="160" positionY="192" width="128" height="240"/>
-        <element name="Player" positionX="160" positionY="192" width="128" height="255"/>
+        <element name="Player" positionX="160" positionY="192" width="128" height="285"/>
         <element name="Report" positionX="160" positionY="192" width="128" height="150"/>
         <element name="Research" positionX="160" positionY="192" width="128" height="150"/>
         <element name="Star" positionX="160" positionY="192" width="128" height="240"/>

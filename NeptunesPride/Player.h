@@ -2,7 +2,7 @@
 //  Player.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/22/13.
+//  Created by Bion Oren on 4/24/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
@@ -21,6 +21,8 @@
 @property (nonatomic, retain) NSNumber * science;
 @property (nonatomic, retain) NSNumber * ships;
 @property (nonatomic, retain) NSNumber * uid;
+@property (nonatomic, retain) NSDate * lastSync;
+@property (nonatomic, retain) NSNumber * shareStatus;
 @property (nonatomic, retain) NSOrderedSet *fleets;
 @property (nonatomic, retain) Report *report;
 @property (nonatomic, retain) Research *research;

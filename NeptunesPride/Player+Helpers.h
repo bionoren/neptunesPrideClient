@@ -9,6 +9,13 @@
 #import "Player.h"
 #import "Report.h"
 
+typedef enum shareStatus {
+    NONE,
+    OFFERED,
+    OFFERING,
+    ACCEPTED
+} shareStatus;
+
 @interface Player (Helpers)
 
 +(Player*)playerFromUID:(int)uid inReport:(Report*)report;

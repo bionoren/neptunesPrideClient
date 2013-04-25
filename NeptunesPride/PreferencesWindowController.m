@@ -10,15 +10,24 @@
 #import "NSManagedObject+Helpers.h"
 #import "Game+Helpers.h"
 #import "AppDelegate.h"
+#import "Game+Helpers.h"
+#import "Player+Helpers.h"
+#import "Report+Helpers.h"
 
 @interface PreferencesWindowController () <NSTableViewDataSource, NSTableViewDelegate>
 
-@property (weak) IBOutlet NSScrollView *sharingView;
+//settings
 @property (weak) IBOutlet NSView *settingsView;
 @property (weak) IBOutlet NSTextField *gameNumberField;
 @property (weak) IBOutlet NSTextField *cookieField;
 @property (weak) IBOutlet NSTextField *shareServerField;
 @property (weak) IBOutlet NSTextField *lastSyncLabel;
+
+//sharing
+@property (weak) IBOutlet NSScrollView *sharingView;
+@property (weak) IBOutlet NSTableView *playerTable;
+@property (nonatomic, strong) NSOrderedSet *players;
+@property (nonatomic, assign) int currentPlayer;
 
 @end
 
@@ -46,13 +55,22 @@
     if(game.syncServer) {
         self.shareServerField.stringValue = game.syncServer;
     }
+
+    [self reloadData];
 }
 
 - (void)windowDidLoad {
     [super windowDidLoad];
 }
 
+-(IBAction)reloadData:(id)sender {
+    [NSManagedObject resetAndLoad];
+    [self reloadData];
+}
+
 -(void)reloadData {
+    self.players = [Report latestReport].players;
+    [self.playerTable reloadData];
 }
 
 #pragma mark - Settings
@@ -67,40 +85,91 @@
     [self.settingsView setHidden:YES];
 }
 
-- (IBAction)reloadData:(NSButton *)sender {
-    [NSManagedObject resetAndLoad];
-}
-
 - (IBAction)gameUpdated:(NSTextField*)sender {
+    BOOL update = ![[Game game].number isEqualToString:sender.stringValue];
     [Game game].number = sender.stringValue;
-    SAVE_CONTEXT;
-    [self reloadData:nil];
+    if(update) {
+        SAVE_CONTEXT;
+        [NSManagedObject resetAndLoad];
+    }
 }
 
 - (IBAction)cookieUpdated:(NSTextField*)sender {
+    BOOL update = ![[Game game].cookie isEqualToString:sender.stringValue];
     [Game game].cookie = sender.stringValue;
-    SAVE_CONTEXT;
-    [self reloadData:nil];
+    if(update) {
+        SAVE_CONTEXT;
+        [NSManagedObject resetAndLoad];
+    }
 }
 
 - (IBAction)syncServerUpdated:(NSTextField*)sender {
+    BOOL update = ![[Game game].syncServer isEqualToString:sender.stringValue];
     [Game game].syncServer = sender.stringValue;
-    SAVE_CONTEXT;
-    [self reloadData:nil];
+    if(update) {
+        SAVE_CONTEXT;
+        [NSManagedObject resetAndLoad];
+    }
 }
 
 #pragma mark - Sharing
 
+-(IBAction)buttonDown:(id)sender {
+    Player *player = [self.players objectAtIndex:self.currentPlayer];
+    int status = player.shareStatus.intValue;
+    if(status == OFFERED) {
+        player.shareStatus = @(ACCEPTED);
+    } else if(status == NONE) {
+        player.shareStatus = @(OFFERING);
+    } else {
+        player.shareStatus = @(NONE);
+    }
+    SAVE_CONTEXT;
+    [self reloadData];
+}
+
 #pragma mark NSTableViewDataSource
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
-    return 0;
+    return self.players.count;
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+    if([aTableColumn.identifier isEqualToString:@"share"]) {
+        int status = [[self.players[rowIndex] shareStatus] intValue];
+        if(status >= OFFERING) {
+            return @(YES);
+        }
+        return @(NO);
+    } else if([aTableColumn.identifier isEqualToString:@"status"]) {
+        switch([[self.players[rowIndex] shareStatus] intValue]) {
+            case NONE:
+                return @(0);
+            case OFFERED:
+                return @(1);
+            case OFFERING:
+                return @(1);
+            case ACCEPTED:
+                return @(2);
+        }
+    } else if([aTableColumn.identifier isEqualToString:@"player"]) {
+        return [self.players[rowIndex] name];
+    } else if([aTableColumn.identifier isEqualToString:@"lastUpdated"]) {
+        NSDate *date = [self.players[rowIndex] lastSync];
+        if(date) {
+            return date;
+        } else {
+            return @"Never";
+        }
+    }
     return nil;
 }
 
-#pragma mark NSTableViewDataDelegate
+#pragma mark NSTableViewDelegate
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex {
+    self.currentPlayer = rowIndex;
+    return YES;
+}
 
 @end
