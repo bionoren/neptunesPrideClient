@@ -26,7 +26,7 @@
 //sharing
 @property (weak) IBOutlet NSScrollView *sharingView;
 @property (weak) IBOutlet NSTableView *playerTable;
-@property (nonatomic, strong) NSOrderedSet *players;
+@property (nonatomic, strong) NSArray *players;
 @property (nonatomic, assign) int currentPlayer;
 
 @end
@@ -45,18 +45,26 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadData" object:nil];
     [self.sharingView setHidden:YES];
 
-    Game *game = [Game game];
-    if(game.number) {
-        self.gameNumberField.stringValue = game.number;
-    }
-    if(game.cookie) {
-        self.cookieField.stringValue = game.cookie;
-    }
-    if(game.syncServer) {
-        self.shareServerField.stringValue = game.syncServer;
-    }
+    [GET_CONTEXT performBlock:^{
+        Game *game = [Game game];
+        NSString *number = game.number;
+        NSString *cookie = game.cookie;
+        NSString *syncServer = game.syncServer;
 
-    [self reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(number.length) {
+                self.gameNumberField.stringValue = number;
+            }
+            if(cookie.length) {
+                self.cookieField.stringValue = cookie;
+            }
+            if(syncServer.length) {
+                self.shareServerField.stringValue = syncServer;
+            }
+
+            [self reloadData];
+        });
+    }];
 }
 
 - (void)windowDidLoad {
@@ -69,8 +77,25 @@
 }
 
 -(void)reloadData {
-    self.players = [Report latestReport].players;
-    [self.playerTable reloadData];
+    [GET_CONTEXT performBlock:^{
+        NSMutableArray *players = [[NSMutableArray alloc] init];
+        for(Player *player in [Report latestReport].players) {
+            NSMutableDictionary *p = [[NSMutableDictionary alloc] init];
+            p[@"playerObj"] = player;
+            p[@"shareStatus"] = player.shareStatus;
+            p[@"name"] = player.name;
+            NSDate *lastSync = player.lastSync;
+            if(lastSync) {
+                p[@"lastSync"] = lastSync;
+            }
+            [players addObject:p];
+        }
+        self.players = players;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.playerTable reloadData];
+        });
+    }];
 }
 
 #pragma mark - Settings
@@ -86,46 +111,57 @@
 }
 
 - (IBAction)gameUpdated:(NSTextField*)sender {
-    BOOL update = ![[Game game].number isEqualToString:sender.stringValue];
-    [Game game].number = sender.stringValue;
-    if(update) {
-        SAVE_CONTEXT;
-        [NSManagedObject resetAndLoad];
-    }
+    NSString *string = sender.stringValue;
+    [GET_CONTEXT performBlock:^{
+        BOOL update = ![[Game game].number isEqualToString:string];
+        [Game game].number = string;
+        if(update) {
+            SAVE_CONTEXT;
+            [NSManagedObject resetAndLoad];
+        }
+    }];
 }
 
 - (IBAction)cookieUpdated:(NSTextField*)sender {
-    BOOL update = ![[Game game].cookie isEqualToString:sender.stringValue];
-    [Game game].cookie = sender.stringValue;
-    if(update) {
-        SAVE_CONTEXT;
-        [NSManagedObject resetAndLoad];
-    }
+    NSString *string = sender.stringValue;
+    [GET_CONTEXT performBlock:^{
+        BOOL update = ![[Game game].cookie isEqualToString:string];
+        [Game game].cookie = string;
+        if(update) {
+            SAVE_CONTEXT;
+            [NSManagedObject resetAndLoad];
+        }
+    }];
 }
 
 - (IBAction)syncServerUpdated:(NSTextField*)sender {
-    BOOL update = ![[Game game].syncServer isEqualToString:sender.stringValue];
-    [Game game].syncServer = sender.stringValue;
-    if(update) {
-        SAVE_CONTEXT;
-        [NSManagedObject resetAndLoad];
-    }
+    NSString *string = sender.stringValue;
+    [GET_CONTEXT performBlock:^{
+        BOOL update = ![[Game game].syncServer isEqualToString:string];
+        [Game game].syncServer = string;
+        if(update) {
+            SAVE_CONTEXT;
+            [NSManagedObject resetAndLoad];
+        }
+    }];
 }
 
 #pragma mark - Sharing
 
 -(IBAction)buttonDown:(id)sender {
-    Player *player = [self.players objectAtIndex:self.currentPlayer];
-    int status = player.shareStatus.intValue;
-    if(status == OFFERED) {
-        player.shareStatus = @(ACCEPTED);
-    } else if(status == NONE) {
-        player.shareStatus = @(OFFERING);
-    } else {
-        player.shareStatus = @(NONE);
-    }
-    SAVE_CONTEXT;
-    [self reloadData];
+    [GET_CONTEXT performBlock:^{
+        Player *player = [self.players objectAtIndex:self.currentPlayer][@"playerObj"];
+        int status = player.shareStatus.intValue;
+        if(status == OFFERED) {
+            player.shareStatus = @(ACCEPTED);
+        } else if(status == NONE) {
+            player.shareStatus = @(OFFERING);
+        } else {
+            player.shareStatus = @(NONE);
+        }
+        SAVE_CONTEXT;
+        [self reloadData];
+    }];
 }
 
 #pragma mark NSTableViewDataSource
@@ -136,13 +172,13 @@
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
     if([aTableColumn.identifier isEqualToString:@"share"]) {
-        int status = [[self.players[rowIndex] shareStatus] intValue];
+        int status = [self.players[rowIndex][@"shareStatus"] intValue];
         if(status >= OFFERING) {
             return @(YES);
         }
         return @(NO);
     } else if([aTableColumn.identifier isEqualToString:@"status"]) {
-        switch([[self.players[rowIndex] shareStatus] intValue]) {
+        switch([self.players[rowIndex][@"shareStatus"] intValue]) {
             case NONE:
                 return @(0);
             case OFFERED:
@@ -153,9 +189,9 @@
                 return @(2);
         }
     } else if([aTableColumn.identifier isEqualToString:@"player"]) {
-        return [self.players[rowIndex] name];
+        return self.players[rowIndex][@"name"];
     } else if([aTableColumn.identifier isEqualToString:@"lastUpdated"]) {
-        NSDate *date = [self.players[rowIndex] lastSync];
+        NSDate *date = self.players[rowIndex][@"lastSync"];
         if(date) {
             return date;
         } else {

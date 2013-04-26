@@ -11,6 +11,7 @@
 #import "Player+Helpers.h"
 #import "Report+Helpers.h"
 #import "Fleet+Helpers.h"
+#import "AppDelegate.h"
 
 @interface MapView ()
 
@@ -25,31 +26,69 @@
 -(void)awakeFromNib {
     [super awakeFromNib];
 
+    [self reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadData" object:nil];
 }
 
 -(void)reloadData {
-    Report *report = [Report latestReport];
-    self.stars = [Star allStarsInReport:report];
-    self.fleets = [Fleet allFleetsInReport:report];
-    if(!self.stars) {
-        return;
-    }
-    if(virtualFrame.size.width == 0) {
-        virtualFrame = [self virtualFrame];
-    }
+    [GET_CONTEXT performBlock:^{
+        Report *report = [Report latestReport];
 
-    [self setNeedsDisplay:YES];
+        id<NSFastEnumeration> cdstars = [Star allStarsInReport:report];
+        if(!cdstars) {
+            return;
+        }
+        NSMutableArray *stars = [[NSMutableArray alloc] init];
+        for(Star *cdstar in cdstars) {
+            NSMutableDictionary *star = [[NSMutableDictionary alloc] init];
+            star[@"x"] = cdstar.x;
+            star[@"y"] = cdstar.y;
+            star[@"visible"] = cdstar.visible;
+            star[@"player.color"] = cdstar.player.color;
+            star[@"economy"] = cdstar.economy;
+            star[@"industry"] = cdstar.industry;
+            star[@"science"] = cdstar.science;
+            star[@"allShips"] = @([cdstar allShips]);
+
+            [stars addObject:star];
+        }
+        self.stars = stars;
+
+        id<NSFastEnumeration> cdfleets = [Fleet allFleetsInReport:report];
+        NSMutableArray *fleets = [[NSMutableArray alloc] init];
+        for(Fleet *cdfleet in cdfleets) {
+            NSMutableDictionary *fleet = [[NSMutableDictionary alloc] init];
+            fleet[@"x"] = cdfleet.x;
+            fleet[@"y"] = cdfleet.y;
+            if(cdfleet.waypoints.count > 0) {
+                Star *dest = cdfleet.waypoints[0];
+                fleet[@"destx"] = dest.x;
+                fleet[@"desty"] = dest.y;
+            }
+            fleet[@"player.color"] = cdfleet.player.color;
+            [fleets addObject:fleet];
+        }
+        self.fleets = fleets;
+
+        if(virtualFrame.size.width == 0) {
+            virtualFrame = [self virtualFrame];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setNeedsDisplay:YES];
+        });
+    }];
 }
 
+/** CDT ONLY */
 -(CGRect)virtualFrame {
     float minx = MAXFLOAT;
     float miny = MAXFLOAT;
     float maxx = -MAXFLOAT;
     float maxy = -MAXFLOAT;
-    for(Star *star in self.stars) {
-        float x = star.x.floatValue;
-        float y = star.y.floatValue;
+    for(NSDictionary *star in self.stars) {
+        float x = [star[@"x"] floatValue];
+        float y = [star[@"y"] floatValue];
         if(x < minx) {
             minx = x;
         }
@@ -103,31 +142,31 @@ static CGRect virtualFrame = {0};
         mapOffsetX = (self.bounds.size.width - bounds.width) / 2;
     }
 
-    for(Star *star in self.stars) {
-        float x = star.x.floatValue;
-        float y = star.y.floatValue;
+    for(NSDictionary *star in self.stars) {
+        float x = [star[@"x"] floatValue];
+        float y = [star[@"y"] floatValue];
         float xoffsetPercent = (x - virtualFrame.origin.x) / virtualFrame.size.width;
         float yoffsetPercent = (y - virtualFrame.origin.y) / virtualFrame.size.height;
         float xoffset = bounds.width * xoffsetPercent + mapOffsetX;
         float yoffset = bounds.height * yoffsetPercent + mapOffsetY;
 
         NSBezierPath *starPath = [NSBezierPath bezierPathWithOvalInRect:NSRectFromCGRect(CGRectMake(xoffset - starSize / 2, bounds.height - (yoffset - starSize / 2), starSize, starSize))];
-        if(star.visible.boolValue) {
-            NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:star.player.color, (CGFloat)0, star.player.color, (CGFloat)0.35, [NSColor blackColor], (CGFloat)0.55, [NSColor whiteColor], (CGFloat)0.65, nil];
+        if([star[@"visible"] boolValue]) {
+            NSGradient *gradient = [[NSGradient alloc] initWithColorsAndLocations:star[@"player.color"], (CGFloat)0, star[@"player.color"], (CGFloat)0.35, [NSColor blackColor], (CGFloat)0.55, [NSColor whiteColor], (CGFloat)0.65, nil];
             [gradient drawInBezierPath:starPath relativeCenterPosition:NSZeroPoint];
         } else {
-            [star.player.color setFill];
+            [star[@"player.color"] setFill];
             [starPath stroke];
             [starPath fill];
         }
 
-        if(star.visible.boolValue && magnification > 2) {
-            [[NSString stringWithFormat:@"%@  %@  %@", star.economy, star.industry, star.science] drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 6.5 / magnification, bounds.height - (yoffset - starSize / 2 - 20 / magnification)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
+        if([star[@"visible"] boolValue] && magnification > 2) {
+            [[NSString stringWithFormat:@"%@  %@  %@", star[@"economy"], star[@"industry"], star[@"science"]] drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 6.5 / magnification, bounds.height - (yoffset - starSize / 2 - 20 / magnification)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
             NSString *shipsString;
-            if(star.industry.floatValue != 0) {
-                shipsString = [NSString stringWithFormat:@"%d", star.allShips];
+            if([star[@"industry"] floatValue] != 0) {
+                shipsString = [NSString stringWithFormat:@"%@", star[@"allShips"]];
             } else {
-                shipsString = [NSString stringWithFormat:@"%d", star.allShips];
+                shipsString = [NSString stringWithFormat:@"%@", star[@"allShips"]];
             }
             [shipsString drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 1 / magnification, bounds.height - (yoffset + starSize / 2)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
 
@@ -135,9 +174,9 @@ static CGRect virtualFrame = {0};
         }
     }
 
-    for(Fleet *fleet in self.fleets) {
-        float x = fleet.x.floatValue;
-        float y = fleet.y.floatValue;
+    for(NSDictionary *fleet in self.fleets) {
+        float x = [fleet[@"x"] floatValue];
+        float y = [fleet[@"y"] floatValue];
         float xoffsetPercent = (x - virtualFrame.origin.x) / virtualFrame.size.width;
         float yoffsetPercent = (y - virtualFrame.origin.y) / virtualFrame.size.height;
         float xoffset = bounds.width * xoffsetPercent + mapOffsetX;
@@ -147,10 +186,9 @@ static CGRect virtualFrame = {0};
         NSBezierPath *shipPath = [[NSBezierPath alloc] init];
 
 #define CORNER_ANGLE (145 * 2 * M_PI / 360)
-        if(fleet.waypoints.count > 0) {
-            Star *dest = fleet.waypoints[0];
-            float theta = atan2f(dest.y.floatValue - y, dest.x.floatValue - x);
-            float r = bound.size.width * 0.8;
+        if(fleet[@"destx"]) {
+            float theta = atan2f([fleet[@"desty"] floatValue] - y, [fleet[@"destx"] floatValue] - x);
+            float r = bound.size.width * 0.6;
             float ypartial = bounds.height - (yoffset - bound.size.height);
             [shipPath moveToPoint:NSMakePoint(xoffset + r * cosf(theta - CORNER_ANGLE),  ypartial - r * sinf(theta - CORNER_ANGLE))];
             [shipPath lineToPoint:NSMakePoint(xoffset + r * cosf(theta), ypartial - r * sinf(theta))];
@@ -163,7 +201,7 @@ static CGRect virtualFrame = {0};
             [shipPath closePath];
         }
 
-        [fleet.player.color setFill];
+        [fleet[@"player.color"] setFill];
         [shipPath stroke];
         [shipPath fill];
     }

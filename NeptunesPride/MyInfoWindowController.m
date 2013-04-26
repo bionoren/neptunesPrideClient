@@ -42,15 +42,8 @@
 }
 
 -(void)reloadData {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"gameTime" ascending:NO]];
-    fetchRequest.fetchLimit = 1;
-    NSError *err = nil;
-    Report *report = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err][0];
+    Report *report = [Report latestReport];
     self.players = [report.players array];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
 }
 
 #pragma mark - NSOutlineViewDataSource

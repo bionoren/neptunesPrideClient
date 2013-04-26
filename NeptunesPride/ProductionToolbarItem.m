@@ -10,6 +10,7 @@
 #import "Report+Helpers.h"
 #import "Player+Helpers.h"
 #import "Research+Helpers.h"
+#import "AppDelegate.h"
 
 @implementation ProductionToolbarItem
 
@@ -20,11 +21,18 @@
 }
 
 -(void)reloadData:(NSNotification*)notification {
-    Report *report = notification.userInfo[@"report"];
-    Player *me = [Player playerFromUID:report.originatorUID.intValue inReport:report];
-    int banking = (int)[Research valueForResearch:BANKING forPlayer:me];
-    self.label = [NSString stringWithFormat:@"Credits: $%d [$%d]", me.cash.intValue, me.cash.intValue + me.economy.intValue * 10 + banking * 50];
-    self.visibilityPriority = NSToolbarItemVisibilityPriorityUser;
+    [GET_CONTEXT performBlock:^{
+        Report *report = notification.userInfo[@"report"];
+        Player *me = [Player playerFromUID:report.originatorUID.intValue inReport:report];
+        int banking = (int)[Research valueForResearch:BANKING forPlayer:me];
+        int cash = me.cash.intValue;
+        int economy = me.economy.intValue;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.label = [NSString stringWithFormat:@"Credits: $%d [$%d]", cash, cash + economy * 10 + banking * 50];
+            self.visibilityPriority = NSToolbarItemVisibilityPriorityUser;
+        });
+    }];
 }
 
 @end
