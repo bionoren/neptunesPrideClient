@@ -1,4 +1,5 @@
 See http://triton.ironhelmet.com/. If you're still confused, you probably don't care.
+NOTE: This is completely unofficial and not endorsed by the game's author. He just happens to provide a reasonable JSON interface :)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
