@@ -20,6 +20,7 @@
 		BE18FE14172595C3002AEFE2 /* Game+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE13172595C3002AEFE2 /* Game+Helpers.m */; };
 		BE18FE2B172633FA002AEFE2 /* Fleet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */; };
 		BE18FE371726C604002AEFE2 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE18FE361726C603002AEFE2 /* Fleet.m */; };
+		BE1D9739172C8843008E6133 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = BE1D9738172C8843008E6133 /* readme.md */; };
 		BE353942171F9FA8004DA84F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE353941171F9FA8004DA84F /* Cocoa.framework */; };
 		BE35394C171F9FA8004DA84F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE35394A171F9FA8004DA84F /* InfoPlist.strings */; };
 		BE35394E171F9FA8004DA84F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE35394D171F9FA8004DA84F /* main.m */; };
@@ -77,6 +78,7 @@
 		BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Fleet+Helpers.m"; sourceTree = "<group>"; };
 		BE18FE351726C601002AEFE2 /* Fleet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fleet.h; sourceTree = "<group>"; };
 		BE18FE361726C603002AEFE2 /* Fleet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fleet.m; sourceTree = "<group>"; };
+		BE1D9738172C8843008E6133 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.md; path = ../readme.md; sourceTree = "<group>"; };
 		BE35393E171F9FA8004DA84F /* NeptunesPride.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeptunesPride.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE353941171F9FA8004DA84F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		BE353944171F9FA8004DA84F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -206,6 +208,7 @@
 		BE353948171F9FA8004DA84F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BE1D9738172C8843008E6133 /* readme.md */,
 				BE353949171F9FA8004DA84F /* NeptunesPride-Info.plist */,
 				BE35394A171F9FA8004DA84F /* InfoPlist.strings */,
 				BE35394D171F9FA8004DA84F /* main.m */,
@@ -357,6 +360,7 @@
 				BE18FDF8172573CD002AEFE2 /* settings.jpg in Resources */,
 				BE18FDFA17257480002AEFE2 /* share.png in Resources */,
 				BE18FDFF17258760002AEFE2 /* PreferencesWindowController.xib in Resources */,
+				BE1D9739172C8843008E6133 /* readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
