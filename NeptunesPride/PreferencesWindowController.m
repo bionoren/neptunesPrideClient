@@ -43,8 +43,11 @@
     [super awakeFromNib];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadData" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadShares" object:nil];
+    [NSManagedObject loadShareData];
     [self.sharingView setHidden:YES];
 
+    [self reloadPlayerData];
     [GET_CONTEXT performBlock:^{
         Game *game = [Game game];
         NSString *number = game.number;
@@ -73,10 +76,10 @@
 
 -(IBAction)reloadData:(id)sender {
     [NSManagedObject resetAndLoad];
-    [self reloadData];
+    [self reloadPlayerData];
 }
 
--(void)reloadData {
+-(void)reloadPlayerData {
     [GET_CONTEXT performBlock:^{
         NSMutableArray *players = [[NSMutableArray alloc] init];
         for(Player *player in [Report latestReport].players) {
@@ -91,11 +94,11 @@
             [players addObject:p];
         }
         self.players = players;
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.playerTable reloadData];
-        });
     }];
+}
+
+-(void)reloadData {
+    [self.playerTable reloadData];
 }
 
 #pragma mark - Settings
@@ -148,19 +151,31 @@
 
 #pragma mark - Sharing
 
--(IBAction)buttonDown:(id)sender {
+-(IBAction)buttonDown:(NSTableView*)sender {
+    [sender setEnabled:NO];
     [GET_CONTEXT performBlock:^{
-        Player *player = [self.players objectAtIndex:self.currentPlayer][@"playerObj"];
+        NSMutableDictionary *playerDict = [self.players objectAtIndex:self.currentPlayer];
+        Player *player = playerDict[@"playerObj"];
         int status = player.shareStatus.intValue;
         if(status == OFFERED) {
             player.shareStatus = @(ACCEPTED);
+            NSLog(@"%@: Offered -> Accepted", player.name);
+            [player share];
         } else if(status == NONE) {
             player.shareStatus = @(OFFERING);
+            NSLog(@"%@: None -> Offering", player.name);
+            [player share];
         } else {
             player.shareStatus = @(NONE);
+            NSLog(@"%@: * -> None", player.name);
+            [player unshare];
         }
+        playerDict[@"shareStatus"] = player.shareStatus;
         SAVE_CONTEXT;
-        [self reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadData];
+            [sender setEnabled:YES];
+        });
     }];
 }
 

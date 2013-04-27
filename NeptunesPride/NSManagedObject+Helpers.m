@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "Player+Helpers.h"
 #import "Star+Helpers.h"
-#import "Fleet.h"
+#import "Fleet+Helpers.h"
 #import "Research.h"
 #import "Game+Helpers.h"
 
@@ -18,24 +18,6 @@ static NSTimer *updateTimer = nil;
 static BOOL oneShotTimer = NO;
 
 @implementation NSManagedObject (Helpers)
-
-+(void)deleteAllObjects {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:GET_CONTEXT];
-    [fetchRequest setEntity:entity];
-
-    NSError *err = nil;
-    NSArray *items = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
-
-
-    for (NSManagedObject *obj in items) {
-    	[GET_CONTEXT deleteObject:obj];
-    }
-    SAVE_CONTEXT;
-}
 
 +(void)reset {
     [updateTimer invalidate];
@@ -45,14 +27,11 @@ static BOOL oneShotTimer = NO;
 +(void)resetAndLoad {
     [self reset];
     [self loadData];
+    [self loadShareData];
 }
 
 +(void)loadData {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        //curl "http://triton.ironhelmet.com/grequest/order" --data "type=order&order=full_universe_report&game_number=1429278"
-        NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://triton.ironhelmet.com/grequest/order"]];
-        [request setHTTPMethod:@"POST"];
-
         //game
         __block NSString *gameCookie;
         __block NSString *gameNumber;
@@ -69,9 +48,15 @@ static BOOL oneShotTimer = NO;
         }];
 
         if(oneShotTimer) {
-            updateTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(tickRate * 60) target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                updateTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(tickRate * 60) target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+            });
             oneShotTimer = NO;
         }
+
+        //curl "http://triton.ironhelmet.com/grequest/order" --data "type=order&order=full_universe_report&game_number=1429278"
+        NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://triton.ironhelmet.com/grequest/order"]];
+        [request setHTTPMethod:@"POST"];
 
         [request setValue:[NSString stringWithFormat:@"ACSID=%@", gameCookie] forHTTPHeaderField:@"Cookie"];
 
@@ -93,7 +78,7 @@ static BOOL oneShotTimer = NO;
                 NSLog(@"ERROR: %@", err);
             }
         });
-        NSLog(@"Data = %@", data);
+        //NSLog(@"Data = %@", data);
 
         //update game
         if([data[@"player_uid"] intValue] < 0) {
@@ -213,25 +198,162 @@ static BOOL oneShotTimer = NO;
             }
             SAVE_CONTEXT;
 
+            [self loadDataFromShares];
+
             [Report setLatestReport:report];
             
-            double delayInSeconds = 1.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadData" object:nil userInfo:@{@"report": report}];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadData" object:nil userInfo:nil];
             });
 
             NSTimeInterval timeToNextPossibleUpdate = [report timeToPossibleUpdate];
             if(!updateTimer) {
-                updateTimer = [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:self selector:@selector(loadData) userInfo:nil repeats:NO];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    updateTimer = [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:self selector:@selector(loadData) userInfo:nil repeats:NO];
+                });
                 oneShotTimer = YES;
             }
 
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                [report push];
-            });
+            [report push];
         }];
     });
+}
+
++(void)loadDataFromShares {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+        //game
+        __block NSString *gameCookie;
+        __block NSString *gameNumber;
+        __block NSString *syncServer;
+        [GET_CONTEXT performBlockAndWait:^{
+            Game *game = [Game game];
+            if(!game.cookie.length || !game.number.length) {
+                [self reset];
+                return;
+            }
+            gameCookie = game.cookie;
+            gameNumber = game.number;
+            syncServer = game.syncServer;
+        }];
+        data[@"ACSID"] = gameCookie;
+        data[@"game"] = gameNumber;
+        data[@"action"] = @"pull";
+
+        NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:syncServer]];
+        [request setHTTPMethod:@"POST"];
+        NSError *err = nil;
+        NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
+        if(err) {
+            NSLog(@"ERROR: %@", err);
+        }
+        NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+        [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
+        //NSLog(@"JSON = %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+
+        NSURLResponse *response;
+        err = nil;
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+        if(err) {
+            NSLog(@"ERROR: %@", err);
+        }
+        NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+
+        err = nil;
+        NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
+        if(err) {
+            NSLog(@"ERROR: %@", err);
+        }
+
+        //stars
+        for(NSDictionary *star in jsondata[@"stars"]) {
+            NSNumber *uid = star[@"uid"];
+            NSNumber *tick = star[@"tick"];
+            Report *report = [Report reportForTick:tick];
+            Star *s = [Star starFromUID:uid.intValue inReport:report];
+            if(s.visible.boolValue) {
+                continue;
+            } else {
+                s.visible = @(YES);
+                s.economy = @([star[@"economy"] intValue]);
+                s.industry = @([star[@"industry"] intValue]);
+                s.science = @([star[@"science"] intValue]);
+                s.garrison = @([star[@"garrison"] intValue]);
+                s.naturalResources = @([star[@"naturalResources"] intValue]);
+                s.ships = @([star[@"ships"] intValue]);
+            }
+        }
+
+        //fleets
+        for(NSDictionary *fleet in jsondata[@"fleets"]) {
+            NSNumber *uid = fleet[@"uid"];
+            NSNumber *tick = fleet[@"tick"];
+            Report *report = [Report reportForTick:tick];
+            Fleet *f = [Fleet fleetFromUID:uid.intValue inReport:report];
+            if(!f) {
+                f.name = fleet[@"name"];
+                int player = [fleet[@"puid"] intValue];
+                f.player = [Player playerFromUID:player inReport:report];
+                f.ships = @([fleet[@"ships"] intValue]);
+                f.uid = @([fleet[@"uid"] intValue]);
+                f.x = @([fleet[@"x"] floatValue]);
+                f.y = @([fleet[@"y"] floatValue]);
+                if(fleet[@"orbitinguid"]) {
+                    int uid = [fleet[@"orbitinguid"] intValue];
+                    f.orbiting = [Star starFromUID:uid inReport:report];
+                } else {;
+                    NSOrderedSet *wp = [[NSOrderedSet alloc] initWithObject:[Star starFromUID:[fleet[@"destuid"] intValue] inReport:report]];
+                    f.waypoints = wp;
+                }
+            }
+        }
+
+        SAVE_CONTEXT;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadData" object:nil userInfo:nil];
+        });
+    });
+}
+
++(void)loadShareData {
+    [GET_CONTEXT performBlock:^{
+        Game *game = [Game game];
+        if(!game.syncServer.length) {
+            return;
+        }
+        NSString *syncServer = game.syncServer;
+        NSString *cookie = game.cookie;
+        NSString *number = game.number;
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+            data[@"ACSID"] = cookie;
+            data[@"game"] = number;
+            data[@"action"] = @"shares";
+
+            NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:syncServer]];
+            [request setHTTPMethod:@"POST"];
+            NSError *err = nil;
+            NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
+            if(err) {
+                NSLog(@"ERROR: %@", err);
+            }
+            NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+            [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
+            //NSLog(@"JSON = %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+
+            NSURLResponse *response;
+            err = nil;
+            NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+            if(err) {
+                NSLog(@"ERROR: %@", err);
+            }
+            NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadShares" object:nil userInfo:nil];
+        });
+    }];
 }
 
 @end

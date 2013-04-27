@@ -39,6 +39,21 @@ static Report *latestReport = nil;
     latestReport = report;
 }
 
++(Report*)reportForTick:(NSNumber*)tick {
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"tick = %@", tick];
+    NSError *err = nil;
+    NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
+    if(err) {
+        NSLog(@"ERROR: %@", err);
+    }
+    if(result.count == 0) {
+        Report *ret = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];
+        return ret;
+    }
+    return result[0];
+}
+
 -(NSTimeInterval)timeToPossibleUpdate {
     Game *game = [Game game];
 
@@ -50,42 +65,53 @@ static Report *latestReport = nil;
 }
 
 -(void)push {
-    //game
-    Game *game = [Game game];
-    if(!game.syncServer.length) {
-        return;
-    }
-
-    NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
-    data[@"ACSID"] = game.cookie;
-    data[@"game"] = game.number;
-    data[@"action"] = @"push";
-    data[@"starData"] = [Star dataForReport:self];
-    data[@"fleetData"] = [Fleet dataForReport:self];
-    data[@"gameTime"] = @([self.gameTime timeIntervalSince1970]);
-    data[@"tick"] = self.tick;
-    data[@"tickFragment"] = self.tick_fragment;
-
-    NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:game.syncServer]];
-    [request setHTTPMethod:@"POST"];
-    NSError *err = nil;
-    NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
-    NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-    [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
-    //NSLog(@"JSON = %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSURLResponse *response;
-        NSError *err = nil;
-        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-        if(err) {
-            NSLog(@"ERROR: %@", err);
+    [GET_CONTEXT performBlock:^{
+        Game *game = [Game game];
+        if(!game.syncServer.length) {
+            return;
         }
-        NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-    });
+        NSString *syncServer = game.syncServer;
+        NSString *cookie = game.cookie;
+        NSString *number = game.number;
+
+        id starData = [Star dataForReport:self];
+        id fleetData = [Fleet dataForReport:self];
+
+        NSNumber *gameTime = @([self.gameTime timeIntervalSince1970]);
+        NSNumber *tick = self.tick;
+        NSNumber *tick_fragment = self.tick_fragment;
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+            data[@"ACSID"] = cookie;
+            data[@"game"] = number;
+            data[@"action"] = @"push";
+            data[@"starData"] = starData;
+            data[@"fleetData"] = fleetData;
+            data[@"gameTime"] = gameTime;
+            data[@"tick"] = tick;
+            data[@"tickFragment"] = tick_fragment;
+
+            NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:syncServer]];
+            [request setHTTPMethod:@"POST"];
+            NSError *err = nil;
+            NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
+            if(err) {
+                NSLog(@"ERROR: %@", err);
+            }
+            NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+            [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
+            //NSLog(@"JSON = %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+
+            NSURLResponse *response;
+            err = nil;
+            NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+            if(err) {
+                NSLog(@"ERROR: %@", err);
+            }
+            NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+        });
+    }];
 }
 
 @end

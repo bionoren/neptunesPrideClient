@@ -12,7 +12,8 @@
 @interface NSManagedObject (Helpers)
 
 +(void)loadData;
-+(void)deleteAllObjects;
 +(void)resetAndLoad;
+
++(void)loadShareData;
 
 @end

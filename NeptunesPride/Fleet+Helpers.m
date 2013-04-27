@@ -40,6 +40,7 @@
 
     for(Fleet *fleet in fleets) {
         NSMutableDictionary *f = [[NSMutableDictionary alloc] init];
+        f[@"name"] = fleet.name;
         f[@"x"] = fleet.x;
         f[@"y"] = fleet.y;
         f[@"ships"] = fleet.ships;
@@ -60,6 +61,20 @@
     }
     
     return ret;
+}
+
++(Fleet*)fleetFromUID:(int)uid inReport:(Report*)report {
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Fleet"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND player.report = %@", uid, report];
+    NSError *err = nil;
+    NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
+    if(err) {
+        NSLog(@"ERROR: %@", err);
+    }
+    if(result.count == 0) {
+        return nil;
+    }
+    return result[0];
 }
 
 @end

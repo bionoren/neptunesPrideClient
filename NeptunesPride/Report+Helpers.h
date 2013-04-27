@@ -12,8 +12,9 @@
 
 +(void)setLatestReport:(Report*)report;
 +(Report*)latestReport;
--(NSTimeInterval)timeToPossibleUpdate;
++(Report*)reportForTick:(NSNumber*)tick;
 
+-(NSTimeInterval)timeToPossibleUpdate;
 -(void)push;
 
 @end

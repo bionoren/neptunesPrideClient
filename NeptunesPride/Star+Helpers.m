@@ -64,7 +64,9 @@
     if(err) {
         NSLog(@"ERROR: %@", err);
     }
-    NSAssert(result.count > 0, @"Huh? No results for uid %d", uid);
+    if(result.count == 0) {
+        return nil;
+    }
     return result[0];
 }
 

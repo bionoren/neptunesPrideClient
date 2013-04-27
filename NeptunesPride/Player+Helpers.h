@@ -23,4 +23,9 @@ typedef enum shareStatus {
 -(NSNumber*)resources;
 -(NSNumber*)visibleShips;
 
+/** CDT ONLY */
+-(void)share;
+/** CDT ONLY */
+-(void)unshare;
+
 @end

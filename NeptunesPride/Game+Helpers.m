@@ -9,9 +9,15 @@
 #import "Game+Helpers.h"
 #import "AppDelegate.h"
 
+static Game *game = nil;
+
 @implementation Game (Helpers)
 
 +(Game*)game {
+    if(game) {
+        return game;
+    }
+
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Game"];
     NSError *err = nil;
     NSArray *games = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
@@ -19,15 +25,14 @@
         NSLog(@"ERROR: %@", err);
     }
     NSAssert(games.count <= 1, @"Didn't expect so many games... %@", games);
-    Game *ret = nil;
     if(games.count == 0) {
-        ret = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:GET_CONTEXT];
+        game = [NSEntityDescription insertNewObjectForEntityForName:@"Game" inManagedObjectContext:GET_CONTEXT];
         SAVE_CONTEXT;
     } else {
-        ret = games[0];
+        game = games[0];
     }
 
-    return ret;
+    return game;
 }
 
 @end

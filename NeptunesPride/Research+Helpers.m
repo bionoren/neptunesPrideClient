@@ -27,7 +27,10 @@
     if(err) {
         NSLog(@"ERROR: %@", err);
     }
-    NSAssert(results.count == 1, @"Not the results we expected for player %@ and string %@: %@", player, research, results);
+    //NSAssert(results.count == 1, @"Not the results we expected for player %@ and string %@: %@", player, research, results);
+    if(results.count == 0) {
+        return nil;
+    }
     return results[0];
 }
 

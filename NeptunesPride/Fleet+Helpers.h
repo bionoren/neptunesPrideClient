@@ -13,5 +13,6 @@
 
 +(NSArray*)allFleetsInReport:(Report*)report;
 +(NSArray*)dataForReport:(Report*)report;
++(Fleet*)fleetFromUID:(int)uid inReport:(Report*)report;
 
 @end
