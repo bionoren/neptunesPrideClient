@@ -46,6 +46,9 @@ static BOOL oneShotTimer = NO;
             gameNumber = game.number;
             tickRate = game.tickRate.floatValue;
         }];
+        if(!gameCookie) {
+            return;
+        }
 
         if(oneShotTimer) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -228,14 +231,16 @@ static BOOL oneShotTimer = NO;
         __block NSString *syncServer;
         [GET_CONTEXT performBlockAndWait:^{
             Game *game = [Game game];
-            if(!game.cookie.length || !game.number.length) {
-                [self reset];
+            if(!game.cookie.length || !game.number.length || !game.syncServer.length) {
                 return;
             }
             gameCookie = game.cookie;
             gameNumber = game.number;
             syncServer = game.syncServer;
         }];
+        if(!gameCookie) {
+            return;
+        }
         data[@"ACSID"] = gameCookie;
         data[@"game"] = gameNumber;
         data[@"action"] = @"pull";
@@ -260,7 +265,7 @@ static BOOL oneShotTimer = NO;
         NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
 
         err = nil;
-        NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
+        NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
         if(err) {
             NSLog(@"ERROR: %@", err);
         }

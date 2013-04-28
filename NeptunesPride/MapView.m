@@ -65,6 +65,10 @@
                 fleet[@"destx"] = dest.x;
                 fleet[@"desty"] = dest.y;
             }
+            if(cdfleet.orbiting) {
+                fleet[@"orbiting"] = cdfleet.orbiting;
+            }
+            fleet[@"ships"] = cdfleet.ships;
             fleet[@"player.color"] = cdfleet.player.color;
             [fleets addObject:fleet];
         }
@@ -199,6 +203,11 @@ static CGRect virtualFrame = {0};
             [shipPath relativeLineToPoint:NSMakePoint(bound.size.width, 0)];
             [shipPath relativeLineToPoint:NSMakePoint(-bound.size.width / 2, bound.size.height)];
             [shipPath closePath];
+        }
+
+        if(!fleet[@"orbiting"] && magnification > 2) {
+            NSString *shipsString = [NSString stringWithFormat:@"%@", fleet[@"ships"]];
+            [shipsString drawAtPoint:NSMakePoint(xoffset - starSize / 2 - 1 / magnification, bounds.height - (yoffset + starSize / 2)) withAttributes:@{NSForegroundColorAttributeName: [NSColor whiteColor], NSFontAttributeName: [NSFont fontWithName:@"Helvetica Light" size:12 / magnification]}];
         }
 
         [fleet[@"player.color"] setFill];
