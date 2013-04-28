@@ -25,7 +25,7 @@
     NSError *err = nil;
     NSArray *results = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
     if(err) {
-        NSLog(@"ERROR: %@", err);
+        NSLog(@"ERROR getting research: %@", err);
     }
     //NSAssert(results.count == 1, @"Not the results we expected for player %@ and string %@: %@", player, research, results);
     if(results.count == 0) {

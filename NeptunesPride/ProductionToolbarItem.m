@@ -22,7 +22,7 @@
 
 -(void)reloadData:(NSNotification*)notification {
     [GET_CONTEXT performBlock:^{
-        Report *report = notification.userInfo[@"report"];
+        Report *report = [Report latestReport];
         Player *me = [Player playerFromUID:report.originatorUID.intValue inReport:report];
         int banking = (int)[Research valueForResearch:BANKING forPlayer:me];
         int cash = me.cash.intValue;

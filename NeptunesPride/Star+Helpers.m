@@ -62,7 +62,8 @@
     NSError *err = nil;
     NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
     if(err) {
-        NSLog(@"ERROR: %@", err);
+        NSLog(@"ERROR getting star from UID: %@", err);
+        return nil;
     }
     if(result.count == 0) {
         return nil;

@@ -72,13 +72,14 @@ static BOOL oneShotTimer = NO;
             NSError *err = nil;
             NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
             if(err) {
-                NSLog(@"ERROR: %@", err);
+                NSLog(@"ERROR fetching game data: %@", err);
             }
+            //NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
 
             err = nil;
             data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"report"];
             if(err) {
-                NSLog(@"ERROR: %@", err);
+                NSLog(@"ERROR parsing game data: %@", err);
             }
         });
         //NSLog(@"Data = %@", data);
@@ -250,7 +251,7 @@ static BOOL oneShotTimer = NO;
         NSError *err = nil;
         NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR prepping pull data: %@", err);
         }
         NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
         [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
@@ -260,14 +261,16 @@ static BOOL oneShotTimer = NO;
         err = nil;
         NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR fetching pull data: %@", err);
+            return;
         }
         NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
 
         err = nil;
         NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR parsing pull json: %@", err);
+            return;
         }
 
         //stars
@@ -342,7 +345,8 @@ static BOOL oneShotTimer = NO;
             NSError *err = nil;
             NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
             if(err) {
-                NSLog(@"ERROR: %@", err);
+                NSLog(@"ERROR loading share data: %@", err);
+                return;
             }
             NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
             [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];

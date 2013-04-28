@@ -24,7 +24,7 @@ static Report *latestReport = nil;
         NSError *err = nil;
         NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR fetching latest report: %@", err);
         }
         if(result.count == 0) {
             return nil;
@@ -45,7 +45,7 @@ static Report *latestReport = nil;
     NSError *err = nil;
     NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
     if(err) {
-        NSLog(@"ERROR: %@", err);
+        NSLog(@"ERROR fetching report for tick: %@", err);
     }
     if(result.count == 0) {
         Report *ret = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];

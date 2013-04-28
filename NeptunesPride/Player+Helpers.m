@@ -23,7 +23,7 @@
     NSError *err = nil;
     NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
     if(err) {
-        NSLog(@"ERROR: %@", err);
+        NSLog(@"ERROR fetching player by uid: %@", err);
     }
     //NSAssert(result.count > 0, @"Huh? No results for uid %d", uid);
     if(result.count == 0) {
@@ -112,7 +112,7 @@
         NSError *err = nil;
         NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR preparing sharing data: %@", err);
         }
         NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
         [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
@@ -129,7 +129,7 @@
         err = nil;
         NSNumber *reload = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err][@"reload"];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR parsing sharing: %@", err);
         }
         if(reload.boolValue) {
             [NSManagedObject loadData];
@@ -159,7 +159,7 @@
         NSError *err = nil;
         NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR preparing unshare data: %@", err);
         }
         NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
         [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
@@ -169,7 +169,7 @@
         err = nil;
         NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
         if(err) {
-            NSLog(@"ERROR: %@", err);
+            NSLog(@"ERROR parsing unsharing: %@", err);
         }
         NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
 
