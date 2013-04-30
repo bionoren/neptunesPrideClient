@@ -20,6 +20,7 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize managedObjectContext = _managedObjectContext;
+@synthesize mainManagedObjectContext = _mainManagedObjectContext;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 }
@@ -117,6 +118,37 @@
     [_managedObjectContext setPersistentStoreCoordinator:coordinator];
 
     return _managedObjectContext;
+}
+
+- (NSManagedObjectContext *)mainManagedObjectContext
+{
+    if (_mainManagedObjectContext) {
+        return _mainManagedObjectContext;
+    }
+
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (!coordinator) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [dict setValue:@"Failed to initialize the store" forKey:NSLocalizedDescriptionKey];
+        [dict setValue:@"There was an error building up the data file." forKey:NSLocalizedFailureReasonErrorKey];
+        NSError *error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
+        [[NSApplication sharedApplication] presentError:error];
+        return nil;
+    }
+    _mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [_mainManagedObjectContext setPersistentStoreCoordinator:coordinator];
+
+    return _mainManagedObjectContext;
+}
+
+-(NSArray*)executeFetchRequest:(NSFetchRequest*)fetchRequest inContext:(NSManagedObjectContext*)context {
+    NSError *err = nil;
+    NSArray *ret = [context executeFetchRequest:fetchRequest error:&err];
+    if(err) {
+        NSLog(@"ERROR executing fetch request %@ in context %@: %@", fetchRequest, context, err);
+        return nil;
+    }
+    return ret;
 }
 
 // Returns the NSUndoManager for the application. In this case, the manager returned is that of the managed object context for the application.
