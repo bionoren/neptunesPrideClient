@@ -22,11 +22,7 @@
 +(Research*)research:(const NSString*)research forPlayer:(Player*)player {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Research"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player = %@ AND name = %@", player, research];
-    NSError *err = nil;
-    NSArray *results = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR getting research: %@", err);
-    }
+    NSArray *results = FETCH(fetchRequest);
     //NSAssert(results.count == 1, @"Not the results we expected for player %@ and string %@: %@", player, research, results);
     if(results.count == 0) {
         return nil;

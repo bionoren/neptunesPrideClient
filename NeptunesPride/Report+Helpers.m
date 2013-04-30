@@ -21,11 +21,7 @@ static Report *latestReport = nil;
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
         fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"collectionTime" ascending:NO]];
         fetchRequest.fetchLimit = 1;
-        NSError *err = nil;
-        NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-        if(err) {
-            NSLog(@"ERROR fetching latest report: %@", err);
-        }
+        NSArray *result = FETCH(fetchRequest);
         if(result.count == 0) {
             return nil;
         }
@@ -42,11 +38,7 @@ static Report *latestReport = nil;
 +(Report*)reportForTick:(NSNumber*)tick {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"tick = %@", tick];
-    NSError *err = nil;
-    NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR fetching report for tick: %@", err);
-    }
+    NSArray *result = FETCH(fetchRequest);
     if(result.count == 0) {
         Report *ret = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];
         return ret;

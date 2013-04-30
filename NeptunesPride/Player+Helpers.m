@@ -20,11 +20,7 @@
 +(Player*)playerFromUID:(int)uid inReport:(Report*)report {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND report = %@", uid, report];
-    NSError *err = nil;
-    NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR fetching player by uid: %@", err);
-    }
+    NSArray *result = FETCH(fetchRequest);
     //NSAssert(result.count > 0, @"Huh? No results for uid %d", uid);
     if(result.count == 0) {
         return nil;

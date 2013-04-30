@@ -20,11 +20,7 @@
     }
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Star"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@", report];
-    NSError *err = nil;
-    NSArray *ret = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
+    NSArray *ret = FETCH(fetchRequest);
     NSAssert(ret.count == 62, @"Found %ld stars in report %@?", ret.count, report);
     return ret;
 }
@@ -34,11 +30,7 @@
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Star"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@ AND player.uid != %@", report, report.originatorUID];
-    NSError *err = nil;
-    NSArray *stars = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
+    NSArray *stars = FETCH(fetchRequest);
 
     for(Star *star in stars) {
         NSMutableDictionary *s = [[NSMutableDictionary alloc] init];
@@ -59,12 +51,7 @@
 +(Star*)starFromUID:(int)uid inReport:(Report*)report {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Star"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND player.report = %@", uid, report];
-    NSError *err = nil;
-    NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR getting star from UID: %@", err);
-        return nil;
-    }
+    NSArray *result = FETCH(fetchRequest);
     if(result.count == 0) {
         return nil;
     }

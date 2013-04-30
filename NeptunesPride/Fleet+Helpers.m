@@ -19,11 +19,7 @@
     }
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Fleet"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@", report];
-    NSError *err = nil;
-    NSArray *ret = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
+    NSArray *ret = FETCH(fetchRequest);
     return ret;
 }
 
@@ -32,11 +28,7 @@
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Fleet"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@ AND player.uid != %@", report, report.originatorUID];
-    NSError *err = nil;
-    NSArray *fleets = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
+    NSArray *fleets = FETCH(fetchRequest);
 
     for(Fleet *fleet in fleets) {
         NSMutableDictionary *f = [[NSMutableDictionary alloc] init];
@@ -66,11 +58,7 @@
 +(Fleet*)fleetFromUID:(int)uid inReport:(Report*)report {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Fleet"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND player.report = %@", uid, report];
-    NSError *err = nil;
-    NSArray *result = [GET_CONTEXT executeFetchRequest:fetchRequest error:&err];
-    if(err) {
-        NSLog(@"ERROR: %@", err);
-    }
+    NSArray *result = FETCH(fetchRequest);
     if(result.count == 0) {
         return nil;
     }
