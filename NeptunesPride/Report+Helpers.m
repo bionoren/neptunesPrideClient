@@ -17,6 +17,7 @@ static Report *latestReport = nil;
 @implementation Report (Helpers)
 
 +(Report*)latestReport {
+    NSAssert([[NSThread currentThread] isEqual:[NSThread mainThread]], @"");
     if(!latestReport) {
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
         fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"collectionTime" ascending:NO]];

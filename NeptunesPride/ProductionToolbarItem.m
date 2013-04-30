@@ -21,18 +21,13 @@
 }
 
 -(void)reloadData:(NSNotification*)notification {
-    [GET_CONTEXT performBlock:^{
-        Report *report = [Report latestReport];
-        Player *me = [Player playerFromUID:report.originatorUID.intValue inReport:report];
-        int banking = (int)[Research valueForResearch:BANKING forPlayer:me];
-        int cash = me.cash.intValue;
-        int economy = me.economy.intValue;
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.label = [NSString stringWithFormat:@"Credits: $%d [$%d]", cash, cash + economy * 10 + banking * 50];
-            self.visibilityPriority = NSToolbarItemVisibilityPriorityUser;
-        });
-    }];
+    Report *report = [Report latestReport];
+    Player *me = [Player playerFromUID:report.originatorUID.intValue inReport:report];
+    int banking = (int)[Research valueForResearch:BANKING forPlayer:me];
+    int cash = me.cash.intValue;
+    int economy = me.economy.intValue;
+    self.label = [NSString stringWithFormat:@"Credits: $%d [$%d]", cash, cash + economy * 10 + banking * 50];
+    self.visibilityPriority = NSToolbarItemVisibilityPriorityUser;
 }
 
 @end
