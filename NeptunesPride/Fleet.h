@@ -2,14 +2,14 @@
 //  Fleet.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/23/13.
+//  Created by Bion Oren on 4/30/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Player, Star;
+@class Player, Report, Star;
 
 @interface Fleet : NSManagedObject
 
@@ -18,9 +18,10 @@
 @property (nonatomic, retain) NSNumber * uid;
 @property (nonatomic, retain) NSNumber * x;
 @property (nonatomic, retain) NSNumber * y;
+@property (nonatomic, retain) Star *orbiting;
 @property (nonatomic, retain) Player *player;
 @property (nonatomic, retain) NSOrderedSet *waypoints;
-@property (nonatomic, retain) Star *orbiting;
+@property (nonatomic, retain) Report *report;
 @end
 
 @interface Fleet (CoreDataGeneratedAccessors)

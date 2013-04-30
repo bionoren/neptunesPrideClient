@@ -11,7 +11,6 @@
 #import "Star+Helpers.h"
 #import "Fleet.h"
 #import "Game+Helpers.h"
-#import "NSManagedObject+Helpers.h"
 
 #define RGB(r, g, b) [NSColor colorWithSRGBRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
 
@@ -128,7 +127,7 @@
             NSLog(@"ERROR parsing sharing: %@", err);
         }
         if(reload.boolValue) {
-            [NSManagedObject loadData];
+            [Game loadData];
         }
     });
 }
@@ -169,7 +168,7 @@
         }
         NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
 
-        [NSManagedObject loadData];
+        [Game loadData];
     });
 }
 

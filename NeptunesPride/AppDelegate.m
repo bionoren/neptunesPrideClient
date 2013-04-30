@@ -89,7 +89,7 @@
     
     NSURL *url = [applicationFilesDirectory URLByAppendingPathComponent:@"NeptunesPride.storedata"];
     NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    if (![coordinator addPersistentStoreWithType:NSXMLStoreType configuration:nil URL:url options:@{NSMigratePersistentStoresAutomaticallyOption: @(YES), NSInferMappingModelAutomaticallyOption: @(YES)} error:&error]) {
+    if (![coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:@{NSMigratePersistentStoresAutomaticallyOption: @(YES), NSInferMappingModelAutomaticallyOption: @(YES)} error:&error]) {
         [[NSApplication sharedApplication] presentError:error];
         return nil;
     }
@@ -137,6 +137,7 @@
     }
     _mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     [_mainManagedObjectContext setPersistentStoreCoordinator:coordinator];
+    _mainManagedObjectContext.undoManager = nil;
 
     return _mainManagedObjectContext;
 }
@@ -158,15 +159,15 @@
 }
 
 // Performs the save action for the application, which is to send the save: message to the application's managed object context. Any encountered errors are presented to the user.
-- (IBAction)saveAction:(id)sender
+- (IBAction)saveAction:(NSManagedObjectContext*)sender
 {
     NSError *error = nil;
     
-    if (![[self managedObjectContext] commitEditing]) {
+    if (![sender commitEditing]) {
         NSLog(@"%@:%@ unable to commit editing before saving", [self class], NSStringFromSelector(_cmd));
     }
     
-    if (![[self managedObjectContext] save:&error]) {
+    if (![sender save:&error]) {
         [[NSApplication sharedApplication] presentError:error];
     }
 }

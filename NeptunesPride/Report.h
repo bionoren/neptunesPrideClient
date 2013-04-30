@@ -2,14 +2,14 @@
 //  Report.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/22/13.
+//  Created by Bion Oren on 4/30/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Game, Player;
+@class Fleet, Game, Player, Star;
 
 @interface Report : NSManagedObject
 
@@ -18,8 +18,10 @@
 @property (nonatomic, retain) NSNumber * originatorUID;
 @property (nonatomic, retain) NSNumber * tick;
 @property (nonatomic, retain) NSNumber * tick_fragment;
-@property (nonatomic, retain) NSOrderedSet *players;
 @property (nonatomic, retain) Game *game;
+@property (nonatomic, retain) NSOrderedSet *players;
+@property (nonatomic, retain) NSSet *stars;
+@property (nonatomic, retain) NSSet *fleets;
 @end
 
 @interface Report (CoreDataGeneratedAccessors)
@@ -34,4 +36,14 @@
 - (void)removePlayersObject:(Player *)value;
 - (void)addPlayers:(NSOrderedSet *)values;
 - (void)removePlayers:(NSOrderedSet *)values;
+- (void)addStarsObject:(Star *)value;
+- (void)removeStarsObject:(Star *)value;
+- (void)addStars:(NSSet *)values;
+- (void)removeStars:(NSSet *)values;
+
+- (void)addFleetsObject:(Fleet *)value;
+- (void)removeFleetsObject:(Fleet *)value;
+- (void)addFleets:(NSSet *)values;
+- (void)removeFleets:(NSSet *)values;
+
 @end

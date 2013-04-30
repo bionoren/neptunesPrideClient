@@ -10,8 +10,7 @@
 #import "MapView.h"
 #import "AppDelegate.h"
 #import "MyInfoWindowController.h"
-#import "Report+Helpers.h"
-#import "NSManagedObject+Helpers.h"
+#import "Game+Helpers.h"
 #import "PreferencesWindowController.h"
 
 @interface MainWindowController ()
@@ -27,7 +26,7 @@
     [super awakeFromNib];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [NSManagedObject loadData];
+        [Game loadData];
     });
 }
 

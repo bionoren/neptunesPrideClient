@@ -2,14 +2,14 @@
 //  Star.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/24/13.
+//  Created by Bion Oren on 4/30/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Fleet, Player;
+@class Fleet, Player, Report;
 
 @interface Star : NSManagedObject
 
@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSNumber * y;
 @property (nonatomic, retain) NSSet *fleets;
 @property (nonatomic, retain) Player *player;
+@property (nonatomic, retain) Report *report;
 @end
 
 @interface Star (CoreDataGeneratedAccessors)

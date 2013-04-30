@@ -12,4 +12,10 @@
 
 +(Game*)game;
 
+//MUST be called from the main thread
++(void)loadData;
+-(void)resetAndLoad;
+
++(void)loadShareData;
+
 @end

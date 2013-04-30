@@ -9,6 +9,14 @@
 #import "Research+Helpers.h"
 #import "AppDelegate.h"
 
+const NSString *BANKING = @"banking";
+const NSString *MANUFACTURING = @"manufacturing";
+const NSString *HYPERSPACE = @"propulsion";
+const NSString *GENERAL = @"research";
+const NSString *SCANNING = @"scanning";
+const NSString *TERRAFORMING = @"terraforming";
+const NSString *WEAPONS = @"weapons";
+
 @implementation Research (Helpers)
 
 +(int)levelForResearch:(const NSString*)research forPlayer:(Player*)player {

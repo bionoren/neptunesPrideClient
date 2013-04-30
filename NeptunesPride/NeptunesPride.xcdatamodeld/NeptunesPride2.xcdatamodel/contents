@@ -8,6 +8,7 @@
         <attribute name="y" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="orbiting" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Star" inverseName="fleets" inverseEntity="Star" syncable="YES"/>
         <relationship name="player" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="fleets" inverseEntity="Player" syncable="YES"/>
+        <relationship name="report" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Report" inverseName="fleets" inverseEntity="Report" syncable="YES"/>
         <relationship name="waypoints" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Star" syncable="YES"/>
     </entity>
     <entity name="Game" representedClassName="Game" syncable="YES">
@@ -49,8 +50,10 @@
         <attribute name="originatorUID" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="tick" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="tick_fragment" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Fleet" inverseName="report" inverseEntity="Fleet" syncable="YES"/>
         <relationship name="game" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Game" inverseName="reports" inverseEntity="Game" syncable="YES"/>
         <relationship name="players" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Player" inverseName="report" inverseEntity="Player" syncable="YES"/>
+        <relationship name="stars" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="Star" inverseName="report" inverseEntity="Star" syncable="YES"/>
     </entity>
     <entity name="Research" representedClassName="Research" syncable="YES">
         <attribute name="goal" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -75,13 +78,14 @@
         <attribute name="y" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="fleets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Fleet" inverseName="orbiting" inverseEntity="Fleet" syncable="YES"/>
         <relationship name="player" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="stars" inverseEntity="Player" syncable="YES"/>
+        <relationship name="report" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Report" inverseName="stars" inverseEntity="Report" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Fleet" positionX="171" positionY="288" width="128" height="165"/>
+        <element name="Fleet" positionX="171" positionY="288" width="128" height="180"/>
         <element name="Game" positionX="160" positionY="192" width="128" height="240"/>
         <element name="Player" positionX="160" positionY="192" width="128" height="285"/>
-        <element name="Report" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="Report" positionX="160" positionY="192" width="128" height="180"/>
         <element name="Research" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="Star" positionX="160" positionY="192" width="128" height="240"/>
+        <element name="Star" positionX="160" positionY="192" width="128" height="255"/>
     </elements>
 </model>

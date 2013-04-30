@@ -8,13 +8,13 @@
 
 #import "Research.h"
 
-static const NSString *BANKING = @"banking";
-static const NSString *MANUFACTURING = @"manufacturing";
-static const NSString *HYPERSPACE = @"propulsion";
-static const NSString *GENERAL = @"research";
-static const NSString *SCANNING = @"scanning";
-static const NSString *TERRAFORMING = @"terraforming";
-static const NSString *WEAPONS = @"weapons";
+extern const NSString *BANKING;
+extern const NSString *MANUFACTURING;
+extern const NSString *HYPERSPACE;
+extern const NSString *GENERAL;
+extern const NSString *SCANNING;
+extern const NSString *TERRAFORMING;
+extern const NSString *WEAPONS;
 
 @interface Research (Helpers)
 
