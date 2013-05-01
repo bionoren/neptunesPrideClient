@@ -232,9 +232,8 @@ static BOOL oneShotTimer = NO;
                     }
                     SAVE(game.managedObjectContext);
                     
-                    [self loadDataFromShares];
-                    
-                    [Report setLatestReport:report];
+                    [report setLatest];
+                    [report pull];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[Game game].managedObjectContext refreshObject:[Game game] mergeChanges:YES];
@@ -257,111 +256,6 @@ static BOOL oneShotTimer = NO;
 }
 
 #pragma mark - Syncing
-
-+(void)loadDataFromShares {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
-        //game
-        __block NSString *gameCookie;
-        __block NSString *gameNumber;
-        __block NSString *syncServer;
-        [GET_CONTEXT performBlockAndWait:^{
-            Game *game = [Game game];
-            if(!game.cookie.length || !game.number.length || !game.syncServer.length) {
-                return;
-            }
-            gameCookie = game.cookie;
-            gameNumber = game.number;
-            syncServer = game.syncServer;
-        }];
-        if(!gameCookie) {
-            return;
-        }
-        data[@"ACSID"] = gameCookie;
-        data[@"game"] = gameNumber;
-        data[@"action"] = @"pull";
-
-        NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:syncServer]];
-        [request setHTTPMethod:@"POST"];
-        NSError *err = nil;
-        NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
-        if(err) {
-            NSLog(@"ERROR prepping pull data: %@", err);
-        }
-        NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
-        [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
-        //NSLog(@"JSON = %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
-
-        NSURLResponse *response;
-        err = nil;
-        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-        if(err) {
-            NSLog(@"ERROR fetching pull data: %@", err);
-            return;
-        }
-        NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-
-        err = nil;
-        NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
-        if(err) {
-            NSLog(@"ERROR parsing pull json: %@", err);
-            return;
-        }
-
-        //stars
-        /*NSMutableDictionary *stars = [[NSMutableDictionary alloc] init];
-        for(Star *star in report.stars) {
-            stars[star.uid] = star;
-        }
-        for(NSDictionary *star in jsondata[@"stars"]) {
-            NSNumber *uid = star[@"uid"];
-            NSNumber *tick = star[@"tick"];
-            Report *report = [Report reportForTick:tick];
-            Star *s = stars[uid];
-            if(s.visible.boolValue) {
-                continue;
-            } else {
-                s.visible = @(YES);
-                s.economy = @([star[@"economy"] intValue]);
-                s.industry = @([star[@"industry"] intValue]);
-                s.science = @([star[@"science"] intValue]);
-                s.garrison = @([star[@"garrison"] intValue]);
-                s.naturalResources = @([star[@"naturalResources"] intValue]);
-                s.ships = @([star[@"ships"] intValue]);
-            }
-        }
-
-        //fleets
-        for(NSDictionary *fleet in jsondata[@"fleets"]) {
-            NSNumber *uid = fleet[@"uid"];
-            NSNumber *tick = fleet[@"tick"];
-            Report *report = [Report reportForTick:tick];
-            Fleet *f = [Fleet fleetFromUID:uid.intValue inReport:report];
-            if(!f) {
-                f.name = fleet[@"name"];
-                int player = [fleet[@"puid"] intValue];
-                f.player = [Player playerFromUID:player inReport:report];
-                f.ships = @([fleet[@"ships"] intValue]);
-                f.uid = @([fleet[@"uid"] intValue]);
-                f.x = @([fleet[@"x"] floatValue]);
-                f.y = @([fleet[@"y"] floatValue]);
-                if(fleet[@"orbitinguid"]) {
-                    int uid = [fleet[@"orbitinguid"] intValue];
-                    f.orbiting = [Star starFromUID:uid inReport:report];
-                } else {;
-                    NSOrderedSet *wp = [[NSOrderedSet alloc] initWithObject:[Star starFromUID:[fleet[@"destuid"] intValue] inReport:report]];
-                    f.waypoints = wp;
-                }
-            }
-        }
-
-        SAVE_CONTEXT;
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadData" object:nil userInfo:nil];
-        });*/
-    });
-}
 
 +(void)loadShareData {
     [GET_CONTEXT performBlock:^{

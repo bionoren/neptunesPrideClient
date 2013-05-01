@@ -10,11 +10,12 @@
 
 @interface Report (Helpers)
 
-+(void)setLatestReport:(Report*)report;
 +(Report*)latestReport;
 +(Report*)reportForTick:(NSNumber*)tick;
 
+-(void)setLatest;
 -(NSTimeInterval)timeToPossibleUpdate;
 -(void)push;
+-(void)pull;
 
 @end

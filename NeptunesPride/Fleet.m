@@ -2,7 +2,7 @@
 //  Fleet.m
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/30/13.
+//  Created by Bion Oren on 5/1/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
@@ -19,9 +19,10 @@
 @dynamic uid;
 @dynamic x;
 @dynamic y;
+@dynamic fromShare;
 @dynamic orbiting;
 @dynamic player;
-@dynamic waypoints;
 @dynamic report;
+@dynamic waypoints;
 
 @end

@@ -27,7 +27,8 @@
     NSMutableArray *ret = [[NSMutableArray alloc] init];
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Fleet"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@ AND player.uid != %@", report, report.originatorUID];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fromShare = NO AND player.report = %@ AND player.uid != %@", report, report.originatorUID];
+    fetchRequest.relationshipKeyPathsForPrefetching = @[@"player", @"waypoints", @"orbiting"];
     NSArray *fleets = FETCH(fetchRequest);
 
     for(Fleet *fleet in fleets) {

@@ -35,10 +35,10 @@
 		BE35398517208A89004DA84F /* info.png in Resources */ = {isa = PBXBuildFile; fileRef = BE35398417208A89004DA84F /* info.png */; };
 		BE35398C17209B69004DA84F /* MyInfoWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE35398A17209B69004DA84F /* MyInfoWindowController.m */; };
 		BE35398D17209B69004DA84F /* MyInfoWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE35398B17209B69004DA84F /* MyInfoWindowController.xib */; };
+		BE3D2C501731AB2A002108B1 /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3D2C4F1731AB2A002108B1 /* Star.m */; };
+		BE3D2C531731AB2A002108B1 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3D2C521731AB2A002108B1 /* Fleet.m */; };
 		BE4CDED21728C86D00C5B082 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4CDED11728C86D00C5B082 /* Player.m */; };
 		BE5FCE1F17300419009B9460 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5FCE1E17300419009B9460 /* Report.m */; };
-		BE5FCE2217300419009B9460 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5FCE2117300419009B9460 /* Fleet.m */; };
-		BE5FCE2517300419009B9460 /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5FCE2417300419009B9460 /* Star.m */; };
 		BEE541E31721BACF00F8CC85 /* Player+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E21721BACF00F8CC85 /* Player+Helpers.m */; };
 		BEE541E61721C39700F8CC85 /* Star+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E51721C39600F8CC85 /* Star+Helpers.m */; };
 /* End PBXBuildFile section */
@@ -102,14 +102,14 @@
 		BE35398917209B69004DA84F /* MyInfoWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyInfoWindowController.h; sourceTree = "<group>"; };
 		BE35398A17209B69004DA84F /* MyInfoWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyInfoWindowController.m; sourceTree = "<group>"; };
 		BE35398B17209B69004DA84F /* MyInfoWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyInfoWindowController.xib; sourceTree = "<group>"; };
+		BE3D2C4E1731AB2A002108B1 /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Star.h; sourceTree = "<group>"; };
+		BE3D2C4F1731AB2A002108B1 /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Star.m; sourceTree = "<group>"; };
+		BE3D2C511731AB2A002108B1 /* Fleet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fleet.h; sourceTree = "<group>"; };
+		BE3D2C521731AB2A002108B1 /* Fleet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fleet.m; sourceTree = "<group>"; };
 		BE4CDED01728C86D00C5B082 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		BE4CDED11728C86D00C5B082 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		BE5FCE1D17300419009B9460 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
 		BE5FCE1E17300419009B9460 /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
-		BE5FCE2017300419009B9460 /* Fleet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fleet.h; sourceTree = "<group>"; };
-		BE5FCE2117300419009B9460 /* Fleet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fleet.m; sourceTree = "<group>"; };
-		BE5FCE2317300419009B9460 /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Star.h; sourceTree = "<group>"; };
-		BE5FCE2417300419009B9460 /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Star.m; sourceTree = "<group>"; };
 		BEE541E11721BACF00F8CC85 /* Player+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Player+Helpers.h"; sourceTree = "<group>"; };
 		BEE541E21721BACF00F8CC85 /* Player+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Player+Helpers.m"; sourceTree = "<group>"; };
 		BEE541E41721C39600F8CC85 /* Star+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Star+Helpers.h"; sourceTree = "<group>"; };
@@ -259,11 +259,11 @@
 				BE18FE2A172633FA002AEFE2 /* Fleet+Helpers.m */,
 				BE4CDED01728C86D00C5B082 /* Player.h */,
 				BE4CDED11728C86D00C5B082 /* Player.m */,
+				BE3D2C4E1731AB2A002108B1 /* Star.h */,
+				BE3D2C511731AB2A002108B1 /* Fleet.h */,
+				BE3D2C521731AB2A002108B1 /* Fleet.m */,
+				BE3D2C4F1731AB2A002108B1 /* Star.m */,
 				BE353959171F9FA8004DA84F /* NeptunesPride.xcdatamodeld */,
-				BE5FCE2317300419009B9460 /* Star.h */,
-				BE5FCE2417300419009B9460 /* Star.m */,
-				BE5FCE2017300419009B9460 /* Fleet.h */,
-				BE5FCE2117300419009B9460 /* Fleet.m */,
 				BE5FCE1D17300419009B9460 /* Report.h */,
 				BE5FCE1E17300419009B9460 /* Report.m */,
 				BE18FE0017259314002AEFE2 /* Research.h */,
@@ -408,8 +408,8 @@
 				BE18FE2B172633FA002AEFE2 /* Fleet+Helpers.m in Sources */,
 				BE4CDED21728C86D00C5B082 /* Player.m in Sources */,
 				BE5FCE1F17300419009B9460 /* Report.m in Sources */,
-				BE5FCE2217300419009B9460 /* Fleet.m in Sources */,
-				BE5FCE2517300419009B9460 /* Star.m in Sources */,
+				BE3D2C501731AB2A002108B1 /* Star.m in Sources */,
+				BE3D2C531731AB2A002108B1 /* Fleet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Fleet" representedClassName="Fleet" syncable="YES">
+        <attribute name="fromShare" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ships" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="uid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -66,6 +67,7 @@
     </entity>
     <entity name="Star" representedClassName="Star" syncable="YES">
         <attribute name="economy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="fromShare" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="garrison" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="industry" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -81,11 +83,11 @@
         <relationship name="report" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Report" inverseName="stars" inverseEntity="Report" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Fleet" positionX="171" positionY="288" width="128" height="180"/>
+        <element name="Fleet" positionX="171" positionY="288" width="128" height="195"/>
         <element name="Game" positionX="160" positionY="192" width="128" height="240"/>
         <element name="Player" positionX="160" positionY="192" width="128" height="285"/>
         <element name="Report" positionX="160" positionY="192" width="128" height="180"/>
         <element name="Research" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="Star" positionX="160" positionY="192" width="128" height="255"/>
+        <element name="Star" positionX="160" positionY="192" width="128" height="270"/>
     </elements>
 </model>

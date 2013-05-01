@@ -577,7 +577,7 @@
 								<object class="NSTextField" id="508106548">
 									<reference key="NSNextResponder" ref="637154869"/>
 									<int key="NSvFlags">268</int>
-									<string key="NSFrame">{{20, 184}, {91, 17}}</string>
+									<string key="NSFrame">{{20, 184}, {55, 17}}</string>
 									<reference key="NSSuperview" ref="637154869"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="694180273"/>
@@ -586,7 +586,7 @@
 									<object class="NSTextFieldCell" key="NSCell" id="124313503">
 										<int key="NSCellFlags">68157504</int>
 										<int key="NSCellFlags2">272630784</int>
-										<string key="NSContents">ACSID Cookie</string>
+										<string key="NSContents">Cookies</string>
 										<reference key="NSSupport" ref="121183210"/>
 										<string key="NSCellIdentifier">_NS:1535</string>
 										<reference key="NSControlView" ref="508106548"/>
@@ -622,6 +622,7 @@
 									<string key="NSFrame">{{102, 20}, {361, 17}}</string>
 									<reference key="NSSuperview" ref="637154869"/>
 									<reference key="NSWindow"/>
+									<reference key="NSNextKeyView"/>
 									<string key="NSReuseIdentifierKey">_NS:1535</string>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSTextFieldCell" key="NSCell" id="807735826">
@@ -695,7 +696,7 @@
 										<int key="NSCellFlags2">272629760</int>
 										<string key="NSContents"/>
 										<reference key="NSSupport" ref="121183210"/>
-										<string key="NSPlaceholderString">ACSID cookie</string>
+										<string key="NSPlaceholderString">Request cookies (all of them)</string>
 										<string key="NSCellIdentifier">_NS:9</string>
 										<reference key="NSControlView" ref="694180273"/>
 										<bool key="NSDrawsBackground">YES</bool>
@@ -1986,45 +1987,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">PreferencesWindowController</string>
 					<string key="superclassName">NSWindowController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="buttonDown:">id</string>
-						<string key="cookieUpdated:">NSTextField</string>
-						<string key="gameUpdated:">NSTextField</string>
-						<string key="reloadData:">id</string>
-						<string key="showSettings:">id</string>
-						<string key="showSharing:">id</string>
-						<string key="syncServerUpdated:">NSTextField</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="buttonDown:">
-							<string key="name">buttonDown:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cookieUpdated:">
-							<string key="name">cookieUpdated:</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBActionInfo" key="gameUpdated:">
-							<string key="name">gameUpdated:</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBActionInfo" key="reloadData:">
-							<string key="name">reloadData:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showSettings:">
-							<string key="name">showSettings:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showSharing:">
-							<string key="name">showSharing:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="syncServerUpdated:">
-							<string key="name">syncServerUpdated:</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="cookieField">NSTextField</string>
 						<string key="gameNumberField">NSTextField</string>

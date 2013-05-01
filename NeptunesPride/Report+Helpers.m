@@ -32,8 +32,8 @@ static Report *latestReport = nil;
     return latestReport;
 }
 
-+(void)setLatestReport:(Report*)report {
-    latestReport = report;
+-(void)setLatest {
+    latestReport = self;
 }
 
 +(Report*)reportForTick:(NSNumber*)tick {
@@ -59,32 +59,31 @@ static Report *latestReport = nil;
 
 -(void)push {
     [GET_CONTEXT performBlock:^{
+        Report *backgroundReport = (Report*)[GET_CONTEXT objectWithID:self.objectID];
         Game *game = [Game game];
         if(!game.syncServer.length) {
             return;
         }
         NSString *syncServer = game.syncServer;
-        NSString *cookie = game.cookie;
-        NSString *number = game.number;
 
-        id starData = [Star dataForReport:self];
-        id fleetData = [Fleet dataForReport:self];
+        id starData = [Star dataForReport:backgroundReport];
+        id fleetData = [Fleet dataForReport:backgroundReport];
 
-        NSNumber *gameTime = @([self.gameTime timeIntervalSince1970]);
-        NSNumber *tick = self.tick;
-        NSNumber *tick_fragment = self.tick_fragment;
+        NSNumber *gameTime = @([backgroundReport.gameTime timeIntervalSince1970]);
+        NSNumber *tick = backgroundReport.tick;
+        NSNumber *tick_fragment = backgroundReport.tick_fragment;
+
+        NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+        data[@"cookie"] = game.cookie;
+        data[@"game"] = game.number;
+        data[@"action"] = @"push";
+
+        data[@"data"] = @[starData, fleetData];
+        data[@"gameTime"] = gameTime;
+        data[@"tick"] = tick;
+        data[@"tickFragment"] = tick_fragment;
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
-            data[@"ACSID"] = cookie;
-            data[@"game"] = number;
-            data[@"action"] = @"push";
-            data[@"starData"] = starData;
-            data[@"fleetData"] = fleetData;
-            data[@"gameTime"] = gameTime;
-            data[@"tick"] = tick;
-            data[@"tickFragment"] = tick_fragment;
-
             NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:syncServer]];
             [request setHTTPMethod:@"POST"];
             NSError *err = nil;
@@ -103,6 +102,55 @@ static Report *latestReport = nil;
                 NSLog(@"ERROR: %@", err);
             }
             NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+        });
+    }];
+}
+
+-(void)pull {
+    [GET_CONTEXT performBlockAndWait:^{
+        Report *backgroundReport = (Report*)[GET_CONTEXT objectWithID:self.objectID];
+        NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
+        Game *game = [Game game];
+        if(!game.cookie.length || !game.number.length || !game.syncServer.length) {
+            return;
+        }
+        NSString *syncServer = game.syncServer;
+
+        if(!game.cookie) {
+            return;
+        }
+        data[@"ACSID"] = game.cookie;
+        data[@"game"] = game.number;
+        data[@"action"] = @"pull";
+        data[@"tick"] = backgroundReport.tick;
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:syncServer]];
+            [request setHTTPMethod:@"POST"];
+            NSError *err = nil;
+            NSData *json = [NSJSONSerialization dataWithJSONObject:data options:0 error:&err];
+            if(err) {
+                NSLog(@"ERROR prepping pull data: %@", err);
+            }
+            NSString *post = [NSString stringWithFormat:@"data=%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]];
+            [request setHTTPBody:[post dataUsingEncoding:NSUTF8StringEncoding]];
+            //NSLog(@"JSON = %@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+
+            NSURLResponse *response;
+            err = nil;
+            NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+            if(err) {
+                NSLog(@"ERROR fetching pull data: %@", err);
+                return;
+            }
+            NSLog(@"response = %@", [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+
+            err = nil;
+            NSDictionary *jsondata = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&err];
+            if(err) {
+                NSLog(@"ERROR parsing pull json: %@", err);
+                return;
+            }
         });
     }];
 }

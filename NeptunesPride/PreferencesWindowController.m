@@ -44,11 +44,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadData" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:@"reloadShares" object:nil];
     Game *game = [Game game];
-    NSAssert([[game managedObjectContext] isEqual:GET_MAIN_CONTEXT], @"Huh? %@ != %@", [game managedObjectContext], GET_MAIN_CONTEXT);
-    [Game loadData];
     [self.sharingView setHidden:YES];
 
-    [self reloadPlayerData];
     if(game.number.length) {
         self.gameNumberField.stringValue = game.number;
     }
@@ -68,28 +65,17 @@
 
 -(IBAction)reloadData:(id)sender {
     [[Game game] resetAndLoad];
-    [self reloadPlayerData];
-}
-
--(void)reloadPlayerData {
-    [GET_CONTEXT performBlock:^{
-        NSMutableArray *players = [[NSMutableArray alloc] init];
-        for(Player *player in [Report latestReport].players) {
-            NSMutableDictionary *p = [[NSMutableDictionary alloc] init];
-            p[@"playerObj"] = player;
-            p[@"shareStatus"] = player.shareStatus;
-            p[@"name"] = player.name;
-            NSDate *lastSync = player.lastSync;
-            if(lastSync) {
-                p[@"lastSync"] = lastSync;
-            }
-            [players addObject:p];
-        }
-        self.players = players;
-    }];
+    [self reloadData];
 }
 
 -(void)reloadData {
+    self.players = [[Report latestReport].players array];
+}
+
+#pragma mark - Custom getters/setters
+
+-(void)setPlayers:(NSArray *)players {
+    _players = players;
     [self.playerTable reloadData];
 }
 
@@ -142,30 +128,25 @@
 
 -(IBAction)buttonDown:(NSTableView*)sender {
     [sender setEnabled:NO];
-    [GET_CONTEXT performBlock:^{
-        NSMutableDictionary *playerDict = [self.players objectAtIndex:self.currentPlayer];
-        Player *player = playerDict[@"playerObj"];
-        int status = player.shareStatus.intValue;
-        if(status == OFFERED) {
-            player.shareStatus = @(ACCEPTED);
-            NSLog(@"%@: Offered -> Accepted", player.name);
-            [player share];
-        } else if(status == NONE) {
-            player.shareStatus = @(OFFERING);
-            NSLog(@"%@: None -> Offering", player.name);
-            [player share];
-        } else {
-            player.shareStatus = @(NONE);
-            NSLog(@"%@: * -> None", player.name);
-            [player unshare];
-        }
-        playerDict[@"shareStatus"] = player.shareStatus;
-        SAVE(GET_CONTEXT);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadData];
-            [sender setEnabled:YES];
-        });
-    }];
+    Player *player = [self.players objectAtIndex:self.currentPlayer];
+    int status = player.shareStatus.intValue;
+    if(status == OFFERED) {
+        player.shareStatus = @(ACCEPTED);
+        NSLog(@"%@: Offered -> Accepted", player.name);
+        [player share];
+    } else if(status == NONE) {
+        player.shareStatus = @(OFFERING);
+        NSLog(@"%@: None -> Offering", player.name);
+        [player share];
+    } else {
+        player.shareStatus = @(NONE);
+        NSLog(@"%@: * -> None", player.name);
+        [player unshare];
+    }
+    SAVE(GET_MAIN_CONTEXT);
+
+    [self reloadData];
+    [sender setEnabled:YES];
 }
 
 #pragma mark NSTableViewDataSource
@@ -175,14 +156,15 @@
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+    Player *player = self.players[rowIndex];
     if([aTableColumn.identifier isEqualToString:@"share"]) {
-        int status = [self.players[rowIndex][@"shareStatus"] intValue];
+        int status = [player.shareStatus intValue];
         if(status >= OFFERING) {
             return @(YES);
         }
         return @(NO);
     } else if([aTableColumn.identifier isEqualToString:@"status"]) {
-        switch([self.players[rowIndex][@"shareStatus"] intValue]) {
+        switch([player.shareStatus intValue]) {
             case NONE:
                 return @(0);
             case OFFERED:
@@ -193,9 +175,9 @@
                 return @(2);
         }
     } else if([aTableColumn.identifier isEqualToString:@"player"]) {
-        return self.players[rowIndex][@"name"];
+        return player.name;
     } else if([aTableColumn.identifier isEqualToString:@"lastUpdated"]) {
-        NSDate *date = self.players[rowIndex][@"lastSync"];
+        NSDate *date = player.lastSync;
         if(date) {
             return date;
         } else {

@@ -2,7 +2,7 @@
 //  Fleet.h
 //  NeptunesPride
 //
-//  Created by Bion Oren on 4/30/13.
+//  Created by Bion Oren on 5/1/13.
 //  Copyright (c) 2013 Bion Oren. All rights reserved.
 //
 
@@ -18,10 +18,11 @@
 @property (nonatomic, retain) NSNumber * uid;
 @property (nonatomic, retain) NSNumber * x;
 @property (nonatomic, retain) NSNumber * y;
+@property (nonatomic, retain) NSNumber * fromShare;
 @property (nonatomic, retain) Star *orbiting;
 @property (nonatomic, retain) Player *player;
-@property (nonatomic, retain) NSOrderedSet *waypoints;
 @property (nonatomic, retain) Report *report;
+@property (nonatomic, retain) NSOrderedSet *waypoints;
 @end
 
 @interface Fleet (CoreDataGeneratedAccessors)

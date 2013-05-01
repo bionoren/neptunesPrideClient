@@ -18,7 +18,7 @@
     NSMutableArray *ret = [[NSMutableArray alloc] init];
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Star"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@ AND player.uid != %@", report, report.originatorUID];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fromShare = NO AND player.report = %@ AND player.uid != %@", report, report.originatorUID];
     NSArray *stars = FETCH(fetchRequest);
 
     for(Star *star in stars) {

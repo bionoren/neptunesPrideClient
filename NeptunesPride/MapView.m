@@ -38,11 +38,15 @@
 
 /** CDT ONLY */
 -(CGRect)virtualFrame {
+    Report *report = [Report latestReport];
+    if(!report.stars.count) {
+        return CGRectZero;
+    }
     float minx = MAXFLOAT;
     float miny = MAXFLOAT;
     float maxx = -MAXFLOAT;
     float maxy = -MAXFLOAT;
-    for(Star *star in [Report latestReport].stars) {
+    for(Star *star in report.stars) {
         float x = [star.x floatValue];
         float y = [star.y floatValue];
         if(x < minx) {
@@ -166,6 +170,7 @@ static CGRect virtualFrame = {0};
             [shipPath relativeLineToPoint:NSMakePoint(-bound.size.width / 2, bound.size.height)];
             [shipPath closePath];
         }
+#undef CORNER_ANGLE
 
         if(!fleet.orbiting && magnification > 2) {
             NSString *shipsString = [NSString stringWithFormat:@"%@", fleet.ships];
