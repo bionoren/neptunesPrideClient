@@ -18,6 +18,7 @@ extern const NSString *WEAPONS;
 
 @interface Research (Helpers)
 
++(Research*)research:(const NSString*)research forPlayer:(Player*)player;
 +(int)levelForResearch:(const NSString*)research forPlayer:(Player*)player;
 +(float)valueForResearch:(const NSString*)research forPlayer:(Player*)player;
 

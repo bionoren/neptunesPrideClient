@@ -15,4 +15,6 @@
 +(NSArray*)dataForReport:(Report*)report;
 +(Fleet*)fleetFromUID:(int)uid inReport:(Report*)report;
 
+-(NSPoint)point;
+
 @end

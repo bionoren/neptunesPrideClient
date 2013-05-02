@@ -68,4 +68,8 @@
     return @(self.naturalResources.intValue + terraforming * 5);
 }
 
+-(NSPoint)point {
+    return NSMakePoint(self.x.floatValue, self.y.floatValue);
+}
+
 @end

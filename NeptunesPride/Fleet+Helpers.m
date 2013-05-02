@@ -66,4 +66,8 @@
     return result[0];
 }
 
+-(NSPoint)point {
+    return NSMakePoint(self.x.floatValue, self.y.floatValue);
+}
+
 @end

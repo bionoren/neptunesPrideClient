@@ -17,5 +17,6 @@
 -(NSNumber*)numFleets;
 -(int)allShips;
 -(NSNumber*)resources;
+-(NSPoint)point;
 
 @end

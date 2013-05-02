@@ -10,9 +10,9 @@
 #import "AppDelegate.h"
 #import "Report+Helpers.h"
 #import "Player.h"
-#import "Research.h"
-#import "Star.h"
-#import "Fleet.h"
+#import "Research+Helpers.h"
+#import "Star+Helpers.h"
+#import "Fleet+Helpers.h"
 
 static Game *game = nil;
 static Game *mainGame = nil;
@@ -137,6 +137,9 @@ static BOOL oneShotTimer = NO;
                     }
 
                     //report
+                    Report *lastReport;
+                    int tick = [data[@"tick"] intValue];
+                    while(!(lastReport = [Report reportForTick:@(--tick)]) && tick >= 0);
                     Report *report = [Report reportForTick:@([data[@"tick"] intValue])];
                     if(!report) {
                         report = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];
@@ -237,6 +240,22 @@ static BOOL oneShotTimer = NO;
                                 [wp addObject:stars[waypoint]];
                             }
                             f.waypoints = wp;
+                            Fleet *lastFleet = [Fleet fleetFromUID:f.uid.intValue inReport:lastReport];
+                            if(lastFleet.orbiting) {
+                                NSUserNotification *fleetLaunchNotification = [[NSUserNotification alloc] init];
+                                fleetLaunchNotification.title = @"Fleet Launched";
+                                fleetLaunchNotification.subtitle = [NSString stringWithFormat:@"%@'s %d ship fleet", [f.player name], f.ships.intValue];
+                                Star *dest = f.waypoints[0];
+                                int hours = [game ticksFromPoint:[f point] toPoint:[dest point] warpGates:NO];
+                                int remainingShips = [game shipsRemainingForStar:dest attackingFleet:f];
+
+                                if(dest.visible.boolValue && dest.player.uid.intValue != lastFleet.orbiting.player.uid.intValue) {
+                                    fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"%@ launched a fleet from %@ to %@ with %d ships. The fleet will arrive in %d hours. We predict the %@ will win with %d ships remaining", [f.player name], lastFleet.orbiting.name, dest.name, f.ships.intValue, hours, (remainingShips > 0)?@"defender":@"attacker", abs(remainingShips)];
+                                } else {
+                                    fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"%@ launched a fleet from %@ to %@ with %d ships. The fleet will arrive in %d hours.", f.player.name, lastFleet.orbiting.name, dest.name, f.ships.intValue, hours];
+                                }
+                                [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:fleetLaunchNotification];
+                            }
                         }
                     }
                     SAVE(game.managedObjectContext);
@@ -306,6 +325,75 @@ static BOOL oneShotTimer = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadShares" object:nil userInfo:nil];
         });
     }];
+}
+
+-(int)ticksFromPoint:(NSPoint)p1 toPoint:(NSPoint)p2 warpGates:(BOOL)warp {
+    float dx = p1.x - p2.x;
+    float dy = p1.y - p2.y;
+    float distance = sqrtf(dx * dx + dy * dy);
+    float time = distance / self.fleetSpeed.floatValue;
+    if(warp) {
+        time /= 3;
+    }
+    return ceilf(time);
+}
+
+///if the return value is negative, the attacker won with that many ships
+-(int)shipsRemainingForStar:(Star*)star attackingFleet:(Fleet*)fleet {
+    int timeToAttack = [self ticksFromPoint:fleet.point toPoint:star.point warpGates:NO];
+
+    int starShips = star.ships.intValue;
+    for(Fleet *fleet in star.fleets) {
+        starShips += fleet.ships.intValue;
+    }
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Fleet"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player = %@ AND %@ IN waypoints", star.player, star];
+    fetchRequest.relationshipKeyPathsForPrefetching = @[@"waypoints", @"orbiting"];
+    NSArray *fleets = FETCH_REQUEST(fetchRequest, star.managedObjectContext);
+    for(Fleet *fleet in fleets) {
+        int transitTime = fleet.orbiting ? 1 : 0;
+
+        Star *lastStar = fleet.orbiting;
+        for(Star *waypoint in fleet.waypoints) {
+            if(lastStar) {
+                transitTime += [self ticksFromPoint:lastStar.point toPoint:waypoint.point warpGates:NO];
+            } else {
+                transitTime += [self ticksFromPoint:fleet.point toPoint:waypoint.point warpGates:NO];
+            }
+            if([waypoint isEqual:star]) {
+                break;
+            }
+            lastStar = waypoint;
+        }
+        if(transitTime <= timeToAttack) {
+            starShips += fleet.ships.intValue;
+        }
+    }
+
+    Research *dwr = [Research research:WEAPONS forPlayer:star.player];
+    float defenderWeapons = dwr.value.floatValue + 1;
+    if([WEAPONS isEqualToString:star.player.research.name]) {
+        if(dwr.progress.intValue + timeToAttack * star.player.science.intValue >= dwr.goal.intValue * dwr.level.intValue) {
+            defenderWeapons++;
+        }
+    }
+    Research *awr = [Research research:WEAPONS forPlayer:fleet.player];
+    float attackerWeapons = awr.value.floatValue;
+    if([WEAPONS isEqualToString:fleet.player.research.name]) {
+        if(awr.progress.intValue + timeToAttack * fleet.player.science.intValue >= awr.goal.intValue * awr.level.intValue) {
+            attackerWeapons++;
+        }
+    }
+
+    int remainingDefenderShips = starShips - attackerWeapons * (fleet.ships.intValue / defenderWeapons);
+    if(remainingDefenderShips > 0) {
+        return remainingDefenderShips;
+    }
+    //                            attacker ships      - defenderWeapons * attacker number of attacks    - defender shoots first
+    int remainingAttackerShips = fleet.ships.intValue - defenderWeapons * (starShips / attackerWeapons) - defenderWeapons;
+    NSAssert(remainingAttackerShips > 0, @"Something went wrong...");
+    return -remainingAttackerShips;
 }
 
 @end

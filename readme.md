@@ -1,6 +1,29 @@
 See http://triton.ironhelmet.com/. If you're still confused, you probably don't care.
 NOTE: This is completely unofficial and not endorsed by the game's author. He just happens to provide a reasonable JSON interface :)
 
+Requirements:
+-------------
+Mac OS X 10.8+
+
+Features:
+---------
+* Projected Cashflow
+* Share sensor data for other players you can see (not your own stars/fleets or data other players are sharing with you) with other players via the neptunesPrideServer project
+* Sortable table of player information with planet breakdowns
+* Scroll through the game history tick by tick
+* Local notifications whenever a fleet enters sensor range or launches from a visible planet. Plus, combat outcome predictions accounting for production, active research, and reinforcements in transit!
+
+Known Issues:
+-------------
+* Doesn't account for warp gates
+* Pulling shared data is not fully implemented and is untested
+* Sorting players based on technology stats may cause a crash
+
+Note also that the JSON data powering this app is NOT a formal API and is subject to change without notice. If this occurs, the app will probably require an update.
+
+***
+MIT Software License:
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
