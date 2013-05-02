@@ -76,8 +76,8 @@ static BOOL oneShotTimer = NO;
 
         if(oneShotTimer) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                //Fire slightly faster than neccessary to ensure we don't lose a tick
-                updateTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(tickRate * 60 * 0.95) target:self selector:@selector(loadDataFromTimer:) userInfo:nil repeats:YES];
+                //Fire faster for a more up-to-date interface
+                updateTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(tickRate * 60 * 0.25) target:self selector:@selector(loadDataFromTimer:) userInfo:nil repeats:YES];
             });
             oneShotTimer = NO;
         }
