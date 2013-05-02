@@ -119,19 +119,24 @@ static BOOL oneShotTimer = NO;
                     }
 
                     NSLog(@"Loading data...");
-                    game.tickRate = @([data[@"tick_rate"] floatValue]);
-                    game.starsForVictory = @([data[@"stars_for_victory"] intValue]);
-                    game.startTime = [NSDate dateWithTimeIntervalSince1970:[data[@"start_time"] longValue] / 1000];
-                    game.tradeCost = @([data[@"trade_cost"] floatValue]);
-                    game.productionRate = @([data[@"production_rate"] floatValue]);
-                    game.economyCost = @([data[@"dev_cost_economy"] floatValue]);
-                    game.industryCost = @([data[@"dev_cost_industry"] floatValue]);
-                    game.scienceCost = @([data[@"dev_cost_science"] floatValue]);
-                    game.fleetSpeed = @([data[@"fleet_speed"] floatValue]);
-                    SAVE(game.managedObjectContext);
+                    if(!game.tickRate) {
+                        game.tickRate = @([data[@"tick_rate"] floatValue]);
+                        game.starsForVictory = @([data[@"stars_for_victory"] intValue]);
+                        game.startTime = [NSDate dateWithTimeIntervalSince1970:[data[@"start_time"] longValue] / 1000];
+                        game.tradeCost = @([data[@"trade_cost"] floatValue]);
+                        game.productionRate = @([data[@"production_rate"] floatValue]);
+                        game.economyCost = @([data[@"dev_cost_economy"] floatValue]);
+                        game.industryCost = @([data[@"dev_cost_industry"] floatValue]);
+                        game.scienceCost = @([data[@"dev_cost_science"] floatValue]);
+                        game.fleetSpeed = @([data[@"fleet_speed"] floatValue]);
+                        SAVE(game.managedObjectContext);
+                    }
 
                     //report
-                    Report *report = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];
+                    Report *report = [Report reportForTick:@([data[@"tick"] intValue])];
+                    if(!report) {
+                        report = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];
+                    }
                     report.collectionTime = [NSDate date];
                     report.gameTime = [NSDate dateWithTimeIntervalSince1970:[data[@"now"] longValue] / 1000];
                     report.originatorUID = @([data[@"player_uid"] intValue]);

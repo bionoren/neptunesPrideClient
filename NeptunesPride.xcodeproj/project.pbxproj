@@ -39,6 +39,7 @@
 		BE3D2C531731AB2A002108B1 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3D2C521731AB2A002108B1 /* Fleet.m */; };
 		BE4CDED21728C86D00C5B082 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4CDED11728C86D00C5B082 /* Player.m */; };
 		BE5FCE1F17300419009B9460 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5FCE1E17300419009B9460 /* Report.m */; };
+		BEE0BC421731D3F50029219F /* GameTimeToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE0BC411731D3F50029219F /* GameTimeToolbarItem.m */; };
 		BEE541E31721BACF00F8CC85 /* Player+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E21721BACF00F8CC85 /* Player+Helpers.m */; };
 		BEE541E61721C39700F8CC85 /* Star+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE541E51721C39600F8CC85 /* Star+Helpers.m */; };
 /* End PBXBuildFile section */
@@ -110,6 +111,8 @@
 		BE4CDED11728C86D00C5B082 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		BE5FCE1D17300419009B9460 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
 		BE5FCE1E17300419009B9460 /* Report.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Report.m; sourceTree = "<group>"; };
+		BEE0BC401731D3F50029219F /* GameTimeToolbarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameTimeToolbarItem.h; sourceTree = "<group>"; };
+		BEE0BC411731D3F50029219F /* GameTimeToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameTimeToolbarItem.m; sourceTree = "<group>"; };
 		BEE541E11721BACF00F8CC85 /* Player+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Player+Helpers.h"; sourceTree = "<group>"; };
 		BEE541E21721BACF00F8CC85 /* Player+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Player+Helpers.m"; sourceTree = "<group>"; };
 		BEE541E41721C39600F8CC85 /* Star+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Star+Helpers.h"; sourceTree = "<group>"; };
@@ -186,6 +189,8 @@
 				BE353956171F9FA8004DA84F /* MainMenu.xib */,
 				BE112B8F172421D1002739BB /* ProductionToolbarItem.h */,
 				BE112B90172421D1002739BB /* ProductionToolbarItem.m */,
+				BEE0BC401731D3F50029219F /* GameTimeToolbarItem.h */,
+				BEE0BC411731D3F50029219F /* GameTimeToolbarItem.m */,
 				BE353948171F9FA8004DA84F /* Supporting Files */,
 				BE353978171FA010004DA84F /* MainWindowController.h */,
 				BE353979171FA010004DA84F /* MainWindowController.m */,
@@ -410,6 +415,7 @@
 				BE5FCE1F17300419009B9460 /* Report.m in Sources */,
 				BE3D2C501731AB2A002108B1 /* Star.m in Sources */,
 				BE3D2C531731AB2A002108B1 /* Fleet.m in Sources */,
+				BEE0BC421731D3F50029219F /* GameTimeToolbarItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

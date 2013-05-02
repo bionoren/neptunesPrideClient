@@ -22,7 +22,7 @@ static Report *latestReport = nil;
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
         fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"collectionTime" ascending:NO]];
         fetchRequest.fetchLimit = 1;
-        NSArray *result = FETCH(fetchRequest);
+        NSArray *result = FETCH_MAIN(fetchRequest);
         if(result.count == 0) {
             return nil;
         }
@@ -33,16 +33,16 @@ static Report *latestReport = nil;
 }
 
 -(void)setLatest {
-    latestReport = self;
+    latestReport = (Report*)[GET_MAIN_CONTEXT objectWithID:self.objectID];
 }
 
 +(Report*)reportForTick:(NSNumber*)tick {
+    NSManagedObjectContext *context = [[NSThread currentThread] isEqual:[NSThread mainThread]] ? GET_MAIN_CONTEXT : GET_CONTEXT;
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Report"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"tick = %@", tick];
-    NSArray *result = FETCH(fetchRequest);
+    NSArray *result = FETCH_REQUEST(fetchRequest, context);
     if(result.count == 0) {
-        Report *ret = [NSEntityDescription insertNewObjectForEntityForName:@"Report" inManagedObjectContext:GET_CONTEXT];
-        return ret;
+        return nil;
     }
     return result[0];
 }

@@ -8,6 +8,7 @@
 
 #import "Research+Helpers.h"
 #import "AppDelegate.h"
+#import "Player.h"
 
 const NSString *BANKING = @"banking";
 const NSString *MANUFACTURING = @"manufacturing";
@@ -30,7 +31,7 @@ const NSString *WEAPONS = @"weapons";
 +(Research*)research:(const NSString*)research forPlayer:(Player*)player {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Research"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player = %@ AND name = %@", player, research];
-    NSArray *results = FETCH(fetchRequest);
+    NSArray *results = FETCH_REQUEST(fetchRequest, player.managedObjectContext);
     //NSAssert(results.count == 1, @"Not the results we expected for player %@ and string %@: %@", player, research, results);
     if(results.count == 0) {
         return nil;

@@ -19,7 +19,7 @@
     }
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Fleet"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"player.report = %@", report];
-    NSArray *ret = FETCH(fetchRequest);
+    NSArray *ret = FETCH_REQUEST(fetchRequest, report.managedObjectContext);
     return ret;
 }
 
@@ -29,7 +29,7 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Fleet"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fromShare = NO AND player.report = %@ AND player.uid != %@", report, report.originatorUID];
     fetchRequest.relationshipKeyPathsForPrefetching = @[@"player", @"waypoints", @"orbiting"];
-    NSArray *fleets = FETCH(fetchRequest);
+    NSArray *fleets = FETCH_REQUEST(fetchRequest, report.managedObjectContext);
 
     for(Fleet *fleet in fleets) {
         NSMutableDictionary *f = [[NSMutableDictionary alloc] init];
@@ -59,7 +59,7 @@
 +(Fleet*)fleetFromUID:(int)uid inReport:(Report*)report {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Fleet"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND player.report = %@", uid, report];
-    NSArray *result = FETCH(fetchRequest);
+    NSArray *result = FETCH_REQUEST(fetchRequest, report.managedObjectContext);
     if(result.count == 0) {
         return nil;
     }

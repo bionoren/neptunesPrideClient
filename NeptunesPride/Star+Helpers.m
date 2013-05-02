@@ -19,7 +19,7 @@
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Star"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"fromShare = NO AND player.report = %@ AND player.uid != %@", report, report.originatorUID];
-    NSArray *stars = FETCH(fetchRequest);
+    NSArray *stars = FETCH_REQUEST(fetchRequest, report.managedObjectContext);
 
     for(Star *star in stars) {
         NSMutableDictionary *s = [[NSMutableDictionary alloc] init];
@@ -40,7 +40,7 @@
 +(Star*)starFromUID:(int)uid inReport:(Report*)report {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Star"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uid = %d AND player.report = %@", uid, report];
-    NSArray *result = FETCH(fetchRequest);
+    NSArray *result = FETCH_REQUEST(fetchRequest, report.managedObjectContext);
     if(result.count == 0) {
         return nil;
     }
