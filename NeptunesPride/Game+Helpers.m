@@ -17,7 +17,7 @@
 static Game *game = nil;
 static Game *mainGame = nil;
 
-static NSTimer *updateTimer = nil;
+static __strong NSTimer *updateTimer = nil;
 static BOOL oneShotTimer = NO;
 
 @implementation Game (Helpers)
@@ -248,6 +248,7 @@ static BOOL oneShotTimer = NO;
                     if(!updateTimer) {
                         NSTimeInterval timeToNextPossibleUpdate = [report timeToPossibleUpdate];
                         dispatch_async(dispatch_get_main_queue(), ^{
+                            //NSLog(@"Next timer fires in %f seconds (%f minutes)", timeToNextPossibleUpdate, timeToNextPossibleUpdate / 60);
                             updateTimer = [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:self selector:@selector(loadData) userInfo:nil repeats:NO];
                         });
                         oneShotTimer = YES;

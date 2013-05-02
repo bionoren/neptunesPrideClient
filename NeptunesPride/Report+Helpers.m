@@ -51,8 +51,8 @@ static Report *latestReport = nil;
     Game *game = [Game game];
 
     //tick_fragment is a percentage of the hour (well, there's a tick interval, but it's 60 for me)
-    int minutes = (int)(self.tick_fragment.floatValue * game.tickRate.floatValue);
-    int seconds = (int)roundf((int)(self.tick_fragment.floatValue * game.tickRate.floatValue * 100) / game.tickRate.floatValue);
+    double minutes;
+    int seconds = (int)roundf(modf(self.tick_fragment.floatValue * game.tickRate.floatValue, &minutes) * 60);
     //NSLog(@"%d minutes, %d seconds", minutes, seconds);
     return game.tickRate.floatValue * 60 - minutes * seconds;
 }
