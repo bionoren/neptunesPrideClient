@@ -56,6 +56,10 @@ static BOOL oneShotTimer = NO;
     [Game loadShareData];
 }
 
++(void)loadDataFromTimer:(NSTimer*)timer {
+    [self loadData];
+}
+
 +(void)loadData {
     [GET_CONTEXT performBlock:^{
         Game *game = [Game game];
@@ -73,7 +77,7 @@ static BOOL oneShotTimer = NO;
         if(oneShotTimer) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 //Fire slightly faster than neccessary to ensure we don't lose a tick
-                updateTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(tickRate * 60 * 0.95) target:self selector:@selector(loadData) userInfo:nil repeats:YES];
+                updateTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(tickRate * 60 * 0.95) target:self selector:@selector(loadDataFromTimer:) userInfo:nil repeats:YES];
             });
             oneShotTimer = NO;
         }
@@ -249,7 +253,7 @@ static BOOL oneShotTimer = NO;
                         NSTimeInterval timeToNextPossibleUpdate = [report timeToPossibleUpdate];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             //NSLog(@"Next timer fires in %f seconds (%f minutes)", timeToNextPossibleUpdate, timeToNextPossibleUpdate / 60);
-                            updateTimer = [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:self selector:@selector(loadData) userInfo:nil repeats:NO];
+                            updateTimer = [NSTimer scheduledTimerWithTimeInterval:timeToNextPossibleUpdate target:self selector:@selector(loadDataFromTimer:) userInfo:nil repeats:NO];
                         });
                         oneShotTimer = YES;
                     }
