@@ -119,6 +119,11 @@ static BOOL oneShotTimer = NO;
                             [[Game game].managedObjectContext refreshObject:[Game game] mergeChanges:YES];
                         });
                         NSLog(@"Looks like authentication failed");
+
+                        NSUserNotification *notification = [[NSUserNotification alloc] init];
+                        notification.title = @"Cookie Expired";
+                        notification.subtitle = @"Looks like your cookies expired";
+                        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
                         return;
                     }
 
@@ -241,7 +246,7 @@ static BOOL oneShotTimer = NO;
                             }
                             f.waypoints = wp;
                             Fleet *lastFleet = [Fleet fleetFromUID:f.uid.intValue inReport:lastReport];
-                            if(lastFleet.orbiting) {
+                            if(![f.player.uid isEqual:report.originatorUID] && lastFleet.orbiting) {
                                 NSUserNotification *fleetLaunchNotification = [[NSUserNotification alloc] init];
                                 fleetLaunchNotification.title = @"Fleet Launched";
                                 fleetLaunchNotification.subtitle = [NSString stringWithFormat:@"%@'s %d ship fleet", [f.player name], f.ships.intValue];
