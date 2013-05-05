@@ -246,7 +246,7 @@ static BOOL oneShotTimer = NO;
                             }
                             f.waypoints = wp;
                             Fleet *lastFleet = [Fleet fleetFromUID:f.uid.intValue inReport:lastReport];
-                            if(![f.player.uid isEqual:report.originatorUID] && lastFleet.orbiting) {
+                            if(![f.player.uid isEqual:report.originatorUID] && (!lastFleet || lastFleet.orbiting)) {
                                 NSUserNotification *fleetLaunchNotification = [[NSUserNotification alloc] init];
                                 fleetLaunchNotification.title = @"Fleet Launched";
                                 fleetLaunchNotification.subtitle = [NSString stringWithFormat:@"%@'s %d ship fleet", [f.player name], f.ships.intValue];
@@ -254,7 +254,7 @@ static BOOL oneShotTimer = NO;
                                 int hours = [game ticksFromPoint:[f point] toPoint:[dest point] warpGates:NO];
                                 int remainingShips = [game shipsRemainingForStar:dest attackingFleet:f];
 
-                                if(dest.visible.boolValue && dest.player.uid.intValue != lastFleet.orbiting.player.uid.intValue) {
+                                if(dest.visible.boolValue && dest.player.uid.intValue != f.orbiting.player.uid.intValue) {
                                     fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"%@ launched a fleet from %@ to %@ with %d ships. The fleet will arrive in %d hours. We predict the %@ will win with %d ships remaining", [f.player name], lastFleet.orbiting.name, dest.name, f.ships.intValue, hours, (remainingShips > 0)?@"defender":@"attacker", abs(remainingShips)];
                                 } else {
                                     fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"%@ launched a fleet from %@ to %@ with %d ships. The fleet will arrive in %d hours.", f.player.name, lastFleet.orbiting.name, dest.name, f.ships.intValue, hours];
