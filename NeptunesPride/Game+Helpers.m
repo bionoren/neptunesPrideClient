@@ -254,10 +254,10 @@ static BOOL oneShotTimer = NO;
                                 int hours = [game ticksFromPoint:[f point] toPoint:[dest point] warpGates:NO];
                                 int remainingShips = [game shipsRemainingForStar:dest attackingFleet:f];
 
-                                if(dest.visible.boolValue && dest.player.uid.intValue != f.orbiting.player.uid.intValue) {
-                                    fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"%@ launched a fleet from %@ to %@ with %d ships. The fleet will arrive in %d hours. We predict the %@ will win with %d ships remaining", [f.player name], lastFleet.orbiting.name, dest.name, f.ships.intValue, hours, (remainingShips > 0)?@"defender":@"attacker", abs(remainingShips)];
+                                if(dest.visible.boolValue && dest.player.uid.intValue != f.player.uid.intValue) {
+                                    fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"Launched from %@ to %@. Will arrive in %d ticks. We predict the %@ will win with %d ships remaining", lastFleet.orbiting.name, dest.name, hours, (remainingShips > 0)?@"defender":@"attacker", abs(remainingShips)];
                                 } else {
-                                    fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"%@ launched a fleet from %@ to %@ with %d ships. The fleet will arrive in %d hours.", f.player.name, lastFleet.orbiting.name, dest.name, f.ships.intValue, hours];
+                                    fleetLaunchNotification.informativeText = [NSString stringWithFormat:@"Launched from %@ to %@. Will arrive in %d ticks.", lastFleet.orbiting.name, dest.name, hours];
                                 }
                                 [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:fleetLaunchNotification];
                             }
