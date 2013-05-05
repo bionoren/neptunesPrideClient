@@ -345,6 +345,9 @@ static BOOL oneShotTimer = NO;
 
 ///if the return value is negative, the attacker won with that many ships
 -(int)shipsRemainingForStar:(Star*)star attackingFleet:(Fleet*)fleet {
+    if(!star.visible.boolValue) {
+        return fleet.ships.intValue;
+    }
     int timeToAttack = [self ticksFromPoint:fleet.point toPoint:star.point warpGates:NO];
 
     int starShips = star.ships.intValue;
