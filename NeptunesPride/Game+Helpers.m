@@ -111,7 +111,7 @@ static BOOL oneShotTimer = NO;
 
                 //update game
                 [game.managedObjectContext performBlock:^{
-                    if([data[@"player_uid"] intValue] < 0) {
+                    if([data isKindOfClass:[NSString class]]) {
                         [game reset];
                         game.cookie = nil;
                         SAVE(game.managedObjectContext);
