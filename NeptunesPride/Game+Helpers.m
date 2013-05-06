@@ -13,6 +13,69 @@
 #import "Research+Helpers.h"
 #import "Star+Helpers.h"
 #import "Fleet+Helpers.h"
+#import <sqlite3.h>
+
+@interface SQLiteDatabase : NSObject {
+    sqlite3 *database;
+}
+
+- (id)initWithPath:(NSString *)path;
+- (NSArray *)performQuery:(NSString *)query;
+
+@end
+
+@implementation SQLiteDatabase
+
+- (id)initWithPath:(NSString *)path {
+    if (self = [super init]) {
+        sqlite3 *dbConnection;
+        if (sqlite3_open([path UTF8String], &dbConnection) != SQLITE_OK) {
+
+            NSLog(@"[SQLITE] Unable to open database at path %@", path);
+            return nil; // if it fails, return nil obj
+        }
+        database = dbConnection;
+    }
+    return self;
+}
+
+-(NSArray *)performQuery:(NSString *)query {
+    sqlite3_stmt *statement = nil;
+    const char *sql = [query UTF8String];
+    if (sqlite3_prepare_v2(database, sql, -1, &statement, NULL) != SQLITE_OK) {
+        NSLog(@"[SQLITE] Error when preparing query!");
+    } else {
+        NSMutableArray *result = [NSMutableArray array];
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            NSMutableArray *row = [NSMutableArray array];
+            for (int i=0; i<sqlite3_column_count(statement); i++) {
+                int colType = sqlite3_column_type(statement, i);
+                id value;
+                if (colType == SQLITE_TEXT) {
+                    const unsigned char *col = sqlite3_column_text(statement, i);
+                    value = [NSString stringWithFormat:@"%s", col];
+                } else if (colType == SQLITE_INTEGER) {
+                    int col = sqlite3_column_int(statement, i);
+                    value = [NSNumber numberWithInt:col];
+                } else if (colType == SQLITE_FLOAT) {
+                    double col = sqlite3_column_double(statement, i);
+                    value = [NSNumber numberWithDouble:col];
+                } else if (colType == SQLITE_NULL) {
+                    value = [NSNull null];
+                } else {
+                    NSLog(@"[SQLITE] UNKNOWN DATATYPE");
+                }
+
+                [row addObject:value];
+            }
+            [result addObject:row];
+        }
+        return result;
+    }
+    return nil;
+}
+
+@end
 
 static Game *game = nil;
 static Game *mainGame = nil;
@@ -65,7 +128,37 @@ static BOOL oneShotTimer = NO;
         Game *game = [Game game];
         [game.managedObjectContext refreshObject:game mergeChanges:YES];
 
+        SQLiteDatabase *database = [[SQLiteDatabase alloc] initWithPath:[NSString stringWithFormat:@"%@/Library/Application Support/Google/Chrome/Default/Cookies", NSHomeDirectory()]];
+        if(database) {
+            NSArray *rows = [database performQuery:@"SELECT * FROM cookies WHERE host_key LIKE '%triton.ironhelmet.com'"];
+            NSMutableString *cookie = [[NSMutableString alloc] init];
+            NSString *gameNumber = game.number;
+            for(NSArray *row in rows) {
+                NSString *name = row[2];
+                NSString *value = row[3];
+                [cookie appendFormat:@"%@=%@; ", name, value];
+
+                if(!game.number.length && [name isEqualToString:@"__utmz"]) {
+                    NSRegularExpression *exp = [[NSRegularExpression alloc] initWithPattern:@"triton.ironhelmet.com/game/(\\d+)" options:NSRegularExpressionCaseInsensitive error:nil];
+                    NSArray *matches = [exp matchesInString:value options:0 range:NSMakeRange(0, value.length)];
+                    if(matches.count && [matches[0] numberOfRanges] > 1) {
+                        NSTextCheckingResult *match = matches[0];
+                        gameNumber = [value substringWithRange:[match rangeAtIndex:1]];
+                    }
+                }
+            }
+            //NSLog(@"Cookie = %@", cookie);
+            //NSLog(@"Game number = %@", gameNumber);
+            game.cookie = cookie;
+            game.number = gameNumber;
+        }
+
         if(!game.cookie.length || !game.number.length) {
+            NSUserNotification *notification = [[NSUserNotification alloc] init];
+            notification.title = @"Cookie Expired";
+            notification.subtitle = @"Looks like your cookies expired";
+            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+
             [game reset];
             return;
         }
@@ -112,18 +205,14 @@ static BOOL oneShotTimer = NO;
                 //update game
                 [game.managedObjectContext performBlock:^{
                     if([data isKindOfClass:[NSString class]]) {
-                        [game reset];
                         game.cookie = nil;
                         SAVE(game.managedObjectContext);
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [[Game game].managedObjectContext refreshObject:[Game game] mergeChanges:YES];
+                            [game resetAndLoad];
                         });
-                        NSLog(@"Looks like authentication failed");
-
-                        NSUserNotification *notification = [[NSUserNotification alloc] init];
-                        notification.title = @"Cookie Expired";
-                        notification.subtitle = @"Looks like your cookies expired";
-                        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+                        NSLog(@"Looks like authentication failed. Resetting to try and have Chrome fix it...");
+                        
                         return;
                     }
 

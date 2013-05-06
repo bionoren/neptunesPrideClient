@@ -5,6 +5,10 @@ Requirements:
 -------------
 Mac OS X 10.8+
 
+Optional:
+---------
+If you use Chrome and keep the game open in a tab/window, this app will automatically pull cookie data from Chrome's cookie database. Only cookies for triton.ironhelmet.com are read.
+
 Features:
 ---------
 * Projected Cashflow
@@ -18,6 +22,7 @@ Known Issues:
 * Doesn't account for warp gates
 * Pulling shared data is not fully implemented and is untested
 * Sorting players based on technology stats may cause a crash
+* Assume you only play one game at a time
 
 Note also that the JSON data powering this app is NOT a formal API and is subject to change without notice. If this occurs, the app will probably require an update.
 

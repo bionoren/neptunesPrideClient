@@ -37,6 +37,7 @@
 		BE35398D17209B69004DA84F /* MyInfoWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE35398B17209B69004DA84F /* MyInfoWindowController.xib */; };
 		BE3D2C501731AB2A002108B1 /* Star.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3D2C4F1731AB2A002108B1 /* Star.m */; };
 		BE3D2C531731AB2A002108B1 /* Fleet.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3D2C521731AB2A002108B1 /* Fleet.m */; };
+		BE47B6CB1737F38300E23CE5 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BE47B6CA1737F38300E23CE5 /* libsqlite3.dylib */; };
 		BE4CDED21728C86D00C5B082 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4CDED11728C86D00C5B082 /* Player.m */; };
 		BE5FCE1F17300419009B9460 /* Report.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5FCE1E17300419009B9460 /* Report.m */; };
 		BEE0BC421731D3F50029219F /* GameTimeToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE0BC411731D3F50029219F /* GameTimeToolbarItem.m */; };
@@ -107,6 +108,7 @@
 		BE3D2C4F1731AB2A002108B1 /* Star.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Star.m; sourceTree = "<group>"; };
 		BE3D2C511731AB2A002108B1 /* Fleet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fleet.h; sourceTree = "<group>"; };
 		BE3D2C521731AB2A002108B1 /* Fleet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fleet.m; sourceTree = "<group>"; };
+		BE47B6CA1737F38300E23CE5 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		BE4CDED01728C86D00C5B082 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		BE4CDED11728C86D00C5B082 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		BE5FCE1D17300419009B9460 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE47B6CB1737F38300E23CE5 /* libsqlite3.dylib in Frameworks */,
 				BE353942171F9FA8004DA84F /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,6 +166,7 @@
 		BE353940171F9FA8004DA84F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BE47B6CA1737F38300E23CE5 /* libsqlite3.dylib */,
 				BE353941171F9FA8004DA84F /* Cocoa.framework */,
 				BE353962171F9FA8004DA84F /* SenTestingKit.framework */,
 				BE353943171F9FA8004DA84F /* Other Frameworks */,
